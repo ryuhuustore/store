@@ -167,7 +167,7 @@
     <nav class="fixed top-0 w-full z-50 px-4 py-4 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto glass-panel rounded-full px-6 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-lg overflow-hidden border border-white/10"><img src="icon.jpg" alt="Ryuhuu Store Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.textContent='R';" /></div>
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-lg overflow-hidden border border-white/10"><img src="logo.png" alt="Ryuhuu Store Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.textContent='Ryuhuu';" /></div>
                 <span class="font-semibold text-lg tracking-tight" data-lang="brand">Ryuhuu Store</span>
             </div>
             <div class="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--text-muted)]">
@@ -1304,8 +1304,10 @@
                 color: 'text-green-500', requiresDiscordGuide: true },
             { id: 'pm_googlepay', name: 'Google Pay', type: 'global', instant: false, icon: 'fa-google',
                 color: 'text-gray-400', requiresDiscordGuide: true },
-            { id: 'pm_paypal', name: 'PayPal', type: 'global', instant: false, icon: 'fa-paypal', color: 'text-blue-300',
-                requiresDiscordGuide: true },
+            { id: 'pm_paypal_manual', name: 'PayPal Manual', type: 'global', instant: false, icon: 'fa-paypal', color: 'text-blue-300',
+                requiresDiscordGuide: false, paypalMode: 'manual', redirectUrl: 'https://www.paypal.com/paypalme/ryuhuustore' },
+            { id: 'pm_paypal_instant', name: 'PayPal Instant Delivery', type: 'global', instant: true, icon: 'fa-paypal', color: 'text-blue-300',
+                requiresDiscordGuide: false, paypalMode: 'instant', redirectUrl: 'https://ryuhuu.mysellauth.com/' },
             { id: 'pm_wise', name: 'Wise', type: 'global', instant: false, icon: 'fa-globe', color: 'text-green-400',
                 requiresDiscordGuide: true },
             { id: 'pm_global', name: 'Crypto/Card via SellAuth', type: 'global', instant: true, icon: 'fa-globe',
@@ -1341,6 +1343,8 @@
             whatsappNumber: '6285117065033',
             discordUrl: 'https://discord.com/users/1120396377839648780',
             globalPaymentUrl: 'https://ryuhuu.mysellauth.com/',
+            paypalManualUrl: 'https://www.paypal.com/paypalme/ryuhuustore',
+            paypalInstantUrl: 'https://ryuhuu.mysellauth.com/',
             responseEstimate: 'Paling lambat 10 jam'
         };
 
@@ -1551,7 +1555,7 @@
                         <i class="fab ${pm.icon} text-lg ${pm.color}"></i>
                         <div>
                             <p class="font-semibold text-xs">${pm.name}</p>
-                            <p class="text-[8px] text-[var(--text-muted)]">${pm.requiresDiscordGuide ? 'Panduan via Discord' : (pm.instant ? 'Redirect' : 'Manual Check')}</p>
+                            <p class="text-[8px] text-[var(--text-muted)]">${pm.paypalMode === 'manual' ? 'Manual • DM for key' : (pm.paypalMode === 'instant' ? 'Instant delivery' : (pm.requiresDiscordGuide ? 'Guide via Discord' : (pm.instant ? 'Instant redirect' : 'Manual check')))}</p>
                         </div>
                     </div>
                 </label>
@@ -1574,8 +1578,16 @@
             qrisPanel.classList.add('hidden');
             warning.classList.remove('hidden');
 
-            if (method.requiresDiscordGuide) {
-                const title = t('payment_guide_title', 'Panduan Belum Tersedia di Website');
+            if (method.id === 'pm_paypal_manual') {
+                warning.innerHTML =
+                    `<div class="flex gap-3"><i class="fab fa-paypal text-2xl text-blue-300"></i><div><h4 class="font-semibold text-sm">PayPal Manual</h4><p class="text-xs mt-1">Pay manually through PayPalMe, then DM admin with your Order ID and payment proof to receive your key.</p><a href="${STORE_CONFIG.paypalManualUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block px-3 py-1 rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-blue-400"><i class="fab fa-paypal"></i> Open PayPalMe</a></div></div>`;
+                payBtn.textContent = t('pay_now', 'Create Order');
+            } else if (method.id === 'pm_paypal_instant') {
+                warning.innerHTML =
+                    `<div class="flex gap-3"><i class="fas fa-bolt text-2xl text-yellow-300"></i><div><h4 class="font-semibold text-sm">PayPal Instant Delivery</h4><p class="text-xs mt-1">Use SellAuth for instant delivery after payment. <strong>${STORE_CONFIG.paypalInstantUrl}</strong></p></div></div>`;
+                payBtn.textContent = 'Open Instant Checkout';
+            } else if (method.requiresDiscordGuide) {
+                const title = t('payment_guide_title', 'Guide Not Available on Website');
                 const body = t('payment_guide_body', 'Guide instalasi, penggunaan lengkap, serta file download untuk metode {method} dikelola langsung di server komunitas kami.')
                     .replace('{method}', method.name);
                 const joinText = t('payment_guide_join', 'Masuk Discord Ryuhuu Store');
@@ -1618,8 +1630,16 @@
                 return;
             }
             const method = ALL_PAYMENT_METHODS.find(m => m.id === selectedPaymentMethod);
-            if (method?.id === 'pm_global') {
-                window.open(STORE_CONFIG.globalPaymentUrl, '_blank', 'noopener,noreferrer');
+            if (method?.id === 'pm_global' || method?.id === 'pm_paypal_instant') {
+                window.open(method.redirectUrl || STORE_CONFIG.globalPaymentUrl, '_blank', 'noopener,noreferrer');
+                return;
+            }
+            if (method?.id === 'pm_paypal_manual') {
+                currentOrderSnapshot = buildOrderSnapshot();
+                currentOrderId = currentOrderSnapshot.id;
+                const msg = `Hello, I have paid via PayPal Manual. Order ID: ${currentOrderId}. Please help me get the key.`;
+                window.open(`${STORE_CONFIG.paypalManualUrl}`, '_blank', 'noopener,noreferrer');
+                alert(`${msg}\n\nPlease DM admin with your Order ID and payment proof to receive the key.`);
                 return;
             }
             if (method?.requiresDiscordGuide) {
@@ -2366,9 +2386,9 @@
                 contact_us: 'Fast Response Support',
                 send_invoice: 'Kirim Order ID dan bukti pembayaran ke admin agar order dapat segera diproses.',
                 download_invoice: 'Download Invoice PDF',
-                payment_guide_title: 'Panduan Belum Tersedia di Website',
-                payment_guide_body: 'Guide instalasi, penggunaan lengkap, serta file download untuk metode {method} dikelola langsung di server komunitas kami.',
-                payment_guide_join: 'Masuk Discord Ryuhuu Store'
+                payment_guide_title: 'Guide Not Available on Website',
+                payment_guide_body: 'Installation guides, usage instructions, and download files for {method} are managed directly in our community server.',
+                payment_guide_join: 'Join Ryuhuu Store Discord'
             },
             en: {
                 brand: 'Ryuhuu Store',
@@ -2378,7 +2398,7 @@
                 community: 'Community',
                 system_status: '24/7 Store Online',
                 hero_title: 'Upgrade Your Gaming Experience.',
-                hero_desc: 'Curated digital products for popular games with streamlined ordering, local QRIS support, and global payment through SellAuth.',
+                hero_desc: 'Curated digital products for popular games with streamlined ordering, manual PayPal support, and instant delivery through SellAuth.',
                 search_placeholder: 'Search games, products, or tags...',
                 trending_games: 'Available Products',
                 faq_title: 'Frequently Asked Questions',
@@ -2394,7 +2414,7 @@
                 empty_cart: 'Your cart is empty.',
                 proceed_checkout: 'Proceed to Checkout',
                 select_region: 'Choose Language & Payment',
-                select_region_desc: 'Choose display language. Indonesia/Malaysia use manual QRIS; global regions go to SellAuth for crypto/card.',
+                select_region_desc: 'Choose your display language and preferred payment method. Manual options require admin confirmation; instant checkout is available through SellAuth.',
                 cancel: 'Cancel',
                 checkout: 'Checkout',
                 back_store: 'Back to Store',
