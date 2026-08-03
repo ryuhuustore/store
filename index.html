@@ -319,23 +319,43 @@
                 <!-- Kolom kanan -->
                 <div class="w-full lg:w-1/2 space-y-3">
                     <!-- Ringkasan Pesanan -->
-                    <div class="glass-panel rounded-2xl p-4">
-                        <h2 class="text-md font-semibold mb-2" data-lang="order_summary">Ringkasan Pesanan</h2>
-                        <div id="checkout-items" class="space-y-2 mb-3 max-h-40 overflow-y-auto hide-scroll text-sm"></div>
-                        <div class="flex justify-between text-sm mb-1"><span data-lang="subtotal">Subtotal</span><span id="checkout-subtotal">-</span></div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span>Diskon</span>
-                            <span id="discount-display" class="text-green-400 hidden">-</span>
+                    <div class="glass-panel rounded-2xl p-4 relative overflow-hidden">
+                        <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-violet-500 to-yellow-400"></div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h2 class="text-md font-semibold" data-lang="order_summary">Ringkasan Pesanan</h2>
+                                <p class="text-[11px] text-[var(--text-muted)]" data-lang="summary_hint">Cek item & total sebelum bayar</p>
+                            </div>
+                            <span class="px-2 py-1 rounded-full bg-blue-500/10 text-blue-300 text-[10px] font-bold uppercase tracking-wide" data-lang="secure_order">Secure Order</span>
                         </div>
-                        <div class="flex justify-between text-sm mb-1"><span data-lang="tips">Tips / Donasi</span><input type="number" id="tips-input" placeholder="0" class="w-20 text-right bg-transparent border-b border-[var(--glass-border)] text-sm" onchange="updateCheckoutTotal()" value="0" /></div>
-                        <div class="flex justify-between mb-2"><span class="font-medium text-md" data-lang="total">Total</span><span class="font-bold text-xl" id="checkout-total">-</span></div>
+                        <div id="checkout-items" class="space-y-2 mb-3 max-h-40 overflow-y-auto hide-scroll text-sm rounded-xl bg-white/[0.03] border border-[var(--glass-border)] p-2"></div>
+                        <div class="rounded-2xl bg-white/[0.04] border border-[var(--glass-border)] p-3 space-y-2">
+                            <div class="flex justify-between text-sm"><span class="text-[var(--text-muted)]" data-lang="subtotal">Subtotal</span><span id="checkout-subtotal" class="font-semibold">-</span></div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-[var(--text-muted)]">Diskon</span>
+                                <span id="discount-display" class="text-green-400 hidden">-</span>
+                            </div>
+                            <div id="payment-fee-row" class="hidden flex justify-between text-sm"><span class="text-[var(--text-muted)]">Fee pembayaran</span><span id="payment-fee-display" class="text-yellow-300 font-semibold">-</span></div>
+                            <div class="flex items-center justify-between gap-3 p-2 rounded-xl bg-yellow-400/10 border border-yellow-400/20"><div><span class="text-sm font-semibold" data-lang="tips">Tips / Donasi</span><p class="text-[10px] text-[var(--text-muted)]" data-lang="tips_hint">Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.</p></div><input type="number" id="tips-input" placeholder="0" class="w-24 text-right bg-black/10 rounded-lg px-2 py-1 border border-[var(--glass-border)] text-sm" onchange="updateCheckoutTotal()" value="0" /></div>
+                        </div>
+                        <div class="flex justify-between items-end my-3 p-3 rounded-2xl bg-gradient-to-r from-blue-500/15 to-violet-500/15 border border-blue-400/20"><span class="font-medium text-sm" data-lang="total">Total</span><span class="font-extrabold text-2xl" id="checkout-total">-</span></div>
                         <!-- Kupon Diskon (hanya summersale) -->
                         <div class="mt-2 pt-2 border-t border-[var(--glass-border)] flex gap-2 items-center">
-                            <input type="text" id="discount-input" placeholder="Kode kupon" class="flex-1 px-3 py-2 rounded-xl glass-input text-sm" />
+                            <input type="text" id="discount-input" data-lang-placeholder="coupon_placeholder" placeholder="Kode kupon" class="flex-1 px-3 py-2 rounded-xl glass-input text-sm" />
                             <button id="apply-discount-btn" onclick="applyDiscount()" class="px-4 py-2 rounded-xl bg-blue-500 text-white font-semibold text-sm">Apply</button>
                             <button id="remove-discount-btn" onclick="removeDiscount()" class="px-3 py-2 rounded-xl bg-red-500/20 text-red-300 hidden text-sm">Batal</button>
                         </div>
                         <button id="pay-button" class="w-full py-3 rounded-2xl bg-[var(--text-main)] text-[var(--bg-color)] font-semibold mt-3 text-sm" onclick="processCheckout()" data-lang="pay_now">Buat Order</button>
+                        <div id="order-summary-contact" class="mt-4 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-left text-sm">
+                            <p class="font-semibold text-blue-400" data-lang="contact_us">Kontak admin:</p>
+                            <p><i class="fab fa-whatsapp text-green-400"></i> WhatsApp: <a href="https://wa.me/6285117065033" target="_blank" class="text-blue-300 hover:underline">+62 851-1706-5033</a></p>
+                            <p><i class="fab fa-discord text-indigo-400"></i> Discord: <a href="https://discord.com/users/1120396377839648780" target="_blank" class="text-blue-300 hover:underline">ryuhuu.</a></p>
+                            <p class="text-xs text-[var(--text-muted)] mt-1" data-lang="send_invoice">Kirim Order ID dan bukti ke admin. Estimasi respond paling lambat 10 jam.</p>
+                            <div class="mt-2 grid grid-cols-2 gap-2">
+                                <a id="whatsapp-summary-btn" href="https://wa.me/6285117065033" target="_blank" class="py-2 rounded-xl bg-green-500 hover:bg-green-400 text-white text-center font-semibold text-sm"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                                <a id="discord-summary-btn" href="https://discord.com/users/1120396377839648780" target="_blank" class="py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white text-center font-semibold text-sm"><i class="fab fa-discord"></i> Discord</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1294,18 +1314,30 @@
         const ALL_PAYMENT_METHODS = [
             { id: 'pm_qris', name: 'QRIS Manual', type: 'local', instant: false, icon: 'fa-qrcode',
                 color: 'text-pink-500', requiresDiscordGuide: false },
-            { id: 'pm_qrph', name: 'QRPH (Philippines)', type: 'local', instant: false, icon: 'fa-qrcode',
+            { id: 'pm_qrph', name: 'QRPH (Philippines)', type: 'local', regions: ['fil'], instant: false, icon: 'fa-qrcode',
                 color: 'text-blue-400', requiresDiscordGuide: true },
-            { id: 'pm_alipay', name: 'Alipay (China)', type: 'global', instant: false, icon: 'fa-alipay',
+            { id: 'pm_vtcpay', name: 'VTCPay Wallet', type: 'local', regions: ['vi'], instant: false, icon: 'fa-wallet',
+                color: 'text-red-300', requiresDiscordGuide: false, needsDM: true },
+            { id: 'pm_kakaopay', name: 'KakaoPay', type: 'local', regions: ['ko'], instant: false, icon: 'fa-comment',
+                color: 'text-yellow-300', requiresDiscordGuide: false, needsDM: true },
+            { id: 'pm_naverpay', name: 'Naver Pay', type: 'local', regions: ['ko'], instant: false, icon: 'fa-n',
+                color: 'text-green-300', requiresDiscordGuide: false, needsDM: true },
+            { id: 'pm_samsungpay', name: 'Samsung Pay', type: 'local', regions: ['ko'], instant: false, icon: 'fa-credit-card',
+                color: 'text-blue-300', requiresDiscordGuide: false, needsDM: true },
+            { id: 'pm_alipay', name: 'Alipay (China)', type: 'local', regions: ['zh'], instant: false, icon: 'fa-alipay',
                 color: 'text-blue-500', requiresDiscordGuide: true },
-            { id: 'pm_upi', name: 'UPI (India)', type: 'global', instant: false, icon: 'fa-credit-card',
+            { id: 'pm_upi', name: 'UPI (India)', type: 'local', regions: ['hi'], instant: false, icon: 'fa-credit-card',
                 color: 'text-orange-500', requiresDiscordGuide: true },
-            { id: 'pm_pix', name: 'PIX (Brazil)', type: 'global', instant: false, icon: 'fa-credit-card',
+            { id: 'pm_pix', name: 'PIX (Brazil / India)', type: 'local', regions: ['pt','hi'], instant: false, icon: 'fa-credit-card',
                 color: 'text-green-500', requiresDiscordGuide: true },
             { id: 'pm_googlepay', name: 'Google Pay', type: 'global', instant: false, icon: 'fa-google',
                 color: 'text-gray-400', requiresDiscordGuide: true },
             { id: 'pm_paypal_manual', name: 'PayPal Manual', type: 'global', instant: false, icon: 'fa-paypal', color: 'text-blue-300',
                 requiresDiscordGuide: false, paypalMode: 'manual', redirectUrl: 'https://www.paypal.com/paypalme/ryuhuustore' },
+            { id: 'pm_visa_cc_manual', name: 'Visa / CC Manual', type: 'global', instant: false, icon: 'fa-credit-card', color: 'text-sky-300',
+                requiresDiscordGuide: false, manualUrl: 'https://boosty.to/ryuhuu', feePercent: 15 },
+            { id: 'pm_binance_manual', name: 'Binance Manual', type: 'global', instant: false, icon: 'fa-coins', color: 'text-yellow-300',
+                requiresDiscordGuide: false, needsDM: true },
             { id: 'pm_paypal_instant', name: 'PayPal Instant Delivery', type: 'global', instant: true, icon: 'fa-paypal', color: 'text-blue-300',
                 requiresDiscordGuide: false, paypalMode: 'instant', redirectUrl: 'https://ryuhuu.mysellauth.com/' },
             { id: 'pm_wise', name: 'Wise', type: 'global', instant: false, icon: 'fa-globe', color: 'text-green-400',
@@ -1345,6 +1377,7 @@
             globalPaymentUrl: 'https://ryuhuu.mysellauth.com/',
             paypalManualUrl: 'https://www.paypal.com/paypalme/ryuhuustore',
             paypalInstantUrl: 'https://ryuhuu.mysellauth.com/',
+            boostyManualUrl: 'https://boosty.to/ryuhuu',
             responseEstimate: 'Paling lambat 10 jam'
         };
 
@@ -1395,7 +1428,13 @@
             } else if (discountType === 'fixed') {
                 discount = Math.min(discountAmount, subtotal);
             }
-            return subtotal + tipsAmount - discount;
+            return subtotal + getPaymentFee(subtotal, discount) + tipsAmount - discount;
+        }
+
+        function getPaymentFee(subtotal = getCartSubtotal(), discount = 0) {
+            const method = ALL_PAYMENT_METHODS.find(m => m.id === selectedPaymentMethod);
+            const base = Math.max(0, subtotal - discount);
+            return method?.feePercent ? Math.round(base * (method.feePercent / 100)) : 0;
         }
 
         function saveCartState() {
@@ -1540,26 +1579,33 @@
             }).join('');
             document.getElementById('checkout-subtotal').innerText = formatPrice(subtotal);
 
-            // Filter metode: QRIS hanya untuk ID/MY
-            let methods = ALL_PAYMENT_METHODS;
-            if (!(isLocal && (appState.selectedRegion === 'id' || appState.selectedRegion === 'my'))) {
-                methods = ALL_PAYMENT_METHODS.filter(m => m.id !== 'pm_qris');
-            }
-            if (methods.length === 0) methods = ALL_PAYMENT_METHODS.filter(m => m.id === 'pm_global');
-
-            const container = document.getElementById('payment-methods-container');
-            container.innerHTML = methods.map((pm, idx) => `
+            const isRegionLocal = (m) => {
+                if (m.id === 'pm_qris') return ['id','my'].includes(appState.selectedRegion); // QRIS hanya Indonesia & Malaysia
+                return m.type === 'local' && Array.isArray(m.regions) && m.regions.includes(appState.selectedRegion);
+            };
+            const locals = ALL_PAYMENT_METHODS.filter(isRegionLocal);
+            const anotherLocals = ALL_PAYMENT_METHODS.filter(m => m.type === 'local' && !isRegionLocal(m));
+            const globalInstant = ALL_PAYMENT_METHODS.filter(m => m.type === 'global' && m.instant);
+            const globalManual = ALL_PAYMENT_METHODS.filter(m => m.type === 'global' && !m.instant);
+            const methods = [...locals, ...anotherLocals, ...globalInstant, ...globalManual];
+            const labelFor = (pm) => pm.feePercent ? `Manual • +${pm.feePercent}% fee` : (pm.paypalMode === 'manual' || pm.needsDM ? 'Manual • DM for key' : (pm.paypalMode === 'instant' ? 'Instant delivery' : (pm.requiresDiscordGuide ? t('guide_via_discord','Guide via Discord') : (pm.instant ? 'Instant redirect' : 'Manual check'))));
+            const renderMethod = (pm, idx) => `
                 <label class="cursor-pointer">
                     <input type="radio" name="payment" class="peer hidden" ${idx===0?'checked':''} onchange="handlePaymentChange('${pm.id}')">
                     <div class="p-2 rounded-xl border border-[var(--glass-border)] bg-white/5 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 flex items-center gap-2 text-sm">
-                        <i class="fab ${pm.icon} text-lg ${pm.color}"></i>
-                        <div>
-                            <p class="font-semibold text-xs">${pm.name}</p>
-                            <p class="text-[8px] text-[var(--text-muted)]">${pm.paypalMode === 'manual' ? 'Manual • DM for key' : (pm.paypalMode === 'instant' ? 'Instant delivery' : (pm.requiresDiscordGuide ? 'Guide via Discord' : (pm.instant ? 'Instant redirect' : 'Manual check')))}</p>
-                        </div>
+                        <i class="${pm.icon.includes('fa-') && !['fa-paypal','fa-google','fa-alipay'].includes(pm.icon) ? 'fas' : 'fab'} ${pm.icon} text-lg ${pm.color}"></i>
+                        <div><p class="font-semibold text-xs">${pm.name}</p><p class="text-[8px] text-[var(--text-muted)]">${labelFor(pm)}</p></div>
                     </div>
-                </label>
-            `).join('');
+                </label>`;
+            let idxCounter = 0;
+            const renderGroup = (title, items, extraClass = '') => items.length ? `<div class="col-span-2 text-[11px] font-bold uppercase tracking-wide text-[var(--text-muted)] mt-2 ${extraClass}">${title}</div>${items.map(pm => renderMethod(pm, idxCounter++)).join('')}` : '';
+            const container = document.getElementById('payment-methods-container');
+            container.innerHTML = `
+                ${renderGroup(t('local_payment','Local Payment'), locals, 'mt-1')}
+                ${renderGroup(t('instant_payment','Instant'), globalInstant)}
+                ${renderGroup(t('manual_payment','Manual'), globalManual)}
+                ${renderGroup(t('another_local_payment','Another Local'), anotherLocals)}
+            `;
             if (methods.length) {
                 selectedPaymentMethod = methods[0].id;
                 handlePaymentChange(selectedPaymentMethod);
@@ -1581,6 +1627,18 @@
             if (method.id === 'pm_paypal_manual') {
                 warning.innerHTML =
                     `<div class="flex gap-3"><i class="fab fa-paypal text-2xl text-blue-300"></i><div><h4 class="font-semibold text-sm">PayPal Manual</h4><p class="text-xs mt-1">Pay manually through PayPalMe, then DM admin with your Order ID and payment proof to receive your key.</p><a href="${STORE_CONFIG.paypalManualUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block px-3 py-1 rounded-xl bg-blue-500 text-white text-xs font-semibold hover:bg-blue-400"><i class="fab fa-paypal"></i> Open PayPalMe</a></div></div>`;
+                payBtn.textContent = t('pay_now', 'Create Order');
+            } else if (method.id === 'pm_visa_cc_manual') {
+                warning.innerHTML =
+                    `<div class="flex gap-3"><i class="fas fa-credit-card text-2xl text-sky-300"></i><div><h4 class="font-semibold text-sm">Visa / CC Manual (+15% fee)</h4><p class="text-xs mt-1">${t('visa_cc_body','Pay by card via Boosty. Send payment proof to admin DM to receive your key. This method works globally for any region.')}</p><a href="${STORE_CONFIG.boostyManualUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block px-3 py-1 rounded-xl bg-sky-500 text-white text-xs font-semibold hover:bg-sky-400"><i class="fas fa-external-link-alt"></i> Open Boosty</a></div></div>`;
+                payBtn.textContent = t('pay_now', 'Create Order');
+            } else if (method.id === 'pm_binance_manual') {
+                warning.innerHTML =
+                    `<div class="flex gap-3"><i class="fas fa-coins text-2xl text-yellow-300"></i><div><h4 class="font-semibold text-sm">Binance Manual</h4><p class="text-xs mt-1">${t('binance_body','Binance manual requires DM admin first for payment details. After payment, send proof by DM to receive your key.')}</p><a href="${STORE_CONFIG.discordUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block px-3 py-1 rounded-xl bg-yellow-500 text-black text-xs font-semibold hover:bg-yellow-400"><i class="fab fa-discord"></i> DM Admin</a></div></div>`;
+                payBtn.textContent = t('pay_now', 'Create Order');
+            } else if (['pm_vtcpay','pm_kakaopay','pm_naverpay','pm_samsungpay'].includes(method.id)) {
+                warning.innerHTML =
+                    `<div class="flex gap-3"><i class="fab fa-discord text-2xl text-indigo-400"></i><div><h4 class="font-semibold text-sm">${method.name}</h4><p class="text-xs mt-1">${t('dm_payment_body', 'Please DM admin on Discord for payment details. After payment, send proof to receive your key.').replace('{method}', method.name)}</p><a href="${STORE_CONFIG.discordUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-block px-3 py-1 rounded-xl bg-indigo-500 text-white text-xs font-semibold hover:bg-indigo-400"><i class="fab fa-discord"></i> ${t('dm_admin','DM Admin')}</a></div></div>`;
                 payBtn.textContent = t('pay_now', 'Create Order');
             } else if (method.id === 'pm_paypal_instant') {
                 warning.innerHTML =
@@ -1634,6 +1692,27 @@
                 window.open(method.redirectUrl || STORE_CONFIG.globalPaymentUrl, '_blank', 'noopener,noreferrer');
                 return;
             }
+            if (method?.id === 'pm_visa_cc_manual') {
+                currentOrderSnapshot = buildOrderSnapshot();
+                currentOrderId = currentOrderSnapshot.id;
+                window.open(STORE_CONFIG.boostyManualUrl, '_blank', 'noopener,noreferrer');
+                alert(`Order ID: ${currentOrderId}\n\nBayar via Boosty (Visa/CC) dengan total sudah termasuk fee 15%. Setelah pembayaran, kirim bukti ke DM admin untuk mendapatkan key.`);
+                return;
+            }
+            if (method?.id === 'pm_binance_manual') {
+                currentOrderSnapshot = buildOrderSnapshot();
+                currentOrderId = currentOrderSnapshot.id;
+                alert(`Order ID: ${currentOrderId}\n\nUntuk Binance Manual, DM admin terlebih dahulu untuk detail pembayaran. Setelah bayar, kirim bukti pembayaran ke DM untuk mendapatkan key.`);
+                window.open(STORE_CONFIG.discordUrl, '_blank', 'noopener,noreferrer');
+                return;
+            }
+            if (method?.needsDM && !['pm_binance_manual'].includes(method.id)) {
+                currentOrderSnapshot = buildOrderSnapshot();
+                currentOrderId = currentOrderSnapshot.id;
+                alert(`${t('order_id','Order ID')}: ${currentOrderId}\n\n${t('dm_payment_body','Please DM admin on Discord for payment details. After payment, send proof to receive your key.').replace('{method}', method.name)}`);
+                window.open(STORE_CONFIG.discordUrl, '_blank', 'noopener,noreferrer');
+                return;
+            }
             if (method?.id === 'pm_paypal_manual') {
                 currentOrderSnapshot = buildOrderSnapshot();
                 currentOrderId = currentOrderSnapshot.id;
@@ -1661,8 +1740,8 @@
             document.getElementById('qris-total-display').innerText = formatPrice(currentOrderSnapshot.total);
             document.getElementById('payment-method-display').innerText = `Merchant: ${STORE_CONFIG.merchantName} • Metode: ${getPaymentMethodName()}`;
             document.getElementById('qris-image').classList.remove('hidden');
-            document.querySelector('[data-lang="qris_payment"]').textContent = 'QRIS Payment';
-            document.querySelector('[data-lang="scan_qris"]').textContent = 'Scan QRIS di bawah';
+            document.querySelector('[data-lang="qris_payment"]').textContent = t('qris_payment', 'QRIS Payment');
+            document.querySelector('[data-lang="scan_qris"]').textContent = t('scan_qris', 'Scan QRIS below');
 
             document.getElementById('qris-panel').classList.remove('hidden');
             document.getElementById('proof-file').value = '';
@@ -1685,7 +1764,8 @@
             } else if (discountType === 'fixed') {
                 discount = Math.min(discountAmount, subtotal);
             }
-            const total = subtotal + tipsAmount - discount;
+            const fee = getPaymentFee(subtotal, discount);
+            const total = subtotal + fee + tipsAmount - discount;
             return {
                 id: createOrderId(),
                 createdAt: new Date(),
@@ -1696,6 +1776,7 @@
                 subtotal: subtotal,
                 tips: tipsAmount,
                 discount: discount,
+                paymentFee: fee,
                 total: total,
                 currency: usesLocalCurrency() ? 'IDR' : 'USD',
                 items: appState.cart.map(item => ({
@@ -1712,6 +1793,7 @@
             const message = buildOrderMessage();
             const encoded = encodeURIComponent(message);
             const waBtn = document.getElementById('whatsapp-confirm-btn');
+            const waSummaryBtn = document.getElementById('whatsapp-summary-btn');
             const dcBtn = document.getElementById('discord-confirm-btn');
             const orderInfo = document.getElementById('order-id-confirmation');
             if (waBtn) waBtn.href = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encoded}`;
@@ -1738,6 +1820,7 @@
                 items,
                 '',
                 `Subtotal: ${formatPrice(order.subtotal)}`,
+                `Fee Pembayaran: ${formatPrice(order.paymentFee || 0)}`,
                 `Tips/Donasi: ${formatPrice(order.tips)}`,
                 `Diskon: ${formatPrice(order.discount)}`,
                 `Total: ${formatPrice(order.total)}`,
@@ -1821,6 +1904,7 @@
                 <div>${itemRows}</div>
                 <div class="border-t border-[var(--glass-border)] bg-white/5 px-4 py-4 space-y-2">
                     <div class="flex justify-between text-sm"><span class="text-[var(--text-muted)]">Subtotal</span><span>${formatPrice(order.subtotal)}</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-[var(--text-muted)]">Fee Pembayaran</span><span>${formatPrice(order.paymentFee || 0)}</span></div>
                     <div class="flex justify-between text-sm"><span class="text-[var(--text-muted)]">Tips/Donasi</span><span>${formatPrice(order.tips)}</span></div>
                     <div class="flex justify-between text-sm"><span class="text-[var(--text-muted)]">Diskon</span><span>${formatPrice(order.discount)}</span></div>
                     <div class="flex justify-between text-base font-bold pt-2 border-t border-[var(--glass-border)]"><span>Total</span><span class="text-blue-400">${formatPrice(order.total)}</span></div>
@@ -1838,9 +1922,9 @@
             const timeStr = now.toLocaleTimeString('id-ID');
             const pageWidth = 210;
             const pageHeight = 297;
-            const margin = 15;
+            const margin = 16;
             const contentWidth = pageWidth - (margin * 2);
-            let y = 20;
+            let y = 18;
 
             const ensureSpace = (needed = 10) => { if (y + needed > pageHeight - 18) { pdf.addPage();
                     y = 18; } };
@@ -1852,25 +1936,25 @@
                 pdf.setFont('helvetica', 'bold');
                 pdf.setFontSize(11);
                 pdf.text(title, margin + 4, y + 6.5);
-                y += 14;
+                y += 11;
             };
             const drawKeyValue = (label, value) => {
                 const labelX = margin + 4;
                 const valueX = margin + 52;
                 const valueWidth = contentWidth - 58;
                 const valueLines = pdf.splitTextToSize(String(value || '-'), valueWidth);
-                const rowHeight = Math.max(8, valueLines.length * 4.8 + 2.5);
+                const rowHeight = Math.max(7, valueLines.length * 4.2 + 2);
                 ensureSpace(rowHeight + 1);
                 pdf.setDrawColor(232, 236, 241);
                 pdf.roundedRect(margin, y - 1, contentWidth, rowHeight, 1.5, 1.5);
                 pdf.setFont('helvetica', 'bold');
                 pdf.setFontSize(10);
                 pdf.setTextColor(85, 99, 117);
-                pdf.text(label, labelX, y + 4.5);
+                pdf.text(label, labelX, y + 4.2);
                 pdf.setFont('helvetica', 'normal');
                 pdf.setTextColor(28, 37, 54);
-                pdf.text(valueLines, valueX, y + 4.5);
-                y += rowHeight + 2;
+                pdf.text(valueLines, valueX, y + 4.2);
+                y += rowHeight + 1;
             };
 
             // Header
@@ -1890,7 +1974,7 @@
             pdf.setFont('helvetica', 'normal');
             pdf.setFontSize(9);
             pdf.text(`${dateStr} • ${timeStr}`, pageWidth - margin - 6, y + 19, { align: 'right' });
-            y += 36;
+            y += 32;
 
             drawSectionTitle('Informasi Order');
             drawKeyValue('Order ID', order.id);
@@ -1925,31 +2009,36 @@
                 pdf.setFont('helvetica', 'normal');
                 pdf.setFontSize(9);
                 pdf.setTextColor(28, 37, 54);
-                pdf.text(String(idx + 1), margin + 4, y + 4.5);
-                pdf.text(productLines, margin + 16, y + 4.5);
+                pdf.text(String(idx + 1), margin + 4, y + 4.2);
+                pdf.text(productLines, margin + 16, y + 4.2);
                 pdf.setTextColor(85, 99, 117);
-                pdf.text(metaLines, margin + 104, y + 4.5);
+                pdf.text(metaLines, margin + 104, y + 4.2);
                 pdf.setTextColor(28, 37, 54);
-                pdf.text(formatPrice(item.price), pageWidth - margin - 4, y + 4.5, { align: 'right' });
-                y += rowHeight + 2;
+                pdf.text(formatPrice(item.price), pageWidth - margin - 4, y + 4.2, { align: 'right' });
+                y += rowHeight + 1;
             });
 
             drawSectionTitle('Ringkasan Biaya');
+            const summaryX = margin + 92;
+            const summaryW = contentWidth - 92;
             const drawTotalRow = (label, value, emphasized = false) => {
-                ensureSpace(9);
+                ensureSpace(emphasized ? 10 : 8);
+                if (emphasized) { pdf.setFillColor(239, 244, 255); pdf.roundedRect(summaryX - 2, y - 5.5, summaryW + 2, 9, 2, 2, 'F'); }
                 pdf.setFont('helvetica', emphasized ? 'bold' : 'normal');
-                pdf.setFontSize(emphasized ? 12 : 10);
-                pdf.setTextColor(emphasized ? 37 : 85, emphasized ? 99 : 99, emphasized ? 235 : 117);
-                pdf.text(label, margin + 110, y);
+                pdf.setFontSize(emphasized ? 11 : 9.5);
+                pdf.setTextColor(emphasized ? 37 : 71, emphasized ? 99 : 85, emphasized ? 235 : 105);
+                pdf.text(label, summaryX, y);
                 pdf.text(formatPrice(value), pageWidth - margin - 4, y, { align: 'right' });
-                y += emphasized ? 9 : 7;
+                y += emphasized ? 9 : 6.5;
             };
             drawTotalRow('Subtotal', order.subtotal);
+            if ((order.paymentFee || 0) > 0) drawTotalRow('Fee Pembayaran', order.paymentFee || 0);
             drawTotalRow('Tips / Donasi', order.tips);
-            drawTotalRow('Diskon', order.discount);
+            if ((order.discount || 0) > 0) drawTotalRow('Diskon', order.discount);
             pdf.setDrawColor(232, 236, 241);
-            pdf.line(margin + 110, y - 3, pageWidth - margin, y - 3);
+            pdf.line(summaryX, y - 3, pageWidth - margin, y - 3);
             drawTotalRow('TOTAL', order.total, true);
+            y += 4;
 
             drawSectionTitle('Catatan');
             pdf.setFont('helvetica', 'normal');
@@ -2029,9 +2118,13 @@
             } else if (discountType === 'fixed') {
                 discount = Math.min(discountAmount, subtotal);
             }
-            const total = subtotal + tipsAmount - discount;
+            const fee = getPaymentFee(subtotal, discount);
+            const total = subtotal + fee + tipsAmount - discount;
             document.getElementById('checkout-subtotal').innerText = formatPrice(subtotal);
             document.getElementById('checkout-total').innerText = formatPrice(total);
+            const feeRow = document.getElementById('payment-fee-row');
+            const feeEl = document.getElementById('payment-fee-display');
+            if (fee > 0) { feeEl.innerText = formatPrice(fee); feeRow.classList.remove('hidden'); } else { feeRow.classList.add('hidden'); }
             const discountEl = document.getElementById('discount-display');
             if (discount > 0) {
                 discountEl.innerText = `- ${formatPrice(discount)}`;
@@ -2371,6 +2464,10 @@
                 customer_note: 'Pastikan username Discord benar agar admin dapat memproses order tanpa kendala.',
                 payment_method: 'Metode Pembayaran',
                 order_summary: 'Ringkasan Pesanan',
+                summary_hint: 'Cek item & total sebelum bayar',
+                secure_order: 'Order Aman',
+                tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.',
+                coupon_placeholder: 'Kode kupon',
                 subtotal: 'Subtotal',
                 tips: 'Tips / Donasi',
                 total: 'Total',
@@ -2424,6 +2521,10 @@
                 customer_note: 'Discord nickname is required. WhatsApp/email is optional but useful for faster admin confirmation.',
                 payment_method: 'Payment Method',
                 order_summary: 'Order Summary',
+                summary_hint: 'Check items & total before payment',
+                secure_order: 'Secure Order',
+                tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.',
+                coupon_placeholder: 'Coupon code',
                 subtotal: 'Subtotal',
                 tips: 'Tips / Donation',
                 total: 'Total',
@@ -2448,9 +2549,29 @@
         translations.fil = { ...translations.en };
         translations.zh = { ...translations.en };
         translations.ar = { ...translations.en };
-        translations.vi = { ...translations.en };
-        translations.ko = { ...translations.en };
         translations.hi = { ...translations.en };
+
+
+        translations.id = { ...translations.id,
+            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Another', another_local_payment: 'Another Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Panduan via Discord', dm_admin: 'DM Admin', order_id: 'Order ID', summary_hint: 'Cek item & total sebelum bayar', secure_order: 'Order Aman', tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.', coupon_placeholder: 'Kode kupon',
+            dm_payment_body: 'Silakan DM admin di Discord untuk detail pembayaran {method}. Setelah bayar, kirim bukti pembayaran untuk mendapatkan key.',
+            visa_cc_body: 'Bayar menggunakan kartu via Boosty. Kirim bukti pembayaran ke DM admin untuk mendapatkan key. Metode ini bisa dipakai global untuk region mana saja.',
+            binance_body: 'Binance manual perlu DM admin terlebih dahulu untuk detail pembayaran. Setelah bayar, kirim bukti pembayaran ke DM untuk mendapatkan key.' };
+        translations.en = { ...translations.en,
+            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Another', another_local_payment: 'Another Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Guide via Discord', dm_admin: 'DM Admin', order_id: 'Order ID', summary_hint: 'Check items & total before payment', secure_order: 'Secure Order', tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.', coupon_placeholder: 'Coupon code',
+            dm_payment_body: 'Please DM admin on Discord for {method} payment details. After payment, send proof to receive your key.',
+            visa_cc_body: 'Pay by card via Boosty. Send payment proof to admin DM to receive your key. This method works globally for any region.',
+            binance_body: 'Binance manual requires DM admin first for payment details. After payment, send proof by DM to receive your key.' };
+        translations.vi = { ...translations.en,
+            select_region: 'Chọn ngôn ngữ & thanh toán', checkout: 'Thanh toán', customer_info: 'Thông tin khách hàng', payment_method: 'Phương thức thanh toán', order_summary: 'Tóm tắt đơn hàng', tips: 'Tip / Ủng hộ', pay_now: 'Tạo đơn hàng',
+            local_payment: 'Thanh toán nội địa', global_payment: 'Thanh toán quốc tế', another_payment: 'Khác', another_local_payment: 'Thanh toán nội địa khác', instant_payment: 'Tức thì', manual_payment: 'Thủ công', guide_via_discord: 'Hướng dẫn qua Discord', dm_admin: 'DM Admin',
+            payment_guide_title: 'Hướng dẫn có trên Discord', payment_guide_body: 'Hướng dẫn cài đặt, cách dùng và file tải xuống cho {method} được quản lý trên server cộng đồng.', payment_guide_join: 'Tham gia Discord Ryuhuu Store',
+            dm_payment_body: 'Vui lòng DM admin trên Discord để nhận thông tin thanh toán {method}. Sau khi thanh toán, gửi bằng chứng để nhận key.' };
+        translations.ko = { ...translations.en,
+            select_region: '언어 및 결제 선택', checkout: '체크아웃', customer_info: '고객 정보', payment_method: '결제 방법', order_summary: '주문 요약', tips: '팁 / 후원', pay_now: '주문 생성',
+            local_payment: '로컬 결제', global_payment: '글로벌 결제', another_payment: '기타', another_local_payment: '기타 로컬 결제', instant_payment: '즉시', manual_payment: '수동', guide_via_discord: 'Discord 안내', dm_admin: '관리자 DM',
+            payment_guide_title: 'Discord에서 안내 제공', payment_guide_body: '{method} 설치 가이드, 사용법, 다운로드 파일은 커뮤니티 서버에서 안내됩니다.', payment_guide_join: 'Ryuhuu Store Discord 참여',
+            dm_payment_body: '{method} 결제 정보를 받으려면 Discord로 관리자에게 DM해 주세요. 결제 후 인증샷을 보내면 key를 받을 수 있습니다.' };
 
         function getActiveLang() { return translations[appState.selectedRegion] ? appState.selectedRegion : 'en'; }
 
