@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ryuhuu-store-v3';
+const CACHE_NAME = 'ryuhuu-store-v4';
 
 const urlsToCache = [
   '/',
