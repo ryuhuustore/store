@@ -10,9 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ryuhuu Store | Digital Product Store</title>
     <script>
-//  if ('serviceWorker' in navigator) {
-//    navigator.serviceWorker.register('/sw.js?v=4');
-//  }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
 </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
@@ -346,16 +346,20 @@
                             <button id="remove-discount-btn" onclick="removeDiscount()" class="px-3 py-2 rounded-xl bg-red-500/20 text-red-300 hidden text-sm">Batal</button>
                         </div>
                         <button id="pay-button" class="w-full py-3 rounded-2xl bg-[var(--text-main)] text-[var(--bg-color)] font-semibold mt-3 text-sm" onclick="processCheckout()" data-lang="pay_now">Buat Order</button>
-                        <div id="order-summary-contact" class="mt-4 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-left text-sm">
-                            <p class="font-semibold text-blue-400" data-lang="contact_us">Kontak admin:</p>
-                            <p><i class="fab fa-whatsapp text-green-400"></i> WhatsApp: <a href="https://wa.me/6285117065033" target="_blank" class="text-blue-300 hover:underline">+62 851-1706-5033</a></p>
-                            <p><i class="fab fa-discord text-indigo-400"></i> Discord: <a href="https://discord.com/users/1120396377839648780" target="_blank" class="text-blue-300 hover:underline">ryuhuu.</a></p>
-                            <p class="text-xs text-[var(--text-muted)] mt-1" data-lang="send_invoice">Kirim Order ID dan bukti ke admin. Estimasi respond paling lambat 10 jam.</p>
-                            <div class="mt-2 grid grid-cols-2 gap-2">
-                                <a id="whatsapp-summary-btn" href="https://wa.me/6285117065033" target="_blank" class="py-2 rounded-xl bg-green-500 hover:bg-green-400 text-white text-center font-semibold text-sm"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                                <a id="discord-summary-btn" href="https://discord.com/users/1120396377839648780" target="_blank" class="py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white text-center font-semibold text-sm"><i class="fab fa-discord"></i> Discord</a>
+                        <details id="order-summary-contact" class="mt-3 rounded-xl border border-[var(--glass-border)] bg-white/[0.03] text-sm group">
+                            <summary class="cursor-pointer list-none px-3 py-2 flex items-center justify-between gap-3 text-[var(--text-muted)] hover:text-[var(--text-main)]">
+                                <span class="flex items-center gap-2"><i class="fas fa-headset text-blue-300"></i><span data-lang="need_help">Butuh bantuan?</span></span>
+                                <span class="text-[11px] text-blue-300 group-open:hidden" data-lang="contact_admin_short">Kontak admin</span>
+                                <i class="fas fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
+                            </summary>
+                            <div class="px-3 pb-3 pt-1 border-t border-[var(--glass-border)]">
+                                <p class="text-xs text-[var(--text-muted)] mb-2" data-lang="send_invoice">Kirim Order ID dan bukti pembayaran ke admin agar order dapat segera diproses.</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a id="whatsapp-summary-btn" href="https://wa.me/6285117065033" target="_blank" class="py-2 rounded-xl bg-green-500/90 hover:bg-green-400 text-white text-center font-semibold text-sm"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                                    <a id="discord-summary-btn" href="https://discord.com/users/1120396377839648780" target="_blank" class="py-2 rounded-xl bg-indigo-500/90 hover:bg-indigo-400 text-white text-center font-semibold text-sm"><i class="fab fa-discord"></i> Discord</a>
+                                </div>
                             </div>
-                        </div>
+                        </details>
                     </div>
                 </div>
             </div>
@@ -2481,6 +2485,8 @@
                 payment_verified: 'Payment Completed',
                 proof_accepted: 'Bukti pembayaran berhasil dilampirkan. Silakan download invoice dan hubungi admin melalui WhatsApp atau Discord untuk proses aktivasi.',
                 contact_us: 'Fast Response Support',
+                need_help: 'Butuh bantuan?',
+                contact_admin_short: 'Kontak admin',
                 send_invoice: 'Kirim Order ID dan bukti pembayaran ke admin agar order dapat segera diproses.',
                 download_invoice: 'Download Invoice PDF',
                 payment_guide_title: 'Guide Not Available on Website',
@@ -2538,6 +2544,8 @@
                 payment_verified: 'Payment Completed',
                 proof_accepted: 'Payment proof attached. Download the invoice, then contact admin to process the order.',
                 contact_us: 'Admin contacts:',
+                need_help: 'Need help?',
+                contact_admin_short: 'Contact admin',
                 send_invoice: 'Send your Order ID and payment proof to admin. Estimated response time is up to ±1 hour depending on order queue.',
                 download_invoice: 'Download Invoice PDF',
                 payment_guide_title: 'Guide Not Available on Website',
@@ -2553,12 +2561,12 @@
 
 
         translations.id = { ...translations.id,
-            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Another', another_local_payment: 'Another Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Panduan via Discord', dm_admin: 'DM Admin', order_id: 'Order ID', summary_hint: 'Cek item & total sebelum bayar', secure_order: 'Order Aman', tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.', coupon_placeholder: 'Kode kupon',
+            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Another', another_local_payment: 'Another Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Panduan via Discord', dm_admin: 'DM Admin', order_id: 'Order ID', need_help: 'Butuh bantuan?', contact_admin_short: 'Kontak admin', summary_hint: 'Cek item & total sebelum bayar', secure_order: 'Order Aman', tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.', coupon_placeholder: 'Kode kupon',
             dm_payment_body: 'Silakan DM admin di Discord untuk detail pembayaran {method}. Setelah bayar, kirim bukti pembayaran untuk mendapatkan key.',
             visa_cc_body: 'Bayar menggunakan kartu via Boosty. Kirim bukti pembayaran ke DM admin untuk mendapatkan key. Metode ini bisa dipakai global untuk region mana saja.',
             binance_body: 'Binance manual perlu DM admin terlebih dahulu untuk detail pembayaran. Setelah bayar, kirim bukti pembayaran ke DM untuk mendapatkan key.' };
         translations.en = { ...translations.en,
-            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Another', another_local_payment: 'Another Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Guide via Discord', dm_admin: 'DM Admin', order_id: 'Order ID', summary_hint: 'Check items & total before payment', secure_order: 'Secure Order', tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.', coupon_placeholder: 'Coupon code',
+            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Another', another_local_payment: 'Another Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Guide via Discord', dm_admin: 'DM Admin', order_id: 'Order ID', need_help: 'Need help?', contact_admin_short: 'Contact admin', summary_hint: 'Check items & total before payment', secure_order: 'Secure Order', tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.', coupon_placeholder: 'Coupon code',
             dm_payment_body: 'Please DM admin on Discord for {method} payment details. After payment, send proof to receive your key.',
             visa_cc_body: 'Pay by card via Boosty. Send payment proof to admin DM to receive your key. This method works globally for any region.',
             binance_body: 'Binance manual requires DM admin first for payment details. After payment, send proof by DM to receive your key.' };
