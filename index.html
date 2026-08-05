@@ -132,6 +132,130 @@
                 transition-duration: 0.001ms !important;
             }
         }
+        /* ==== Modern notification system ==== */
+        :root {
+            --notif-surface: #ffffff;
+            --notif-border: rgba(15, 23, 42, 0.14);
+            --notif-shadow: 0 2px 6px rgba(15,23,42,.10), 0 22px 60px rgba(15, 23, 42, .25);
+            --notif-title: #0f172a;
+            --notif-text: #334155;
+        }
+        .dark {
+            --notif-surface: #1b2438;
+            --notif-border: rgba(255, 255, 255, 0.18);
+            --notif-shadow: 0 2px 8px rgba(0,0,0,.5), 0 24px 70px rgba(0, 0, 0, .75);
+            --notif-title: #ffffff;
+            --notif-text: #d7deeb;
+        }
+        #toast-stack {
+            position: fixed;
+            top: max(1rem, env(safe-area-inset-top));
+            right: 1rem;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            width: min(380px, calc(100vw - 2rem));
+            pointer-events: none;
+        }
+        .toast {
+            position: relative;
+            overflow: hidden;
+            pointer-events: auto;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 1rem 1.05rem 1rem 1.2rem;
+            border-radius: 14px;
+            background: var(--notif-surface);
+            border: 1px solid var(--notif-border);
+            box-shadow: var(--notif-shadow);
+            opacity: 0;
+            transform: translateY(-10px) scale(0.98);
+            transition: opacity .25s ease, transform .3s cubic-bezier(.16,1,.3,1);
+        }
+        /* Garis aksen warna di sisi kiri supaya notifikasi tidak menyatu dengan background */
+        .toast::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--toast-accent, #3b82f6); }
+        .toast.t-info    { --toast-accent: #3b82f6; border-color: rgba(59,130,246,.45); }
+        .toast.t-success { --toast-accent: #10b981; border-color: rgba(16,185,129,.45); }
+        .toast.t-warning { --toast-accent: #f59e0b; border-color: rgba(245,158,11,.5); }
+        .toast.t-error   { --toast-accent: #ef4444; border-color: rgba(239,68,68,.5); }
+        .toast.toast-in { opacity: 1; transform: translateY(0) scale(1); }
+        .toast.toast-out { opacity: 0; transform: translateY(-8px) scale(.98); }
+        .toast-icon {
+            flex-shrink: 0;
+            width: 36px; height: 36px;
+            border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px;
+        }
+        .toast-title { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--notif-title); letter-spacing: -0.005em; }
+        .toast-body { font-size: 13.5px; line-height: 1.55; color: var(--notif-text); margin-top: 3px; }
+        .toast-close {
+            flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--notif-text); font-size: 12px; background: rgba(127,127,127,.12);
+            transition: background .2s, color .2s;
+        }
+        .toast-close:hover { background: rgba(127,127,127,.24); color: var(--notif-title); }
+        .toast-bar { position: absolute; left: 0; bottom: 0; height: 2px; border-radius: 999px; }
+        .tone-info    { background: rgba(59,130,246,.20); color: #60a5fa; }
+        .tone-success { background: rgba(16,185,129,.20); color: #34d399; }
+        .tone-warning { background: rgba(245,158,11,.22); color: #fbbf24; }
+        .tone-error   { background: rgba(239,68,68,.20); color: #f87171; }
+        :root .tone-info { color: #2563eb; }
+        :root .tone-success { color: #059669; }
+        :root .tone-warning { color: #b45309; }
+        :root .tone-error { color: #dc2626; }
+        .dark .tone-info { color: #60a5fa; }
+        .dark .tone-success { color: #34d399; }
+        .dark .tone-warning { color: #fbbf24; }
+        .dark .tone-error { color: #f87171; }
+        /* Dialog */
+        #app-dialog { position: fixed; inset: 0; z-index: 320; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        #app-dialog[hidden] { display: none; }
+        #app-dialog-backdrop { position: absolute; inset: 0; background: rgba(2, 6, 23, .55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity .25s ease; }
+        #app-dialog.dialog-in #app-dialog-backdrop { opacity: 1; }
+        .dialog-card {
+            position: relative;
+            width: min(440px, 100%);
+            border-radius: 20px;
+            background: var(--notif-surface);
+            border: 1px solid var(--notif-border);
+            box-shadow: var(--notif-shadow);
+            padding: 1.5rem;
+            opacity: 0; transform: translateY(12px) scale(.97);
+            transition: opacity .25s ease, transform .3s cubic-bezier(.16,1,.3,1);
+        }
+        #app-dialog.dialog-in .dialog-card { opacity: 1; transform: translateY(0) scale(1); }
+        .dialog-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+        .dialog-title { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; color: var(--notif-title); }
+        .dialog-body { font-size: 14.5px; line-height: 1.6; color: var(--notif-text); }
+        .dialog-code {
+            display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+            padding: .75rem .9rem; border-radius: 12px;
+            background: rgba(127,127,127,.08); border: 1px solid var(--notif-border);
+        }
+        .dialog-code span { font-family: Menlo, Consolas, monospace; font-size: 13px; color: var(--text-main); word-break: break-all; }
+        .dialog-meta { display: flex; flex-direction: column; gap: 6px; padding: .7rem .9rem; border-radius: 12px; background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.22); }
+        .dialog-meta-row { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; font-size: 12px; }
+        .dialog-meta-label { color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; font-size: 10px; white-space: nowrap; }
+        .dialog-meta-value { font-family: Menlo, Consolas, monospace; font-size: 12px; color: #60a5fa; text-align: right; word-break: break-all; }
+        .dialog-btn {
+            min-height: 44px; padding: 0 1.1rem; border-radius: 12px; font-size: 14px; font-weight: 600;
+            display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+            transition: background .2s, border-color .2s, transform .15s, opacity .2s;
+        }
+        .dialog-btn:active { transform: scale(.98); }
+        .dialog-btn-primary { background: #3b82f6; color: #fff; }
+        .dialog-btn-primary:hover { background: #2563eb; }
+        .dialog-btn-ghost { background: transparent; border: 1px solid var(--notif-border); color: var(--text-main); }
+        .dialog-btn-ghost:hover { background: rgba(127,127,127,.1); }
+        .dialog-btn:focus-visible, .toast-close:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+        @media (max-width: 640px) {
+            #toast-stack { left: 1rem; right: 1rem; width: auto; }
+        }
+
         /* Compact checkout */
         .checkout-compact .glass-panel { padding: 1rem !important; }
         .checkout-compact .gap-8 { gap: 0.75rem !important; }
@@ -248,7 +372,7 @@
                     <div class="flex items-center gap-4 mb-6 text-sm text-[var(--text-muted)] border-b border-[var(--glass-border)] pb-4">
                         <span class="flex items-center gap-1"><span class="status-dot status-undetected"></span> <span id="modal-status">Available</span></span>
                         <span class="flex items-center gap-1"><i class="fas fa-star text-yellow-500"></i> <span id="modal-rating">5.0</span></span>
-                        <span class="flex items-center gap-1"><i class="fas fa-box"></i> Stok: <span id="modal-stock">99+</span></span>
+                        <span class="flex items-center gap-1"><i class="fas fa-box"></i> <span data-lang="stock_label">Stok</span>: <span id="modal-stock">99+</span></span>
                     </div>
                     <div class="mb-6">
                         <h3 class="text-sm font-semibold mb-3" data-lang="select_subscription">Pilih Langganan</h3>
@@ -265,7 +389,7 @@
                     <div class="mt-auto pt-4 border-t border-[var(--glass-border)] flex items-center gap-4">
                         <div class="flex-grow">
                             <p class="text-xs text-[var(--text-muted)] mb-1" data-lang="selected_plan">Paket Terpilih</p>
-                            <p class="text-xl font-bold" id="modal-price-display">Pilih tier</p>
+                            <p class="text-xl font-bold" id="modal-price-display" data-lang="select_tier">Pilih paket</p>
                         </div>
                         <button id="add-to-cart-btn" disabled class="px-8 py-3 rounded-2xl bg-[var(--text-main)] text-[var(--bg-color)] font-semibold shadow-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed" data-lang="add_to_cart">Tambah ke Keranjang</button>
                     </div>
@@ -371,6 +495,7 @@
                 <div class="text-center mb-3">
                     <p class="text-xs uppercase tracking-widest text-[var(--text-muted)]">Order ID</p>
                     <p class="text-sm font-bold text-blue-400 mb-1" id="order-id-display">-</p>
+                    <p class="text-[11px] font-mono text-[var(--text-muted)] mb-1" id="order-code-display"></p>
                     <p class="text-2xl font-bold text-yellow-500" id="qris-total-display">Rp 0</p>
                     <p class="text-xs text-[var(--text-muted)] mt-1" data-lang="ensure_nominal">Transfer sesuai nominal. Boleh lebih sebagai donasi.</p>
                     <p class="text-xs text-[var(--text-muted)] mt-1" id="payment-method-display">-</p>
@@ -413,7 +538,7 @@
         </div>
         <div class="p-6 border-t border-[var(--glass-border)] bg-[var(--bg-color)]/50 backdrop-blur-md space-y-3">
             <button onclick="startCheckout()" id="cart-checkout-btn" class="w-full py-4 rounded-2xl bg-[var(--text-main)] text-[var(--bg-color)] font-semibold disabled:opacity-50 disabled:cursor-not-allowed" disabled data-lang="proceed_checkout">Lanjut ke Checkout</button>
-            <button onclick="clearCart()" id="cart-clear-btn" class="w-full py-3 rounded-2xl bg-red-500/10 text-red-300 hover:bg-red-500 hover:text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed" disabled><i class="fas fa-trash"></i> Kosongkan Keranjang</button>
+            <button onclick="clearCart()" id="cart-clear-btn" class="w-full py-3 rounded-2xl bg-red-500/10 text-red-300 hover:bg-red-500 hover:text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed" disabled><i class="fas fa-trash"></i> <span data-lang="clear_cart">Kosongkan Keranjang</span></button>
         </div>
     </div>
     <div id="cart-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[115] hidden opacity-0 transition-opacity duration-300" onclick="toggleCart()"></div>
@@ -1400,10 +1525,92 @@
         function makeCartId() { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() :
                 `cart-${Date.now()}-${Math.random().toString(36).slice(2)}`; }
 
-        function createOrderId() {
+        // ============================================================
+        // KODE PRODUK / PRODUCT CODES
+        // Order ID ikut memuat kode produk + durasi supaya admin bisa
+        // langsung mengenali pesanan, contoh: RYH-260805-SLASH30D-A1B2
+        // ============================================================
+        function productCodeOf(product) {
+            const base = String(product?.name || 'PRODUK').replace(/\(.*?\)/g, ' ');
+            const words = base.replace(/[^a-zA-Z0-9 ]/g, ' ').trim().split(/\s+/).filter(Boolean);
+            if (!words.length) return 'PRODUK';
+            const code = words.length === 1 ? words[0] : words.map(w => w.slice(0, 4)).join('');
+            return code.toUpperCase().slice(0, 8);
+        }
+
+        function tierCodeOf(tier) {
+            const raw = String(tier?.name || '').toLowerCase();
+            if (!raw) return '';
+            if (raw.includes('hubungi') || raw.includes('contact')) return 'DM';
+            if (raw.includes('invite')) return 'INVITE';
+            let code = '';
+            if (raw.includes('lifetime') || raw.includes('selamanya')) {
+                code = 'LIFE';
+            } else {
+                const num = (raw.match(/(\d+)/) || [])[1];
+                let unit = '';
+                if (/hour|jam/.test(raw)) unit = 'H';
+                else if (/day|hari/.test(raw)) unit = 'D';
+                else if (/week|minggu/.test(raw)) unit = 'W';
+                else if (/month|bulan/.test(raw)) unit = 'M';
+                else if (/year|tahun/.test(raw)) unit = 'Y';
+                if (num && unit) code = num + unit;
+                else if (/month|bulan/.test(raw)) code = '1M';
+                else if (num) code = num;
+            }
+            if (/alpha/.test(raw)) code += 'A';
+            if (/beta/.test(raw)) code += 'B';
+            if (/private|privat/.test(raw)) code += 'P';
+            if (/vip/.test(raw)) code += 'V';
+            return code || raw.replace(/[^a-z0-9]/g, '').toUpperCase().slice(0, 6);
+        }
+
+        function itemCodeOf(item) {
+            return `${productCodeOf(item?.product || item)}${tierCodeOf(item?.tier || {})}`;
+        }
+
+        function orderCodeMeta(order = currentOrderSnapshot) {
+            const codes = (order?.codeSummary || cartCodeSummary()).join(', ');
+            return codes ? [{ label: t('product_code_label', 'Kode Produk'), value: codes }] : [];
+        }
+
+        function cartItemCodes(cart = appState.cart) {
+            const codes = [];
+            (cart || []).forEach(item => {
+                const code = itemCodeOf(item);
+                if (!code) return;
+                const qty = Math.max(1, Number(item?.qty) || 1);
+                for (let i = 0; i < qty; i++) codes.push(code);
+            });
+            return codes;
+        }
+
+        // Gabungkan kode semua item; item kembar jadi KODEX2
+        function cartCodeSummary(cart = appState.cart) {
+            const counts = new Map();
+            cartItemCodes(cart).forEach(code => counts.set(code, (counts.get(code) || 0) + 1));
+            return Array.from(counts.entries()).map(([code, qty]) => qty > 1 ? `${code}X${qty}` : code);
+        }
+
+        function createOrderId(cart = appState.cart) {
             const stamp = new Date().toISOString().slice(2, 10).replaceAll('-', '');
-            const random = Math.random().toString(36).slice(2, 8).toUpperCase();
-            return `RYH-${stamp}-${random}`;
+            const random = Math.random().toString(36).slice(2, 6).toUpperCase();
+            const codes = cartCodeSummary(cart);
+            let head = codes.join('_') || 'ORDER';
+            // Batasi panjang ID agar tetap nyaman disalin; sisanya ditandai _P<n>
+            const MAX_CODE_LEN = 64;
+            if (head.length > MAX_CODE_LEN) {
+                const kept = [];
+                let len = 0;
+                for (const code of codes) {
+                    if (kept.length && len + code.length + 1 > MAX_CODE_LEN) break;
+                    len += code.length + (kept.length ? 1 : 0);
+                    kept.push(code);
+                }
+                const rest = codes.length - kept.length;
+                head = kept.join('_') + (rest > 0 ? `_P${rest}` : '');
+            }
+            return `RYH-${stamp}-${head}-${random}`;
         }
 
         function getPaymentMethodName(pmId = selectedPaymentMethod) {
@@ -1419,8 +1626,11 @@
         // ============================================================
         // KERANJANG
         // ============================================================
+        const cartQty = (item) => Math.max(1, Number(item?.qty) || 1);
+        const cartItemTotal = (item) => Number(currentPrice(item.tier) || 0) * cartQty(item);
+
         function getCartSubtotal() {
-            return appState.cart.reduce((sum, item) => sum + Number(currentPrice(item.tier) || 0), 0);
+            return appState.cart.reduce((sum, item) => sum + cartItemTotal(item), 0);
         }
 
         function getCartTotal() {
@@ -1443,7 +1653,7 @@
 
         function saveCartState() {
             try {
-                const payload = appState.cart.map(item => ({ productId: item.product.id, tierId: item.tier.id, cartId: item
+                const payload = appState.cart.map(item => ({ productId: item.product.id, tierId: item.tier.id, qty: cartQty(item), cartId: item
                         .cartId }));
                 localStorage.setItem('ryuhuu_cart_v2', JSON.stringify(payload));
             } catch (e) { console.warn('Cart gagal disimpan:', e); }
@@ -1456,15 +1666,16 @@
                     const product = PRODUCTS.find(p => p.id === row.productId);
                     const tier = product?.tiers.find(t => t.id === row.tierId);
                     if (!product || !tier) return null;
-                    return { product, tier, cartId: row.cartId || makeCartId() };
+                    return { product, tier, qty: Math.max(1, Number(row.qty) || 1), cartId: row.cartId || makeCartId() };
                 }).filter(Boolean);
             } catch (e) { appState.cart = []; }
         }
 
         function updateCartCount() {
             const badge = document.getElementById('cart-count');
-            badge.innerText = appState.cart.length;
-            badge.classList.toggle('hidden', appState.cart.length === 0);
+            const totalQty = appState.cart.reduce((sum, item) => sum + cartQty(item), 0);
+            badge.innerText = totalQty;
+            badge.classList.toggle('hidden', totalQty === 0);
         }
 
         function updateCartUI() {
@@ -1480,15 +1691,28 @@
             }
             btn.disabled = false;
             if (clearBtn) clearBtn.disabled = false;
+            const qtyLabel = t('qty_label', 'Qty');
+            const eachLabel = t('price_each', 'each');
             container.innerHTML = appState.cart.map(item => `
-                <div class="flex gap-4 p-4 rounded-2xl border border-[var(--glass-border)] bg-white/5">
-                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br ${escapeHTML(item.product.bg)} flex items-center justify-center"><i class="fas fa-crosshairs text-white/50"></i></div>
-                    <div class="flex-grow">
-                        <h4 class="font-bold text-sm">${escapeHTML(item.product.name)}</h4>
+                <div class="flex gap-3 p-4 rounded-2xl border border-[var(--glass-border)] bg-white/5">
+                    <div class="w-14 h-14 shrink-0 rounded-xl bg-gradient-to-br ${escapeHTML(item.product.bg)} flex items-center justify-center"><i class="fas fa-crosshairs text-white/50"></i></div>
+                    <div class="flex-grow min-w-0">
+                        <h4 class="font-bold text-sm truncate">${escapeHTML(item.product.name)}</h4>
                         <p class="text-[10px] text-[var(--text-muted)]">${escapeHTML(item.product.game)}</p>
-                        <div class="flex justify-between items-center"><span class="text-xs bg-white/10 px-2 py-0.5 rounded">${escapeHTML(item.tier.name)}</span><span class="text-sm font-bold">${formatCurrentPrice(item.tier)}</span></div>
+                        <span class="inline-block mt-1 text-xs bg-white/10 px-2 py-0.5 rounded">${escapeHTML(item.tier.name)}</span>
+                        <div class="flex items-center justify-between gap-2 mt-2">
+                            <div class="flex items-center gap-1" role="group" aria-label="${escapeHTML(qtyLabel)}">
+                                <button type="button" data-qty-cart-id="${escapeHTML(item.cartId)}" data-qty-delta="-1" aria-label="${escapeHTML(t('qty_decrease', 'Decrease quantity'))}" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs"><i class="fas fa-minus"></i></button>
+                                <span class="min-w-[28px] text-center text-sm font-bold">${cartQty(item)}</span>
+                                <button type="button" data-qty-cart-id="${escapeHTML(item.cartId)}" data-qty-delta="1" aria-label="${escapeHTML(t('qty_increase', 'Increase quantity'))}" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-bold">${formatPrice(cartItemTotal(item))}</p>
+                                ${cartQty(item) > 1 ? `<p class="text-[10px] text-[var(--text-muted)]">${formatCurrentPrice(item.tier)} / ${escapeHTML(eachLabel)}</p>` : ''}
+                            </div>
+                        </div>
                     </div>
-                    <button type="button" data-remove-cart-id="${escapeHTML(item.cartId)}" class="shrink-0 w-10 h-10 rounded-xl bg-red-500/10 text-red-300 hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center"><i class="fas fa-trash"></i></button>
+                    <button type="button" data-remove-cart-id="${escapeHTML(item.cartId)}" aria-label="${escapeHTML(t('remove_item', 'Remove item'))}" class="shrink-0 w-10 h-10 rounded-xl bg-red-500/10 text-red-300 hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center"><i class="fas fa-trash"></i></button>
                 </div>
             `).join('');
             container.querySelectorAll('[data-remove-cart-id]').forEach(btn => {
@@ -1497,11 +1721,29 @@
                     removeFromCart(this.dataset.removeCartId);
                 });
             });
+            container.querySelectorAll('[data-qty-cart-id]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    changeCartQty(this.dataset.qtyCartId, Number(this.dataset.qtyDelta));
+                });
+            });
             applyLanguage(appState.selectedRegion);
         }
 
         function removeFromCart(cartId) {
             appState.cart = appState.cart.filter(i => String(i.cartId) !== String(cartId));
+            saveCartState();
+            updateCartCount();
+            updateCartUI();
+            if (appState.view === 'checkout') renderCheckout();
+        }
+
+        function changeCartQty(cartId, delta) {
+            const item = appState.cart.find(i => String(i.cartId) === String(cartId));
+            if (!item) return;
+            const next = cartQty(item) + Number(delta || 0);
+            if (next < 1) { removeFromCart(cartId); return; }
+            item.qty = Math.min(99, next);
             saveCartState();
             updateCartCount();
             updateCartUI();
@@ -1519,7 +1761,12 @@
 
         function addToCart() {
             if (!currentProduct || !selectedTier || selectedTier.priceIDR === 0) return;
-            appState.cart.push({ product: currentProduct, tier: selectedTier, cartId: makeCartId() });
+            const existing = appState.cart.find(i => i.product.id === currentProduct.id && i.tier.id === selectedTier.id);
+            if (existing) {
+                existing.qty = Math.min(99, cartQty(existing) + 1);
+            } else {
+                appState.cart.push({ product: currentProduct, tier: selectedTier, qty: 1, cartId: makeCartId() });
+            }
             saveCartState();
             updateCartCount();
             closeProductModal();
@@ -1535,7 +1782,7 @@
             if (!code) return;
             const discount = DISCOUNT_CODES[code];
             if (!discount) {
-                alert('Kode diskon tidak valid.');
+                notify({ tone: 'error', title: nt('notif_coupon_invalid_title'), message: nt('notif_coupon_invalid_body') });
                 return;
             }
             discountCode = code;
@@ -1551,7 +1798,14 @@
             document.getElementById('apply-discount-btn').disabled = true;
             document.getElementById('remove-discount-btn').classList.remove('hidden');
             updateCheckoutTotal();
-            alert(`Kode ${code} berhasil! Diskon ${discountType === 'percentage' ? discount.value+'%' : formatPrice(discountAmount)}`);
+            notify({
+                tone: 'success',
+                title: nt('notif_coupon_ok_title'),
+                message: nt('notif_coupon_ok_body', {
+                    code: code,
+                    amount: discountType === 'percentage' ? discount.value + '%' : formatPrice(discountAmount)
+                })
+            });
         }
 
         function removeDiscount() {
@@ -1572,14 +1826,15 @@
 
             const isLocal = usesLocalCurrency();
             const regionNames = { id: '🇮🇩 Indonesia', my: '🇲🇾 Malaysia', en: '🌐 Global', fil: '🇵🇭 Philippines',
-                zh: '🇨🇳 China', ar: '🇸🇦 Arabic', vi: '🇻🇳 Vietnam', ko: '🇰🇷 Korea', hi: '🇮🇳 India' };
+                zh: '���🇳 China', ar: '🇸🇦 Arabic', vi: '🇻🇳 Vietnam', ko: '🇰🇷 Korea', hi: '🇮🇳 India' };
             document.getElementById('checkout-region-badge').innerText = regionNames[appState.selectedRegion] || '🌐 Global';
 
             let subtotal = 0;
             document.getElementById('checkout-items').innerHTML = appState.cart.map(item => {
-                const price = currentPrice(item.tier);
-                subtotal += price;
-                return `<div class="flex justify-between text-sm gap-4"><span>${escapeHTML(item.product.name)} (${escapeHTML(item.tier.name)})</span><span class="font-semibold whitespace-nowrap">${formatCurrentPrice(item.tier)}</span></div>`;
+                const qty = cartQty(item);
+                const lineTotal = cartItemTotal(item);
+                subtotal += lineTotal;
+                return `<div class="flex justify-between text-sm gap-4"><span>${escapeHTML(item.product.name)} (${escapeHTML(item.tier.name)})${qty > 1 ? ` <span class="text-[var(--text-muted)]">×${qty}</span>` : ''}</span><span class="font-semibold whitespace-nowrap">${formatPrice(lineTotal)}</span></div>`;
             }).join('');
             document.getElementById('checkout-subtotal').innerText = formatPrice(subtotal);
 
@@ -1591,8 +1846,9 @@
             const anotherLocals = ALL_PAYMENT_METHODS.filter(m => m.type === 'local' && !isRegionLocal(m));
             const globalInstant = ALL_PAYMENT_METHODS.filter(m => m.type === 'global' && m.instant);
             const globalManual = ALL_PAYMENT_METHODS.filter(m => m.type === 'global' && !m.instant);
-            const methods = [...locals, ...anotherLocals, ...globalInstant, ...globalManual];
-            const labelFor = (pm) => pm.feePercent ? `Manual • +${pm.feePercent}% fee` : (pm.paypalMode === 'manual' || pm.needsDM ? 'Manual • DM for key' : (pm.paypalMode === 'instant' ? 'Instant delivery' : (pm.requiresDiscordGuide ? t('guide_via_discord','Guide via Discord') : (pm.instant ? 'Instant redirect' : 'Manual check'))));
+            // Urutan harus sama dengan urutan render agar radio pertama = metode yang aktif
+            const methods = [...locals, ...globalInstant, ...globalManual, ...anotherLocals];
+            const labelFor = (pm) => pm.feePercent ? `${t('manual_payment','Manual')} • +${pm.feePercent}% ${t('fee_label','fee')}` : (pm.paypalMode === 'manual' || pm.needsDM ? `${t('manual_payment','Manual')} • ${t('dm_for_key','DM for key')}` : (pm.paypalMode === 'instant' ? t('instant_delivery','Instant delivery') : (pm.requiresDiscordGuide ? t('guide_via_discord','Guide via Discord') : (pm.instant ? t('instant_redirect','Instant redirect') : t('manual_check','Manual check')))));
             const renderMethod = (pm, idx) => `
                 <label class="cursor-pointer">
                     <input type="radio" name="payment" class="peer hidden" ${idx===0?'checked':''} onchange="handlePaymentChange('${pm.id}')">
@@ -1647,7 +1903,7 @@
             } else if (method.id === 'pm_paypal_instant') {
                 warning.innerHTML =
                     `<div class="flex gap-3"><i class="fas fa-bolt text-2xl text-yellow-300"></i><div><h4 class="font-semibold text-sm">PayPal Instant Delivery</h4><p class="text-xs mt-1">Use SellAuth for instant delivery after payment. <strong>${STORE_CONFIG.paypalInstantUrl}</strong></p></div></div>`;
-                payBtn.textContent = 'Open Instant Checkout';
+                payBtn.textContent = t('open_instant_checkout', 'Open Instant Checkout');
             } else if (method.requiresDiscordGuide) {
                 const title = t('payment_guide_title', 'Guide Not Available on Website');
                 const body = t('payment_guide_body', 'Guide instalasi, penggunaan lengkap, serta file download untuk metode {method} dikelola langsung di server komunitas kami.')
@@ -1674,10 +1930,10 @@
             } else if (method.id === 'pm_global') {
                 warning.innerHTML =
                     `<div class="flex gap-3"><i class="fas fa-external-link-alt mt-1"></i><div><h4 class="font-semibold text-sm">Global Payment</h4><p class="text-xs mt-1">Payment via SellAuth. <strong>${STORE_CONFIG.globalPaymentUrl}</strong></p></div></div>`;
-                payBtn.textContent = 'Open SellAuth Checkout';
+                payBtn.textContent = t('open_sellauth_checkout', 'Open SellAuth Checkout');
             } else {
                 warning.innerHTML =
-                    `<div class="flex gap-3"><i class="fas fa-info-circle"></i><div><p class="text-xs">Metode ini memerlukan konfirmasi manual. Hubungi admin.</p></div></div>`;
+                    `<div class="flex gap-3"><i class="fas fa-info-circle"></i><div><p class="text-xs">${t('manual_confirm_note', 'This method requires manual confirmation from the admin.')}</p></div></div>`;
                 payBtn.textContent = t('pay_now', 'Buat Order');
             }
         }
@@ -1688,7 +1944,8 @@
             const name = document.getElementById('customer-name').value.trim();
             const contact = document.getElementById('customer-email').value.trim();
             if (!name) {
-                alert('Isi nickname Discord dulu.');
+                notify({ tone: 'warning', title: nt('notif_need_name_title'), message: nt('notif_need_name_body') });
+                document.getElementById('customer-name')?.focus();
                 return;
             }
             const method = ALL_PAYMENT_METHODS.find(m => m.id === selectedPaymentMethod);
@@ -1700,40 +1957,106 @@
                 currentOrderSnapshot = buildOrderSnapshot();
                 currentOrderId = currentOrderSnapshot.id;
                 window.open(STORE_CONFIG.boostyManualUrl, '_blank', 'noopener,noreferrer');
-                alert(`Order ID: ${currentOrderId}\n\nBayar via Boosty (Visa/CC) dengan total sudah termasuk fee 15%. Setelah pembayaran, kirim bukti ke DM admin untuk mendapatkan key.`);
+                showDialog({
+                    tone: 'success',
+                    title: nt('notif_order_created_title'),
+                    message: nt('notif_boosty_body'),
+                    code: currentOrderId,
+                    codeLabel: t('order_id', 'Order ID'),
+                    meta: orderCodeMeta(),
+                    actions: [
+                        { label: nt('notif_open_discord'), icon: 'fa-brands fa-discord', href: STORE_CONFIG.discordUrl },
+                        { label: nt('notif_close'), variant: 'ghost' }
+                    ]
+                });
                 return;
             }
             if (method?.id === 'pm_binance_manual') {
                 currentOrderSnapshot = buildOrderSnapshot();
                 currentOrderId = currentOrderSnapshot.id;
-                alert(`Order ID: ${currentOrderId}\n\nUntuk Binance Manual, DM admin terlebih dahulu untuk detail pembayaran. Setelah bayar, kirim bukti pembayaran ke DM untuk mendapatkan key.`);
-                window.open(STORE_CONFIG.discordUrl, '_blank', 'noopener,noreferrer');
+                showDialog({
+                    tone: 'info',
+                    title: nt('notif_order_created_title'),
+                    message: nt('notif_binance_body'),
+                    code: currentOrderId,
+                    codeLabel: t('order_id', 'Order ID'),
+                    meta: orderCodeMeta(),
+                    actions: [
+                        { label: nt('notif_open_discord'), icon: 'fa-brands fa-discord', href: STORE_CONFIG.discordUrl },
+                        { label: nt('notif_close'), variant: 'ghost' }
+                    ]
+                });
                 return;
             }
             if (method?.needsDM && !['pm_binance_manual'].includes(method.id)) {
                 currentOrderSnapshot = buildOrderSnapshot();
                 currentOrderId = currentOrderSnapshot.id;
-                alert(`${t('order_id','Order ID')}: ${currentOrderId}\n\n${t('dm_payment_body','Please DM admin on Discord for payment details. After payment, send proof to receive your key.').replace('{method}', method.name)}`);
-                window.open(STORE_CONFIG.discordUrl, '_blank', 'noopener,noreferrer');
+                showDialog({
+                    tone: 'info',
+                    title: nt('notif_order_created_title'),
+                    message: t('dm_payment_body', NOTIF_EN.notif_binance_body).replace('{method}', method.name),
+                    code: currentOrderId,
+                    codeLabel: t('order_id', 'Order ID'),
+                    meta: orderCodeMeta(),
+                    actions: [
+                        { label: nt('notif_open_discord'), icon: 'fa-brands fa-discord', href: STORE_CONFIG.discordUrl },
+                        { label: nt('notif_close'), variant: 'ghost' }
+                    ]
+                });
                 return;
             }
             if (method?.id === 'pm_paypal_manual') {
                 currentOrderSnapshot = buildOrderSnapshot();
                 currentOrderId = currentOrderSnapshot.id;
-                const msg = `Hello, I have paid via PayPal Manual. Order ID: ${currentOrderId}. Please help me get the key.`;
                 window.open(`${STORE_CONFIG.paypalManualUrl}`, '_blank', 'noopener,noreferrer');
-                alert(`${msg}\n\nPlease DM admin with your Order ID and payment proof to receive the key.`);
+                showDialog({
+                    tone: 'success',
+                    title: nt('notif_order_created_title'),
+                    message: nt('notif_paypal_body'),
+                    code: currentOrderId,
+                    codeLabel: t('order_id', 'Order ID'),
+                    meta: orderCodeMeta(),
+                    actions: [
+                        { label: nt('notif_open_discord'), icon: 'fa-brands fa-discord', href: STORE_CONFIG.discordUrl },
+                        { label: nt('notif_close'), variant: 'ghost' }
+                    ]
+                });
                 return;
             }
             if (method?.requiresDiscordGuide) {
-                alert(
-                    `Untuk metode ${method.name}, silakan join Discord kami untuk panduan pembayaran dan aktivasi.\n\nKlik OK untuk membuka Discord.`);
-                window.open('https://discord.com/users/1120396377839648780', '_blank');
+                showDialog({
+                    tone: 'info',
+                    title: nt('notif_guide_title'),
+                    message: nt('notif_guide_body', { method: method.name }),
+                    actions: [
+                        { label: nt('notif_open_discord'), icon: 'fa-brands fa-discord', href: 'https://discord.com/users/1120396377839648780' },
+                        { label: nt('notif_close'), variant: 'ghost' }
+                    ]
+                });
                 return;
             }
 
             if (getCartTotal() <= 0) {
-                alert('Total order tidak valid.');
+                notify({ tone: 'error', title: nt('notif_total_invalid_title'), message: nt('notif_total_invalid_body') });
+                return;
+            }
+
+            // Panel QRIS hanya untuk metode QRIS. Metode lain diarahkan ke DM admin.
+            if (method?.id !== 'pm_qris') {
+                currentOrderSnapshot = buildOrderSnapshot();
+                currentOrderId = currentOrderSnapshot.id;
+                showDialog({
+                    tone: 'info',
+                    title: nt('notif_order_created_title'),
+                    message: t('dm_payment_body', NOTIF_EN.notif_binance_body).replace('{method}', method?.name || '-'),
+                    code: currentOrderId,
+                    codeLabel: t('order_id', 'Order ID'),
+                    meta: orderCodeMeta(),
+                    actions: [
+                        { label: nt('notif_open_discord'), icon: 'fa-brands fa-discord', href: STORE_CONFIG.discordUrl },
+                        { label: nt('notif_close'), variant: 'ghost' }
+                    ]
+                });
                 return;
             }
 
@@ -1741,8 +2064,13 @@
             currentOrderId = currentOrderSnapshot.id;
 
             document.getElementById('order-id-display').innerText = currentOrderId;
+            const codeDisplay = document.getElementById('order-code-display');
+            if (codeDisplay) {
+                const codes = (currentOrderSnapshot?.codeSummary || currentOrderSnapshot?.itemCodes || []).join(', ');
+                codeDisplay.innerText = codes ? `${t('product_code_label', 'Kode Produk')}: ${codes}` : '';
+            }
             document.getElementById('qris-total-display').innerText = formatPrice(currentOrderSnapshot.total);
-            document.getElementById('payment-method-display').innerText = `Merchant: ${STORE_CONFIG.merchantName} • Metode: ${getPaymentMethodName()}`;
+            document.getElementById('payment-method-display').innerText = `${t('merchant_label', 'Merchant')}: ${STORE_CONFIG.merchantName} • ${t('method_label', 'Method')}: ${getPaymentMethodName()}`;
             document.getElementById('qris-image').classList.remove('hidden');
             document.querySelector('[data-lang="qris_payment"]').textContent = t('qris_payment', 'QRIS Payment');
             document.querySelector('[data-lang="scan_qris"]').textContent = t('scan_qris', 'Scan QRIS below');
@@ -1771,7 +2099,7 @@
             const fee = getPaymentFee(subtotal, discount);
             const total = subtotal + fee + tipsAmount - discount;
             return {
-                id: createOrderId(),
+                id: createOrderId(appState.cart),
                 createdAt: new Date(),
                 customerName: name,
                 customerContact: contact,
@@ -1783,11 +2111,16 @@
                 paymentFee: fee,
                 total: total,
                 currency: usesLocalCurrency() ? 'IDR' : 'USD',
+                itemCodes: cartItemCodes(),
+                codeSummary: cartCodeSummary(),
                 items: appState.cart.map(item => ({
                     productName: item.product.name,
                     game: item.product.game,
                     tierName: item.tier.name,
-                    price: currentPrice(item.tier)
+                    code: itemCodeOf(item),
+                    qty: cartQty(item),
+                    unitPrice: currentPrice(item.tier),
+                    price: cartItemTotal(item)
                 }))
             };
         }
@@ -1808,11 +2141,12 @@
         function buildOrderMessage() {
             if (!currentOrderSnapshot) return '';
             const order = currentOrderSnapshot;
-            const items = order.items.map((item, idx) => `${idx + 1}. ${item.productName} - ${item.game} - ${item.tierName} (${formatPrice(item.price)})`).join('\n');
+            const items = order.items.map((item, idx) => `${idx + 1}. [${item.code}] ${item.productName} - ${item.game} - ${item.tierName} x${item.qty || 1} (${formatPrice(item.price)})`).join('\n');
             return [
                 `Halo admin ${STORE_CONFIG.name}, saya ingin konfirmasi pembayaran order.`,
                 '',
                 `Order ID: ${order.id}`,
+                `Kode Produk: ${(order.codeSummary || order.itemCodes || []).join(', ') || '-'}`,
                 `Discord Nickname: ${order.customerName}`,
                 `Kontak Tambahan: ${order.customerContact || '-'}`,
                 `Merchant: ${STORE_CONFIG.merchantName}`,
@@ -1838,12 +2172,12 @@
         // ============================================================
         function uploadProof() {
             if (!currentOrderSnapshot) {
-                alert('Buat order dulu sebelum lampirkan bukti.');
+                notify({ tone: 'warning', title: nt('notif_no_order_title'), message: nt('notif_no_order_body') });
                 return;
             }
             const file = document.getElementById('proof-file').files[0];
             if (!file) {
-                alert('Pilih file bukti pembayaran dulu.');
+                notify({ tone: 'warning', title: nt('notif_no_file_title'), message: nt('notif_no_file_body') });
                 return;
             }
             proofFileMeta = { name: file.name, type: file.type || 'unknown', size: file.size || 0 };
@@ -1879,7 +2213,8 @@
                     <div class="text-xs text-[var(--text-muted)]">${idx + 1}</div>
                     <div>
                         <p class="font-semibold leading-tight">${escapeHTML(item.productName)}</p>
-                        <p class="text-xs text-[var(--text-muted)] mt-1">${escapeHTML(item.game)} • ${escapeHTML(item.tierName)}</p>
+                        <p class="text-xs text-[var(--text-muted)] mt-1">${escapeHTML(item.game)} • ${escapeHTML(item.tierName)} × ${item.qty || 1}</p>
+                        <p class="text-[11px] font-mono mt-1 text-blue-400">${escapeHTML(item.code || '-')}</p>
                     </div>
                     <div class="text-sm font-semibold whitespace-nowrap">${formatPrice(item.price)}</div>
                 </div>
@@ -1887,6 +2222,7 @@
 
             const infoRows = [
                 ['Order ID', order.id],
+                ['Kode Produk', (order.codeSummary || order.itemCodes || []).join(', ') || '-'],
                 ['Status', 'Pembayaran Selesai'],
                 ['Discord Nickname', order.customerName],
                 ['Kontak Tambahan', order.customerContact || '-'],
@@ -2004,8 +2340,8 @@
             y += 11;
 
             order.items.forEach((item, idx) => {
-                const productLines = pdf.splitTextToSize(item.productName, 78);
-                const metaLines = pdf.splitTextToSize(`${item.game} • ${item.tierName}`, 48);
+                const productLines = pdf.splitTextToSize(`${item.productName} [${item.code || '-'}]`, 78);
+                const metaLines = pdf.splitTextToSize(`${item.game} • ${item.tierName} × ${item.qty || 1}`, 48);
                 const rowHeight = Math.max(productLines.length, metaLines.length) * 4.8 + 4;
                 ensureSpace(rowHeight + 1);
                 pdf.setDrawColor(232, 236, 241);
@@ -2223,7 +2559,7 @@
             if (currentProduct) {
                 renderModalTiers();
                 if (selectedTier) document.getElementById('modal-price-display').innerText = selectedTier.priceIDR === 0 ?
-                    'DM untuk membeli' : formatCurrentPrice(selectedTier);
+                    t('dm_to_buy', 'DM to buy') : formatCurrentPrice(selectedTier);
             }
         }
 
@@ -2300,13 +2636,13 @@
             document.getElementById('modal-status').innerText = currentProduct.status;
             document.getElementById('modal-badges').innerHTML = '';
             renderModalTiers();
-            document.getElementById('modal-price-display').innerText = 'Pilih tier';
+            document.getElementById('modal-price-display').innerText = t('select_tier', 'Select a package');
             const addBtn = document.getElementById('add-to-cart-btn');
             addBtn.disabled = true;
             // Jika private, disable tombol add dan tampilkan pesan
             if (isPrivateProduct(currentProduct)) {
                 addBtn.disabled = true;
-                document.getElementById('modal-price-display').innerText = 'DM untuk membeli produk ini';
+                document.getElementById('modal-price-display').innerText = t('dm_to_buy_product', 'DM to buy this product');
             }
             document.querySelectorAll('#modal-tab-buttons .tab-btn').forEach(b => {
                 b.classList.remove('border-blue-500', 'text-[var(--text-main)]');
@@ -2330,7 +2666,7 @@
             const isPrivate = isPrivateProduct(currentProduct);
             document.getElementById('modal-tiers').innerHTML = currentProduct.tiers.map((tier, idx) => {
                 const isContact = (tier.priceIDR === 0);
-                const priceDisplay = isContact ? 'DM untuk membeli' : formatCurrentPrice(tier);
+                const priceDisplay = isContact ? t('dm_to_buy', 'DM to buy') : formatCurrentPrice(tier);
                 return `<button onclick="selectTier(${idx})" class="p-3 rounded-xl border border-[var(--glass-border)] bg-white/5 hover:border-blue-500 transition-colors flex justify-between items-center ${isContact ? 'opacity-70' : ''}">
                     <span class="text-sm font-semibold">${tier.name}</span>
                     <span class="text-xs font-bold text-[var(--text-main)]">${priceDisplay}</span>
@@ -2347,7 +2683,7 @@
                     btn.classList.add('border-[var(--glass-border)]', 'bg-white/5'); }
             });
             const isContact = (selectedTier.priceIDR === 0);
-            const priceDisplay = isContact ? 'DM untuk membeli' : formatCurrentPrice(selectedTier);
+            const priceDisplay = isContact ? t('dm_to_buy', 'DM to buy') : formatCurrentPrice(selectedTier);
             document.getElementById('modal-price-display').innerText = priceDisplay;
             const addBtn = document.getElementById('add-to-cart-btn');
             addBtn.disabled = (isContact || isPrivateProduct(currentProduct));
@@ -2364,7 +2700,7 @@
             if (tab === 'details') {
                 let extra = '';
                 if (isPrivate) {
-                    extra = `<p class="text-blue-400 font-semibold">📩 DM untuk membeli produk ini</p>`;
+                    extra = `<p class="text-blue-400 font-semibold">📩 ${t('dm_to_buy_product', 'DM to buy this product')}</p>`;
                 }
                 if (local) {
                     return `<div class="space-y-3">
@@ -2440,23 +2776,29 @@
                 games: 'Game',
                 faq: 'FAQ',
                 community: 'Komunitas',
-                system_status: '24/7 Digital Store',
+                system_status: 'Toko Digital 24/7',
                 hero_title: 'Upgrade Pengalaman Bermain Anda.',
                 hero_desc: 'Ryuhuu Store menyediakan produk digital pilihan dengan proses order cepat, pembayaran fleksibel, dan dukungan admin yang responsif.',
                 search_placeholder: 'Cari produk, game, atau durasi...',
-                trending_games: 'Available Products',
+                trending_games: 'Produk Tersedia',
                 faq_title: 'Pertanyaan Umum',
                 policy_title: 'Kebijakan Toko',
                 policy_desc: 'Ketentuan layanan, privasi, dan kebijakan penggantian produk.',
                 details_tab: 'Informasi Produk',
                 feature_tab: 'Panduan Order',
-                support_tab: 'Support',
+                support_tab: 'Dukungan',
                 select_subscription: 'Pilih Paket',
                 selected_plan: 'Paket Terpilih',
                 add_to_cart: 'Tambah ke Keranjang',
                 your_cart: 'Keranjang Anda',
                 empty_cart: 'Keranjang Anda kosong.',
                 proceed_checkout: 'Lanjut ke Checkout',
+                clear_cart: 'Kosongkan Keranjang',
+                qty_label: 'Jumlah',
+                qty_decrease: 'Kurangi jumlah',
+                qty_increase: 'Tambah jumlah',
+                remove_item: 'Hapus item',
+                price_each: 'per item',
                 select_region: 'Pilih Bahasa & Pembayaran',
                 select_region_desc: 'Pilih bahasa tampilan. Indonesia/Malaysia menggunakan QRIS manual, region global diarahkan ke SellAuth untuk crypto/card.',
                 cancel: 'Batal',
@@ -2476,22 +2818,22 @@
                 tips: 'Tips / Donasi',
                 total: 'Total',
                 pay_now: 'Buat Order',
-                qris_payment: 'QRIS Payment',
-                scan_qris: 'Scan QRIS berikut dan lakukan pembayaran sesuai total order.',
+                qris_payment: 'Pembayaran QRIS',
+                scan_qris: 'Pindai QRIS berikut dan lakukan pembayaran sesuai total pesanan.',
                 ensure_nominal: 'Transfer sesuai total pembayaran yang tertera. Nominal lebih akan dianggap sebagai tips, nominal kurang tidak dapat diproses.',
-                upload_proof: 'Upload Payment Proof',
+                upload_proof: 'Unggah Bukti Pembayaran',
                 proof_note: 'Lampirkan bukti pembayaran untuk membuat invoice dan mempercepat proses verifikasi admin.',
-                upload_proof_btn: 'Submit Payment Proof',
-                payment_verified: 'Payment Completed',
+                upload_proof_btn: 'Kirim Bukti Pembayaran',
+                payment_verified: 'Pembayaran Selesai',
                 proof_accepted: 'Bukti pembayaran berhasil dilampirkan. Silakan download invoice dan hubungi admin melalui WhatsApp atau Discord untuk proses aktivasi.',
-                contact_us: 'Fast Response Support',
+                contact_us: 'Dukungan Respons Cepat',
                 need_help: 'Butuh bantuan?',
                 contact_admin_short: 'Kontak admin',
                 send_invoice: 'Kirim Order ID dan bukti pembayaran ke admin agar order dapat segera diproses.',
-                download_invoice: 'Download Invoice PDF',
-                payment_guide_title: 'Guide Not Available on Website',
-                payment_guide_body: 'Installation guides, usage instructions, and download files for {method} are managed directly in our community server.',
-                payment_guide_join: 'Join Ryuhuu Store Discord'
+                download_invoice: 'Unduh Invoice PDF',
+                payment_guide_title: 'Panduan Tersedia di Discord',
+                payment_guide_body: 'Panduan instalasi, cara pakai, dan file unduhan untuk {method} kami kelola langsung di server komunitas Discord.',
+                payment_guide_join: 'Gabung Discord Ryuhuu Store'
             },
             en: {
                 brand: 'Ryuhuu Store',
@@ -2516,6 +2858,12 @@
                 your_cart: 'Your Cart',
                 empty_cart: 'Your cart is empty.',
                 proceed_checkout: 'Proceed to Checkout',
+                clear_cart: 'Clear Cart',
+                qty_label: 'Qty',
+                qty_decrease: 'Decrease quantity',
+                qty_increase: 'Increase quantity',
+                remove_item: 'Remove item',
+                price_each: 'each',
                 select_region: 'Choose Language & Payment',
                 select_region_desc: 'Choose your display language and preferred payment method. Manual options require admin confirmation; instant checkout is available through SellAuth.',
                 cancel: 'Cancel',
@@ -2548,7 +2896,7 @@
                 contact_admin_short: 'Contact admin',
                 send_invoice: 'Send your Order ID and payment proof to admin. Estimated response time is up to ±1 hour depending on order queue.',
                 download_invoice: 'Download Invoice PDF',
-                payment_guide_title: 'Guide Not Available on Website',
+                payment_guide_title: 'Guide Available on Discord',
                 payment_guide_body: 'Installation guide, full usage, and download files for {method} are managed directly in our community server.',
                 payment_guide_join: 'Join Ryuhuu Store Discord'
             }
@@ -2561,12 +2909,20 @@
 
 
         translations.id = { ...translations.id,
-            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Another', another_local_payment: 'Another Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Panduan via Discord', dm_admin: 'DM Admin', order_id: 'Order ID', need_help: 'Butuh bantuan?', contact_admin_short: 'Kontak admin', summary_hint: 'Cek item & total sebelum bayar', secure_order: 'Order Aman', tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.', coupon_placeholder: 'Kode kupon',
+            local_payment: 'Pembayaran Lokal', global_payment: 'Pembayaran Global', another_payment: 'Lainnya', another_local_payment: 'Lokal Lainnya', instant_payment: 'Instan', manual_payment: 'Manual', guide_via_discord: 'Panduan via Discord', dm_admin: 'DM Admin', order_id: 'Order ID',
+            stock_label: 'Stok', select_tier: 'Pilih paket', dm_to_buy: 'DM untuk membeli', dm_to_buy_product: 'DM untuk membeli produk ini',
+            manual_confirm_note: 'Metode ini memerlukan konfirmasi manual dari admin.', open_instant_checkout: 'Buka Checkout Instan', open_sellauth_checkout: 'Buka Checkout SellAuth',
+            merchant_label: 'Merchant', method_label: 'Metode', product_code_label: 'Kode Produk',
+            fee_label: 'biaya', dm_for_key: 'DM admin untuk key', instant_delivery: 'Pengiriman instan', instant_redirect: 'Redirect instan', manual_check: 'Cek manual', qty_short: 'Jml', need_help: 'Butuh bantuan?', contact_admin_short: 'Kontak admin', summary_hint: 'Cek item & total sebelum bayar', secure_order: 'Order Aman', tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.', coupon_placeholder: 'Kode kupon',
             dm_payment_body: 'Silakan DM admin di Discord untuk detail pembayaran {method}. Setelah bayar, kirim bukti pembayaran untuk mendapatkan key.',
             visa_cc_body: 'Bayar menggunakan kartu via Boosty. Kirim bukti pembayaran ke DM admin untuk mendapatkan key. Metode ini bisa dipakai global untuk region mana saja.',
             binance_body: 'Binance manual perlu DM admin terlebih dahulu untuk detail pembayaran. Setelah bayar, kirim bukti pembayaran ke DM untuk mendapatkan key.' };
         translations.en = { ...translations.en,
-            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Another', another_local_payment: 'Another Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Guide via Discord', dm_admin: 'DM Admin', order_id: 'Order ID', need_help: 'Need help?', contact_admin_short: 'Contact admin', summary_hint: 'Check items & total before payment', secure_order: 'Secure Order', tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.', coupon_placeholder: 'Coupon code',
+            local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Other', another_local_payment: 'Other Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Guide via Discord', dm_admin: 'DM Admin', order_id: 'Order ID',
+            stock_label: 'Stock', select_tier: 'Select a package', dm_to_buy: 'DM to buy', dm_to_buy_product: 'DM to buy this product',
+            manual_confirm_note: 'This method requires manual confirmation from the admin.', open_instant_checkout: 'Open Instant Checkout', open_sellauth_checkout: 'Open SellAuth Checkout',
+            merchant_label: 'Merchant', method_label: 'Method', product_code_label: 'Product Code',
+            fee_label: 'fee', dm_for_key: 'DM for key', instant_delivery: 'Instant delivery', instant_redirect: 'Instant redirect', manual_check: 'Manual check', qty_short: 'Qty', need_help: 'Need help?', contact_admin_short: 'Contact admin', summary_hint: 'Check items & total before payment', secure_order: 'Secure Order', tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.', coupon_placeholder: 'Coupon code',
             dm_payment_body: 'Please DM admin on Discord for {method} payment details. After payment, send proof to receive your key.',
             visa_cc_body: 'Pay by card via Boosty. Send payment proof to admin DM to receive your key. This method works globally for any region.',
             binance_body: 'Binance manual requires DM admin first for payment details. After payment, send proof by DM to receive your key.' };
@@ -2709,6 +3065,224 @@
                 showRegionGate();
             }
         });
+    </script>
+
+    <!-- ============================================================
+         MODERN NOTIFICATION SYSTEM (toast + dialog, multi-language)
+         ============================================================ -->
+    <div id="toast-stack" role="region" aria-live="polite" aria-label="Notifications"></div>
+    <div id="app-dialog" role="dialog" aria-modal="true" aria-labelledby="app-dialog-title" hidden>
+        <div id="app-dialog-backdrop" data-dialog-close></div>
+        <div class="dialog-card">
+            <button type="button" class="toast-close absolute top-4 right-4" data-dialog-close aria-label="Close"><i class="fas fa-times"></i></button>
+            <div class="flex items-start gap-3 pr-8">
+                <div class="dialog-icon tone-info" id="app-dialog-icon"><i class="fas fa-circle-info"></i></div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="dialog-title" id="app-dialog-title"></h3>
+                    <p class="dialog-body mt-1.5" id="app-dialog-message"></p>
+                </div>
+            </div>
+            <div class="dialog-code mt-4 hidden" id="app-dialog-code-wrap">
+                <div class="min-w-0">
+                    <p class="text-[11px] uppercase tracking-wider" style="color:var(--text-muted)" id="app-dialog-code-label">Order ID</p>
+                    <span id="app-dialog-code"></span>
+                </div>
+                <button type="button" class="dialog-btn dialog-btn-ghost" id="app-dialog-copy" style="min-height:36px;padding:0 .75rem;font-size:13px"><i class="fas fa-copy"></i><span></span></button>
+            </div>
+            <div class="dialog-meta mt-2 hidden" id="app-dialog-meta"></div>
+            <div class="flex flex-col sm:flex-row gap-2 mt-5" id="app-dialog-actions"></div>
+        </div>
+    </div>
+
+    <script>
+        // ---------- Notification copy (kept in sync with site language) ----------
+        const NOTIF_ID = {
+            notif_close: 'Tutup',
+            notif_copy: 'Salin',
+            notif_copied: 'Tersalin',
+            notif_copied_toast: 'Order ID berhasil disalin.',
+            notif_open_discord: 'Buka Discord',
+            notif_understood: 'Mengerti',
+            notif_coupon_invalid_title: 'Kode kupon tidak valid',
+            notif_coupon_invalid_body: 'Kode yang kamu masukkan tidak ditemukan atau sudah tidak aktif.',
+            notif_coupon_ok_title: 'Kupon berhasil dipakai',
+            notif_coupon_ok_body: 'Kode {code} aktif. Kamu mendapat diskon {amount}.',
+            notif_need_name_title: 'Username Discord belum diisi',
+            notif_need_name_body: 'Masukkan username Discord kamu agar admin bisa mengirim key pesanan.',
+            notif_order_created_title: 'Pesanan berhasil dibuat',
+            notif_boosty_body: 'Selesaikan pembayaran kartu (Visa/CC) di Boosty. Total sudah termasuk biaya layanan 15%. Setelah membayar, kirim bukti pembayaran ke DM admin untuk menerima key.',
+            notif_binance_body: 'Untuk Binance manual, DM admin terlebih dahulu untuk detail pembayaran. Setelah membayar, kirim bukti pembayaran ke DM admin untuk menerima key.',
+            notif_paypal_body: 'Selesaikan pembayaran PayPal manual, lalu kirim Order ID dan bukti pembayaran ke DM admin untuk menerima key.',
+            notif_total_invalid_title: 'Total pesanan tidak valid',
+            notif_total_invalid_body: 'Periksa kembali isi keranjang kamu sebelum melanjutkan pembayaran.',
+            notif_no_order_title: 'Pesanan belum dibuat',
+            notif_no_order_body: 'Buat pesanan terlebih dahulu sebelum melampirkan bukti pembayaran.',
+            notif_no_file_title: 'Bukti pembayaran belum dipilih',
+            notif_no_file_body: 'Pilih file bukti pembayaran (gambar atau PDF) terlebih dahulu.',
+            notif_guide_title: 'Panduan tersedia di Discord',
+            notif_guide_body: 'Panduan pembayaran dan aktivasi untuk {method} kami kelola langsung di server Discord.'
+        };
+        const NOTIF_EN = {
+            notif_close: 'Close',
+            notif_copy: 'Copy',
+            notif_copied: 'Copied',
+            notif_copied_toast: 'Order ID copied to clipboard.',
+            notif_open_discord: 'Open Discord',
+            notif_understood: 'Got it',
+            notif_coupon_invalid_title: 'Invalid coupon code',
+            notif_coupon_invalid_body: 'The code you entered was not found or is no longer active.',
+            notif_coupon_ok_title: 'Coupon applied',
+            notif_coupon_ok_body: 'Code {code} is active. You saved {amount}.',
+            notif_need_name_title: 'Discord username required',
+            notif_need_name_body: 'Enter your Discord username so the admin can deliver your key.',
+            notif_order_created_title: 'Order created',
+            notif_boosty_body: 'Complete the card payment (Visa/CC) on Boosty. The total already includes the 15% service fee. After paying, send your payment proof to the admin DM to receive your key.',
+            notif_binance_body: 'For Binance manual, DM the admin first for payment details. After paying, send your payment proof by DM to receive your key.',
+            notif_paypal_body: 'Complete the manual PayPal payment, then send your Order ID and payment proof to the admin DM to receive your key.',
+            notif_total_invalid_title: 'Invalid order total',
+            notif_total_invalid_body: 'Please review your cart before continuing to payment.',
+            notif_no_order_title: 'No order yet',
+            notif_no_order_body: 'Create your order first, then attach the payment proof.',
+            notif_no_file_title: 'No payment proof selected',
+            notif_no_file_body: 'Choose your payment proof file (image or PDF) first.',
+            notif_guide_title: 'Guide available on Discord',
+            notif_guide_body: 'Payment and activation guides for {method} are handled directly in our Discord server.'
+        };
+        (function mergeNotifCopy() {
+            if (typeof translations === 'undefined') return;
+            ['id', 'my'].forEach(l => { if (translations[l]) Object.assign(translations[l], NOTIF_ID); });
+            ['en', 'fil', 'zh', 'ar', 'hi', 'vi', 'ko'].forEach(l => { if (translations[l]) Object.assign(translations[l], NOTIF_EN); });
+        })();
+
+        function nt(key, vars) {
+            let text = (typeof t === 'function') ? t(key, NOTIF_EN[key] || key) : (NOTIF_EN[key] || key);
+            if (vars) Object.keys(vars).forEach(k => { text = text.split('{' + k + '}').join(vars[k]); });
+            return text;
+        }
+
+        const TONE_ICONS = {
+            info: 'fa-circle-info',
+            success: 'fa-circle-check',
+            warning: 'fa-triangle-exclamation',
+            error: 'fa-circle-exclamation'
+        };
+
+        // ---------- Toast ----------
+        function notify({ tone = 'info', title = '', message = '', duration = 5000 } = {}) {
+            const stack = document.getElementById('toast-stack');
+            if (!stack) return;
+            const toast = document.createElement('div');
+            toast.className = 'toast t-' + tone;
+            toast.setAttribute('role', tone === 'error' ? 'alert' : 'status');
+            toast.innerHTML =
+                '<div class="toast-icon tone-' + tone + '"><i class="fas ' + (TONE_ICONS[tone] || TONE_ICONS.info) + '"></i></div>' +
+                '<div class="flex-1 min-w-0">' +
+                    (title ? '<p class="toast-title"></p>' : '') +
+                    (message ? '<p class="toast-body"></p>' : '') +
+                '</div>' +
+                '<button type="button" class="toast-close" aria-label="' + nt('notif_close') + '"><i class="fas fa-times"></i></button>';
+            if (title) toast.querySelector('.toast-title').textContent = title;
+            if (message) toast.querySelector('.toast-body').textContent = message;
+            const remove = () => {
+                toast.classList.remove('toast-in');
+                toast.classList.add('toast-out');
+                setTimeout(() => toast.remove(), 300);
+            };
+            toast.querySelector('.toast-close').addEventListener('click', remove);
+            stack.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('toast-in'));
+            if (duration) setTimeout(remove, duration);
+            while (stack.children.length > 4) stack.firstElementChild.remove();
+        }
+
+        // ---------- Dialog ----------
+        let dialogLastFocus = null;
+        function showDialog({ tone = 'info', title = '', message = '', code = '', codeLabel = 'Order ID', meta = [], actions = [] } = {}) {
+            const root = document.getElementById('app-dialog');
+            if (!root) return;
+            dialogLastFocus = document.activeElement;
+            root.querySelector('#app-dialog-icon').className = 'dialog-icon tone-' + tone;
+            root.querySelector('#app-dialog-icon').innerHTML = '<i class="fas ' + (TONE_ICONS[tone] || TONE_ICONS.info) + '"></i>';
+            root.querySelector('#app-dialog-title').textContent = title;
+            root.querySelector('#app-dialog-message').textContent = message;
+
+            const codeWrap = root.querySelector('#app-dialog-code-wrap');
+            const copyBtn = root.querySelector('#app-dialog-copy');
+            if (code) {
+                codeWrap.classList.remove('hidden');
+                root.querySelector('#app-dialog-code-label').textContent = codeLabel;
+                root.querySelector('#app-dialog-code').textContent = code;
+                copyBtn.querySelector('span').textContent = nt('notif_copy');
+                copyBtn.onclick = async () => {
+                    try {
+                        await navigator.clipboard.writeText(code);
+                    } catch (e) {
+                        const ta = document.createElement('textarea');
+                        ta.value = code; document.body.appendChild(ta); ta.select();
+                        try { document.execCommand('copy'); } catch (err) {}
+                        ta.remove();
+                    }
+                    copyBtn.querySelector('span').textContent = nt('notif_copied');
+                    notify({ tone: 'success', title: nt('notif_copied'), message: nt('notif_copied_toast'), duration: 2500 });
+                    setTimeout(() => { copyBtn.querySelector('span').textContent = nt('notif_copy'); }, 2000);
+                };
+            } else {
+                codeWrap.classList.add('hidden');
+            }
+
+            const metaWrap = root.querySelector('#app-dialog-meta');
+            metaWrap.innerHTML = '';
+            if (meta && meta.length) {
+                metaWrap.classList.remove('hidden');
+                meta.forEach(row => {
+                    const line = document.createElement('div');
+                    line.className = 'dialog-meta-row';
+                    const label = document.createElement('span');
+                    label.className = 'dialog-meta-label';
+                    label.textContent = row.label;
+                    const value = document.createElement('span');
+                    value.className = 'dialog-meta-value';
+                    value.textContent = row.value;
+                    line.appendChild(label);
+                    line.appendChild(value);
+                    metaWrap.appendChild(line);
+                });
+            } else {
+                metaWrap.classList.add('hidden');
+            }
+
+            const actionWrap = root.querySelector('#app-dialog-actions');
+            actionWrap.innerHTML = '';
+            const list = actions.length ? actions : [{ label: nt('notif_understood'), variant: 'primary' }];
+            list.forEach(action => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'dialog-btn flex-1 ' + (action.variant === 'ghost' ? 'dialog-btn-ghost' : 'dialog-btn-primary');
+                btn.innerHTML = (action.icon ? '<i class="fas ' + action.icon + '"></i>' : '') + '<span></span>';
+                btn.querySelector('span').textContent = action.label;
+                btn.addEventListener('click', () => {
+                    if (action.href) window.open(action.href, '_blank', 'noopener,noreferrer');
+                    if (typeof action.onClick === 'function') action.onClick();
+                    if (action.keepOpen !== true) closeDialog();
+                });
+                actionWrap.appendChild(btn);
+            });
+
+            root.hidden = false;
+            requestAnimationFrame(() => root.classList.add('dialog-in'));
+            setTimeout(() => { actionWrap.querySelector('button')?.focus(); }, 60);
+        }
+
+        function closeDialog() {
+            const root = document.getElementById('app-dialog');
+            if (!root || root.hidden) return;
+            root.classList.remove('dialog-in');
+            setTimeout(() => { root.hidden = true; }, 250);
+            if (dialogLastFocus && typeof dialogLastFocus.focus === 'function') dialogLastFocus.focus();
+        }
+
+        document.querySelectorAll('[data-dialog-close]').forEach(el => el.addEventListener('click', closeDialog));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDialog(); });
     </script>
 </body>
 </html>
