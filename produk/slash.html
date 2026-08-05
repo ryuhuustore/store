@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Slash — Multi-Game | Ryuhuustore</title>
+<title>Slash - Ryuhuustore</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -43,11 +43,13 @@ body {
     background: var(--ios-bg);
     color: var(--text-primary);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.6; letter-spacing: -0.01em;
-    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
-/* Liquid glass statis — tanpa blur realtime, hemat GPU */
+/* ============ LIQUID GLASS HEMAT GPU ============ */
 .glass-panel {
     position: relative;
     background: var(--glass-tint), var(--glass-base);
@@ -60,6 +62,7 @@ body {
     background: linear-gradient(160deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 22%, rgba(255,255,255,0) 46%);
 }
 .glass-panel > * { position: relative; z-index: 1; }
+
 .glass-blur { backdrop-filter: blur(16px) saturate(150%); -webkit-backdrop-filter: blur(16px) saturate(150%); }
 
 .bg-gradient {
@@ -78,22 +81,22 @@ body {
 .orb-3 { width: 440px; height: 440px; bottom: -170px; left: 26%;
     background: radial-gradient(circle at 50% 50%, rgba(255,159,10,.16), rgba(255,159,10,.05) 45%, rgba(255,159,10,0) 70%); }
 
-/* Header */
+/* ============ Header ============ */
 header {
     position: sticky; top: 0; z-index: 100;
     background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02)), rgba(3, 7, 18, .70);
     border-bottom: 1px solid rgba(255, 255, 255, 0.09);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
 }
-nav { max-width: 1140px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 70px; gap: 16px; }
+nav { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 70px; gap: 16px; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 19px; letter-spacing: -.02em; }
-.logo-mark { width: 38px; height: 38px; border-radius: 13px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple)); box-shadow: 0 8px 20px rgba(10,132,255,.32), inset 0 1px 0 rgba(255,255,255,.35); overflow: hidden; color: #fff; font-size: 15px; }
+.logo-mark { width: 38px; height: 38px; border-radius: 13px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple)); box-shadow: 0 8px 20px rgba(10,132,255,.32), inset 0 1px 0 rgba(255,255,255,.35); overflow: hidden; }
 .logo-mark img { width: 100%; height: 100%; object-fit: cover; }
 .nav-links { display: flex; gap: 24px; align-items: center; }
 .nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 600; font-size: 14.5px; transition: var(--transition-quick); padding: 8px 0; position: relative; }
-.nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+.nav-links a:hover { color: var(--text-primary); }
 .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; border-radius: 2px; background: linear-gradient(to right, var(--ios-blue), var(--ios-purple)); transition: width .3s ease; }
-.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-links a:hover::after { width: 100%; }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
 .icon-btn {
     width: 40px; height: 40px; border-radius: 14px; cursor: pointer; flex: none;
@@ -104,39 +107,183 @@ nav { max-width: 1140px; margin: 0 auto; padding: 0 20px; display: flex; justify
 }
 .icon-btn:hover { color: var(--text-primary); background: rgba(255,255,255,.14); transform: translateY(-2px); }
 .cart-icon { position: relative; }
-.cart-count { position: absolute; top: -6px; right: -6px; background: var(--ios-pink); color: #fff; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; font-size: 11px; display: none; align-items: center; justify-content: center; font-weight: 800; box-shadow: 0 4px 12px rgba(255,55,95,.45); }
+.cart-count { position: absolute; top: -6px; right: -6px; background: var(--ios-pink); color: #fff; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 800; box-shadow: 0 4px 12px rgba(255,55,95,.45); }
 
 .breadcrumb { max-width: 1140px; margin: 26px auto 14px; padding: 0 20px; font-size: 13.5px; color: var(--text-tertiary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .breadcrumb a { color: var(--ios-blue); text-decoration: none; font-weight: 600; }
 .breadcrumb a:hover { text-decoration: underline; }
 .breadcrumb i { font-size: 10px; opacity: .5; }
 
-/* Tombol umum */
-.btn { padding: 14px 22px; border-radius: 15px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition-smooth); border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; text-decoration: none; }
-.btn-ghost { background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.05)); color: var(--text-primary); border: 1px solid rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
-.btn-ghost:hover { background: rgba(255,255,255,.19); transform: translateY(-2px); }
-.btn-primary { background: linear-gradient(135deg, var(--ios-blue), #6f5bff); color: #fff; box-shadow: 0 10px 26px rgba(10,132,255,.34), inset 0 1px 0 rgba(255,255,255,.28); }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(10,132,255,.44), inset 0 1px 0 rgba(255,255,255,.28); }
-.btn-danger { background: linear-gradient(135deg, rgba(255,55,95,.22), rgba(255,55,95,.10)); color: #ffb3c4; border: 1px solid rgba(255,55,95,.35); }
-.btn-danger:hover { background: rgba(255,55,95,.28); color: #fff; transform: translateY(-2px); }
-
-/* Input umum */
-.field-label { font-size: 12.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; display: block; }
-.text-input {
-    width: 100%; padding: 12px 15px; border-radius: 14px; font: inherit; font-size: 14.5px; color: var(--text-primary);
-    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.06); transition: border-color .2s ease, box-shadow .2s ease;
+/* ============================================================
+   TATA LETAK PANEL GANDA (seperti modal di referensi)
+   Kiri: visual produk • Kanan: detail + paket + tab + action bar
+   ============================================================ */
+.product-shell {
+    max-width: 1140px;
+    margin: 0 auto;
+    border-radius: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+    align-items: stretch;
+    min-height: 720px;
 }
-.text-input::placeholder { color: rgba(255,255,255,.35); }
-.text-input:focus { outline: none; border-color: var(--ios-blue); box-shadow: 0 0 0 3px rgba(10,132,255,.22); }
-.text-input.input-error { border-color: var(--ios-pink); box-shadow: 0 0 0 3px rgba(255,55,95,.22); }
 
+/* --- Panel kiri --- */
+.product-visual {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+    border-right: 1px solid rgba(255, 255, 255, .09);
+    background:
+        radial-gradient(circle at 50% 38%, rgba(10,132,255,.20), transparent 62%),
+        linear-gradient(160deg, rgba(191,90,242,.14), rgba(3,7,18,.55) 55%),
+        rgba(6, 10, 20, .82);
+}
+.visual-inner { display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+.visual-art {
+    width: 190px; height: 190px; border-radius: 46px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 24px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.14);
+}
+.visual-art img { width: 74%; height: 74%; object-fit: contain; filter: drop-shadow(0 16px 34px rgba(0,0,0,.55)); }
+.visual-art i { font-size: 74px; color: rgba(255,255,255,.22); }
+.visual-caption { font-size: 13px; color: var(--text-tertiary); max-width: 240px; line-height: 1.6; }
+.visual-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.mini-badge { font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 999px; color: #cfe3ff; background: rgba(10,132,255,.16); border: 1px solid rgba(10,132,255,.28); }
+
+/* --- Panel kanan --- */
+.product-panel { position: relative; display: flex; flex-direction: column; min-width: 0; }
+.panel-scroll { padding: 34px 34px 20px; }
+.panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.close-btn { width: 38px; height: 38px; border-radius: 50%; flex: none; }
+
+.product-category { display: block; color: #4da3ff; font-size: 12.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .10em; margin-bottom: 6px; }
+.product-name { font-size: 40px; font-weight: 800; letter-spacing: -.035em; line-height: 1.06; margin-bottom: 8px; }
+.product-meta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 14.5px; color: var(--text-secondary); }
+.product-meta span { display: inline-flex; align-items: center; gap: 7px; }
+.status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ios-green); box-shadow: 0 0 10px var(--ios-green); }
+.meta-star { color: var(--ios-orange); }
+
+.panel-divider { height: 1px; background: rgba(255,255,255,.09); margin: 22px 0; }
+.section-label { font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+
+/* Pilih Paket — grid 2 kolom seperti referensi */
+.service-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.service-item {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.02));
+    border-radius: 16px; border: 1px solid rgba(255,255,255,.10);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    transition: var(--transition-smooth); cursor: pointer; position: relative;
+}
+.service-item:hover { border-color: rgba(10,132,255,.55); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.10); }
+.service-item.active { border-color: rgba(10,132,255,.85); background: linear-gradient(135deg, rgba(10,132,255,.24), rgba(10,132,255,.07)); box-shadow: 0 10px 26px rgba(10,132,255,.20), inset 0 1px 0 rgba(255,255,255,.16); }
+.service-item.best-value { border-color: rgba(255,159,10,.50); background: linear-gradient(135deg, rgba(255,159,10,.16), rgba(255,159,10,.035)); }
+.service-item.best-value.active { border-color: rgba(255,159,10,.9); box-shadow: 0 10px 26px rgba(255,159,10,.20), inset 0 1px 0 rgba(255,255,255,.16); }
+.service-duration { font-weight: 700; font-size: 15.5px; }
+.service-sub { font-size: 11.5px; color: var(--text-tertiary); text-decoration: line-through; }
+.price-amount { font-weight: 700; font-size: 15px; white-space: nowrap; }
+.best-tag { position: absolute; top: -9px; left: 16px; background: var(--ios-orange); color: #1c1200; font-size: 9.5px; font-weight: 800; letter-spacing: .08em; padding: 2px 9px; border-radius: 999px; }
+
+/* Qty + kontak inline */
+.inline-fields { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: end; margin-top: 18px; }
+.field-label { font-size: 12.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; display: block; }
 .qty-control { display: flex; align-items: center; gap: 8px; }
 .qty-control input { width: 58px; text-align: center; padding: 9px 4px; border-radius: 12px; font: inherit; font-weight: 800; font-size: 15px; color: var(--text-primary); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); -moz-appearance: textfield; }
 .qty-control input::-webkit-outer-spin-button, .qty-control input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .qty-btn { width: 38px; height: 38px; border-radius: 12px; }
+#contact {
+    width: 100%; padding: 12px 15px; border-radius: 14px; font: inherit; font-size: 14.5px; color: var(--text-primary);
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06); transition: border-color .2s ease, box-shadow .2s ease;
+}
+#contact::placeholder { color: rgba(255,255,255,.35); }
+#contact:focus { outline: none; border-color: var(--ios-blue); box-shadow: 0 0 0 3px rgba(10,132,255,.22); }
+#contact.input-error { border-color: var(--ios-pink); box-shadow: 0 0 0 3px rgba(255,55,95,.22); }
 
-/* Footer */
+/* Tab — underline seperti referensi */
+.tabs { display: flex; gap: 24px; border-bottom: 1px solid rgba(255,255,255,.10); flex-wrap: wrap; margin-bottom: 20px; }
+.tab-btn { background: none; border: none; color: var(--text-tertiary); font: inherit; font-size: 14.5px; font-weight: 600; padding: 0 2px 12px; cursor: pointer; position: relative; transition: color .2s ease; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: #4da3ff; }
+.tab-btn::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 2px; background: #4da3ff; opacity: 0; transition: opacity .2s ease; }
+.tab-btn.active::after { opacity: 1; }
+.tab-panel { display: none; font-size: 14.5px; color: var(--text-secondary); line-height: 1.75; }
+.tab-panel.active { display: block; }
+.tab-panel strong { color: var(--text-primary); font-weight: 700; }
+.tab-panel > p { margin-bottom: 14px; }
+.info-list { list-style: disc; padding-left: 20px; display: grid; gap: 8px; }
+.info-list li { font-size: 14px; }
+
+/* Sub-tab fitur */
+.subtabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.subtab { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: var(--text-secondary); font: inherit; font-size: 12.5px; font-weight: 700; padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: var(--transition-smooth); }
+.subtab:hover { background: rgba(255,255,255,.11); color: var(--text-primary); }
+.subtab.active { background: rgba(10,132,255,.85); border-color: rgba(10,132,255,.9); color: #fff; box-shadow: 0 6px 18px rgba(10,132,255,.28); }
+.subpanel { display: none; max-height: 320px; overflow-y: auto; padding-right: 8px; }
+.subpanel.active { display: block; }
+.subpanel::-webkit-scrollbar { width: 6px; }
+.subpanel::-webkit-scrollbar-track { background: rgba(255,255,255,.04); border-radius: 3px; }
+.subpanel::-webkit-scrollbar-thumb { background: rgba(10,132,255,.55); border-radius: 3px; }
+.feature-category { margin-bottom: 18px; }
+.feature-category h4 { margin-bottom: 10px; font-size: 12.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--ios-cyan); }
+.feature-list, .game-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.feature-list li, .game-list li {
+    background: linear-gradient(135deg, rgba(255,255,255,.065), rgba(255,255,255,.015));
+    padding: 10px 12px 10px 32px; border-radius: 12px; font-size: 13px; color: var(--text-secondary);
+    border: 1px solid rgba(255,255,255,.07); box-shadow: inset 0 1px 0 rgba(255,255,255,.06); position: relative;
+}
+.feature-list li::before { content: '\2713'; position: absolute; left: 12px; top: 10px; color: var(--ios-green); font-weight: 800; font-size: 12px; }
+.game-list li::before { content: '\1F3AE'; position: absolute; left: 10px; top: 9px; font-size: 12.5px; }
+.note-line { margin-top: 12px; font-size: 13px; color: var(--text-tertiary); font-style: italic; }
+.bonus-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(255,159,10,.20), rgba(255,55,95,.14)); color: #ffd9a3; padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 13px; border: 1px solid rgba(255,159,10,.30); margin-bottom: 16px; }
+
+/* Action bar bawah panel */
+.action-bar {
+    position: sticky; bottom: 0; margin-top: auto;
+    padding: 18px 34px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    background: linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.015)), rgba(7, 11, 22, .95);
+    border-top: 1px solid rgba(255,255,255,.10);
+}
+.selected-label { font-size: 12.5px; font-weight: 600; color: var(--text-tertiary); }
+.selected-value { font-size: 20px; font-weight: 800; letter-spacing: -.025em; }
+.action-buttons { display: flex; gap: 10px; }
+.cart-button, .checkout-button { padding: 14px 22px; border-radius: 15px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition-smooth); border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+.cart-button { background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.05)); color: var(--text-primary); border: 1px solid rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
+.cart-button:hover { background: rgba(255,255,255,.19); transform: translateY(-2px); }
+.checkout-button { background: linear-gradient(135deg, var(--ios-blue), #6f5bff); color: #fff; box-shadow: 0 10px 26px rgba(10,132,255,.34), inset 0 1px 0 rgba(255,255,255,.28); }
+.checkout-button:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(10,132,255,.44), inset 0 1px 0 rgba(255,255,255,.28); }
+
+/* ============ Sections bawah ============ */
+.gameplay-section, .related-products { max-width: 1140px; margin: 84px auto; padding: 0 20px; }
+.section-title { text-align: center; font-size: 30px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 46px; position: relative; }
+.section-title::after { content: ''; position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); width: 64px; height: 3px; background: linear-gradient(to right, var(--ios-blue), var(--ios-purple)); border-radius: 2px; }
+.video-container { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 28px; }
+.video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-secondary); text-align: center; gap: 14px; padding: 20px; z-index: 1; }
+.video-placeholder .play-badge { width: 84px; height: 84px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff; background: linear-gradient(135deg, rgba(255,55,95,.9), rgba(191,90,242,.75)); box-shadow: 0 18px 40px rgba(255,55,95,.28), inset 0 1px 0 rgba(255,255,255,.35); }
+.video-placeholder h3 { font-size: 19px; font-weight: 700; color: var(--text-primary); }
+.video-placeholder p { font-size: 13.5px; }
+
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-top: 40px; }
+.product-card { border-radius: 24px; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: var(--transition-smooth); content-visibility: auto; contain-intrinsic-size: 350px; }
+.product-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,.22); box-shadow: var(--hover-shadow), var(--glass-highlight); }
+.card-image { height: 168px; display: flex; align-items: center; justify-content: center; padding: 22px; position: relative; }
+.card-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(3,7,18,.35)); }
+.card-image img { max-width: 66%; max-height: 66%; object-fit: contain; position: relative; z-index: 1; filter: drop-shadow(0 10px 24px rgba(0,0,0,.5)); }
+.card-image .fallback-icon { font-size: 42px; color: rgba(255,255,255,.28); position: relative; z-index: 1; }
+.art-blue { background: linear-gradient(135deg, #1d4ed8, #7c3aed); }
+.art-teal { background: linear-gradient(135deg, #0e7490, #2563eb); }
+.art-rose { background: linear-gradient(135deg, #be185d, #7c3aed); }
+.card-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.card-category { color: #7cc0ff; font-size: 11px; font-weight: 800; margin-bottom: 7px; text-transform: uppercase; letter-spacing: .12em; }
+.card-name { font-size: 18px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 6px; }
+.card-price { font-size: 17px; font-weight: 800; margin-bottom: 16px; color: #ffd08a; }
+.view-details { margin-top: auto; text-align: center; padding: 12px; background: linear-gradient(135deg, rgba(10,132,255,.22), rgba(191,90,242,.12)); color: #cfe3ff; border: 1px solid rgba(10,132,255,.30); border-radius: 14px; font-weight: 700; font-size: 13px; text-decoration: none; transition: var(--transition-smooth); }
+.view-details:hover { background: rgba(10,132,255,.32); transform: translateY(-2px); color: #fff; }
+
 footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(255,255,255,.09); background: linear-gradient(135deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(3, 7, 18, .84); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
 .footer-content { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 40px; }
 .footer-section h3 { font-size: 16px; margin-bottom: 18px; padding-bottom: 12px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,.10); position: relative; }
@@ -151,7 +298,7 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
 .social-link:hover { background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple)); color: #fff; transform: translateY(-4px); border-color: transparent; box-shadow: 0 10px 26px rgba(10,132,255,.32); }
 .copyright { text-align: center; margin-top: 52px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.09); color: var(--text-tertiary); font-size: 13.5px; }
 
-/* Toast */
+/* ============ Toast ============ */
 #toast-stack { position: fixed; top: 18px; right: 18px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; width: min(380px, calc(100vw - 36px)); pointer-events: none; }
 .toast { pointer-events: auto; position: relative; overflow: hidden; display: flex; align-items: flex-start; gap: .8rem; padding: 1rem 1.05rem 1rem 1.2rem; border-radius: 16px; background: var(--notif-surface); border: 1px solid var(--notif-border); box-shadow: var(--notif-shadow); opacity: 0; transform: translateY(-10px) scale(.98); transition: opacity .22s ease, transform .22s ease; }
 .toast::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--toast-accent, #3b82f6); }
@@ -172,94 +319,29 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
 .toast-close { flex: none; width: 28px; height: 28px; border-radius: 9px; border: none; cursor: pointer; background: rgba(127,127,127,.14); color: var(--notif-text); font-size: 12px; display: flex; align-items: center; justify-content: center; transition: background .2s ease; }
 .toast-close:hover { background: rgba(127,127,127,.26); }
 
-@media (max-width: 768px) {
-    .nav-links { display: none; }
-    #toast-stack { top: 12px; right: 12px; left: 12px; width: auto; }
-}
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
-}
-
-.product-shell { max-width: 1140px; margin: 0 auto; border-radius: 28px; display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); align-items: stretch; min-height: 700px; }
-.product-visual { position: relative; display: flex; align-items: center; justify-content: center; padding: 40px; border-right: 1px solid rgba(255, 255, 255, .09); }
-.visual-inner { display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
-.visual-art { width: 190px; height: 190px; border-radius: 46px; display: flex; align-items: center; justify-content: center; font-size: 66px; color: rgba(255,255,255,.92); border: 1px solid rgba(255,255,255,.16); box-shadow: 0 24px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.24); }
-.visual-caption { font-size: 13px; color: var(--text-tertiary); max-width: 250px; line-height: 1.6; }
-.visual-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-.mini-badge { font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 999px; color: #cfe3ff; background: rgba(10,132,255,.16); border: 1px solid rgba(10,132,255,.28); }
-.product-panel { position: relative; display: flex; flex-direction: column; min-width: 0; }
-.panel-scroll { padding: 34px 34px 20px; }
-.panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-.close-btn { width: 38px; height: 38px; border-radius: 50%; flex: none; }
-.product-category { display: block; color: #4da3ff; font-size: 12.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .10em; margin-bottom: 6px; }
-.product-name { font-size: 38px; font-weight: 800; letter-spacing: -.035em; line-height: 1.08; margin-bottom: 8px; }
-.product-meta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 14.5px; color: var(--text-secondary); }
-.product-meta span { display: inline-flex; align-items: center; gap: 7px; }
-.status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ios-green); box-shadow: 0 0 10px var(--ios-green); }
-.meta-star { color: var(--ios-orange); }
-.panel-divider { height: 1px; background: rgba(255,255,255,.09); margin: 22px 0; }
-.section-label { font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
-.service-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.service-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px; background: linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.02)); border-radius: 16px; border: 1px solid rgba(255,255,255,.10); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); transition: var(--transition-smooth); cursor: pointer; position: relative; }
-.service-item:hover { border-color: rgba(10,132,255,.55); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.10); }
-.service-item.active { border-color: rgba(10,132,255,.85); background: linear-gradient(135deg, rgba(10,132,255,.24), rgba(10,132,255,.07)); box-shadow: 0 10px 26px rgba(10,132,255,.20), inset 0 1px 0 rgba(255,255,255,.16); }
-.service-item.best-value { border-color: rgba(255,159,10,.50); background: linear-gradient(135deg, rgba(255,159,10,.16), rgba(255,159,10,.035)); }
-.service-item.best-value.active { border-color: rgba(255,159,10,.9); box-shadow: 0 10px 26px rgba(255,159,10,.20), inset 0 1px 0 rgba(255,255,255,.16); }
-.service-duration { font-weight: 700; font-size: 15.5px; }
-.service-sub { font-size: 11.5px; color: var(--text-tertiary); }
-.price-amount { font-weight: 700; font-size: 15px; white-space: nowrap; }
-.best-tag { position: absolute; top: -9px; left: 16px; background: var(--ios-orange); color: #1c1200; font-size: 9.5px; font-weight: 800; letter-spacing: .08em; padding: 2px 9px; border-radius: 999px; }
-.inline-fields { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: end; margin-top: 18px; }
-.tabs { display: flex; gap: 24px; border-bottom: 1px solid rgba(255,255,255,.10); flex-wrap: wrap; margin-bottom: 20px; }
-.tab-btn { background: none; border: none; color: var(--text-tertiary); font: inherit; font-size: 14.5px; font-weight: 600; padding: 0 2px 12px; cursor: pointer; position: relative; transition: color .2s ease; }
-.tab-btn:hover { color: var(--text-secondary); }
-.tab-btn.active { color: #4da3ff; }
-.tab-btn::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 2px; background: #4da3ff; opacity: 0; transition: opacity .2s ease; }
-.tab-btn.active::after { opacity: 1; }
-.tab-panel { display: none; font-size: 14.5px; color: var(--text-secondary); line-height: 1.75; }
-.tab-panel.active { display: block; }
-.tab-panel strong { color: var(--text-primary); font-weight: 700; }
-.tab-panel > p { margin-bottom: 14px; }
-.info-list { list-style: disc; padding-left: 20px; display: grid; gap: 8px; }
-.info-list li { font-size: 14px; }
-.feature-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
-.feature-list li { background: linear-gradient(135deg, rgba(255,255,255,.065), rgba(255,255,255,.015)); padding: 10px 12px 10px 32px; border-radius: 12px; font-size: 13px; color: var(--text-secondary); border: 1px solid rgba(255,255,255,.07); box-shadow: inset 0 1px 0 rgba(255,255,255,.06); position: relative; }
-.feature-list li::before { content: '\2713'; position: absolute; left: 12px; top: 10px; color: var(--ios-green); font-weight: 800; font-size: 12px; }
-.action-bar { position: sticky; bottom: 0; margin-top: auto; padding: 18px 34px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.015)), rgba(7, 11, 22, .95); border-top: 1px solid rgba(255,255,255,.10); }
-.selected-label { font-size: 12.5px; font-weight: 600; color: var(--text-tertiary); }
-.selected-value { font-size: 20px; font-weight: 800; letter-spacing: -.025em; }
-.action-buttons { display: flex; gap: 10px; }
-.related-products { max-width: 1140px; margin: 80px auto; padding: 0 20px; }
-.section-title { text-align: center; font-size: 30px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 46px; position: relative; }
-.section-title::after { content: ''; position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); width: 64px; height: 3px; background: linear-gradient(to right, var(--ios-blue), var(--ios-purple)); border-radius: 2px; }
-.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-.product-card { border-radius: 22px; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: var(--transition-smooth); content-visibility: auto; contain-intrinsic-size: 320px; }
-.product-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,.22); box-shadow: var(--hover-shadow), var(--glass-highlight); }
-.card-image { height: 132px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: rgba(255,255,255,.9); position: relative; }
-.card-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(3,7,18,.35)); }
-.card-info { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; }
-.card-category { color: #7cc0ff; font-size: 10.5px; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .12em; }
-.card-name { font-size: 17px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 6px; }
-.card-price { font-size: 15.5px; font-weight: 800; margin-bottom: 14px; color: #ffd08a; }
-.view-details { margin-top: auto; text-align: center; padding: 11px; background: linear-gradient(135deg, rgba(10,132,255,.22), rgba(191,90,242,.12)); color: #cfe3ff; border: 1px solid rgba(10,132,255,.30); border-radius: 13px; font-weight: 700; font-size: 12.5px; text-decoration: none; transition: var(--transition-smooth); }
-.view-details:hover { background: rgba(10,132,255,.32); transform: translateY(-2px); color: #fff; }
+/* ============ Responsive ============ */
 @media (max-width: 960px) {
     .product-shell { grid-template-columns: 1fr; min-height: 0; }
     .product-visual { border-right: none; border-bottom: 1px solid rgba(255,255,255,.09); padding: 32px 24px; }
-    .visual-art { width: 150px; height: 150px; border-radius: 38px; font-size: 54px; }
+    .visual-art { width: 150px; height: 150px; border-radius: 38px; }
     .panel-scroll { padding: 26px 24px 16px; }
     .action-bar { padding: 16px 24px; }
 }
 @media (max-width: 768px) {
-    .product-name { font-size: 30px; }
+    .nav-links { display: none; }
+    .product-name { font-size: 32px; }
     .service-list { grid-template-columns: 1fr; }
     .inline-fields { grid-template-columns: 1fr; align-items: stretch; }
-    .feature-list { grid-template-columns: 1fr; }
+    .feature-list, .game-list { grid-template-columns: 1fr; }
     .action-bar { flex-direction: column; align-items: stretch; }
     .action-buttons { justify-content: stretch; }
-    .action-buttons .btn { flex: 1; }
+    .cart-button, .checkout-button { flex: 1; }
     .products-grid { grid-template-columns: 1fr; }
     .section-title { font-size: 26px; }
+    #toast-stack { top: 12px; right: 12px; left: 12px; width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
 </style>
 </head>
@@ -270,17 +352,18 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
     <div class="ambient-light orb-2"></div>
     <div class="ambient-light orb-3"></div>
 </div>
+
 <header class="glass-blur">
     <nav>
         <a href="../index.html" class="logo">
-            <span class="logo-mark"><i class="fas fa-bolt"></i></span>
+            <span class="logo-mark"><img src="../logo.png" alt="Ryuhuustore" onerror="this.style.display='none'"></span>
             Ryuhuustore
         </a>
         <div class="nav-links">
             <a href="../index.html">Beranda</a>
-            <a href="../index.html#produk">Produk</a>
+            <a href="../tutorial.html">Tutorial</a>
             <a href="../keranjang.html">Keranjang</a>
-            <a href="../index.html#kontak">Kontak</a>
+            <a href="#kontak">Kontak</a>
         </div>
         <div class="nav-actions">
             <a href="../keranjang.html" class="icon-btn cart-icon" title="Keranjang">
@@ -297,24 +380,30 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
     <span>Slash</span>
 </div>
 
+<!-- ============ PANEL PRODUK (layout seperti referensi) ============ -->
 <section class="product-shell glass-panel">
-    <div class="product-visual" style="background: radial-gradient(circle at 50% 38%, #2563eb55, transparent 62%), linear-gradient(160deg, #06b6d433, rgba(3,7,18,.55) 55%), rgba(6, 10, 20, .82);">
+
+    <!-- Panel kiri: visual -->
+    <div class="product-visual">
         <div class="visual-inner">
-            <div class="visual-art" style="background: linear-gradient(135deg, #2563eb, #06b6d4);"><i class="fas fa-gamepad"></i></div>
-            <div class="visual-badges">
-                <span class="mini-badge">Bypass</span>
-                <span class="mini-badge">Multi-Game</span>
-                <span class="mini-badge">Langganan</span>
+            <div class="visual-art">
+                <img src="slash.png" alt="Slash" onerror="this.outerHTML='&lt;i class=&quot;fas fa-gamepad&quot;&gt;&lt;/i&gt;'">
             </div>
-            <p class="visual-caption">Satu langganan Slash untuk semua game yang didukung. Berlangganan lewat Wuthering Waves atau Solo Leveling Arise, lalu game lainnya ikut terbuka di akun yang sama.</p>
+            <div class="visual-badges">
+                <span class="mini-badge">Wuthering Waves</span>
+                <span class="mini-badge">Solo Leveling</span>
+                <span class="mini-badge">Multi-Game</span>
+            </div>
+            <p class="visual-caption">Lisensi resmi Slash dengan sistem anti-detection dan dukungan admin.</p>
         </div>
     </div>
 
+    <!-- Panel kanan: detail -->
     <div class="product-panel">
         <div class="panel-scroll">
             <div class="panel-head">
                 <div>
-                    <span class="product-category">Multi-Game</span>
+                    <span class="product-category">Multi-Game Premium</span>
                     <h1 class="product-name">Slash</h1>
                     <div class="product-meta">
                         <span><i class="status-dot"></i> Available</span>
@@ -327,47 +416,38 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
 
             <div class="panel-divider"></div>
 
+            <div class="bonus-badge"><i class="fas fa-gift"></i> Beli Slash = Gratis Bypass Genshin Tools</div>
+
             <div class="section-label">Pilih Paket</div>
             <div class="service-list">
-                <div class="service-item active" data-tier="3 Day" data-price="40000">
-                    
+                <div class="service-item active" data-duration="3 Hari" data-price="40000">
                     <div>
-                        <div class="service-duration">3 Day</div>
-                        <div class="service-sub">≈ $4</div>
+                        <div class="service-duration">3 Hari</div>
+                        <div class="service-sub">Rp 60.000</div>
                     </div>
                     <span class="price-amount">Rp 40.000</span>
                 </div>
-                <div class="service-item" data-tier="7 Days" data-price="60000">
-                    
+                <div class="service-item" data-duration="7 Hari" data-price="60000">
                     <div>
-                        <div class="service-duration">7 Days</div>
-                        <div class="service-sub">≈ $6</div>
+                        <div class="service-duration">7 Hari</div>
+                        <div class="service-sub">Rp 80.000</div>
                     </div>
                     <span class="price-amount">Rp 60.000</span>
                 </div>
-                <div class="service-item" data-tier="1 Month" data-price="120000">
-                    
+                <div class="service-item best-value" data-duration="30 Hari" data-price="120000">
+                    <span class="best-tag">TERBAIK</span>
                     <div>
-                        <div class="service-duration">1 Month</div>
-                        <div class="service-sub">≈ $10</div>
+                        <div class="service-duration">30 Hari</div>
+                        <div class="service-sub">Rp 150.000</div>
                     </div>
                     <span class="price-amount">Rp 120.000</span>
                 </div>
-                <div class="service-item" data-tier="3 Month" data-price="360000">
-                    
+                <div class="service-item" data-duration="120 Hari" data-price="470000">
                     <div>
-                        <div class="service-duration">3 Month</div>
-                        <div class="service-sub">≈ $30</div>
+                        <div class="service-duration">120 Hari</div>
+                        <div class="service-sub">Rp 500.000</div>
                     </div>
-                    <span class="price-amount">Rp 360.000</span>
-                </div>
-                <div class="service-item best-value" data-tier="4 Month" data-price="480000">
-                    <span class="best-tag">TERLENGKAP</span>
-                    <div>
-                        <div class="service-duration">4 Month</div>
-                        <div class="service-sub">≈ $40</div>
-                    </div>
-                    <span class="price-amount">Rp 480.000</span>
+                    <span class="price-amount">Rp 470.000</span>
                 </div>
             </div>
 
@@ -382,12 +462,13 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
                 </div>
                 <div>
                     <label class="field-label" for="contact">Nickname Discord / Nomor WhatsApp</label>
-                    <input type="text" id="contact" class="text-input" placeholder="Contoh: ryuhuu. atau 08123456789">
+                    <input type="text" id="contact" placeholder="Contoh: ryuhuu. atau 08123456789">
                 </div>
             </div>
 
             <div class="panel-divider"></div>
 
+            <!-- Tab utama -->
             <div class="tabs">
                 <button class="tab-btn active" data-tab="info">Informasi Produk</button>
                 <button class="tab-btn" data-tab="fitur">Fitur</button>
@@ -396,46 +477,113 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
             </div>
 
             <div class="tab-panel active" id="info">
-                                <p><strong>Slash</strong> adalah <strong>satu langganan multi-game</strong>. Kamu cukup membeli satu paket (berlangganan lewat <strong>Wuthering Waves</strong> atau <strong>Solo Leveling Arise</strong>), lalu seluruh game di bawah ini otomatis bisa dipakai dengan lisensi yang sama.</p>
-                <p style="margin-bottom: 10px;"><strong>Game yang didukung (12)</strong></p>
-                <ul class="feature-list" style="margin-bottom: 14px;">
-                    <li>Arknights Endfield</li>
-                    <li>Blue Archive</li>
-                    <li>Duet Night Abyss</li>
-                    <li>Genshin Impact</li>
-                    <li>Girls Frontline 2</li>
-                    <li>Honkai Star Rail</li>
-                    <li>Mongil Star Dive</li>
-                    <li>Neverness to Everness</li>
-                    <li>Solo Leveling Arise</li>
-                    <li>Stella Sora Global</li>
-                    <li>Wuthering Waves</li>
-                    <li>Zenless Zone Zero</li>
-                </ul>
+                <p><strong>Slash</strong> tersedia untuk <strong>Wuthering Waves, Solo Leveling Arise,</strong> dan banyak game lain dalam beberapa pilihan durasi. Pastikan memilih durasi yang sesuai sebelum melanjutkan checkout.</p>
                 <ul class="info-list">
-                    <li>Cukup beli satu kali — tidak perlu bayar per game.</li>
                     <li>Lisensi dikirim setelah pembayaran dikonfirmasi.</li>
-                    <li>Aktivasi dan penambahan game dibantu admin.</li>
-                    <li>Daftar game bisa bertambah mengikuti update Slash.</li>
+                    <li>Proses aktivasi dibantu oleh admin.</li>
+                    <li>Harga mengikuti region pembayaran yang dipilih.</li>
+                    <li>Ketersediaan produk dapat berubah sewaktu-waktu.</li>
                 </ul>
             </div>
 
             <div class="tab-panel" id="fitur">
-                <ul class="feature-list">
-                        <li>Kompatibel dengan versi terbaru Multi-Game</li>
-                        <li>Update mengikuti patch resmi game</li>
-                        <li>Panduan instalasi dari admin</li>
-                        <li>Garansi selama masa aktif lisensi</li>
-                        <li>Support via Discord &amp; WhatsApp</li>
-                        <li>Bypass deteksi bawaan game</li>
-                </ul>
-                <p style="margin-top: 14px; font-size: 13px; color: var(--text-tertiary); font-style: italic;">Daftar fitur lengkap dan changelog terbaru bisa dicek di server Discord kami.</p>
+                <div class="subtabs">
+                    <button class="subtab active" data-sub="wuthering">Wuthering Waves</button>
+                    <button class="subtab" data-sub="solo">Solo Leveling</button>
+                    <button class="subtab" data-sub="other">Game Lainnya</button>
+                </div>
+
+                <div class="subpanel active" id="wuthering">
+                    <div class="feature-category">
+                        <h4>Player</h4>
+                        <ul class="feature-list">
+                            <li>God Mode</li><li>Auto Revive</li><li>No Cooldown</li><li>Infinite Stamina</li>
+                            <li>Infinite Special Energy</li><li>Infinite Ultimate</li><li>Infinite Intro Outro</li><li>No Fall Damage</li>
+                            <li>Auto Dodge Dash</li><li>Auto Dodge Jump</li><li>Auto Parry Basic Attack</li><li>Auto Parry Intro Skill</li>
+                            <li>Reduce Stamina While Dodge or Parry</li><li>Fly</li><li>No Clip</li><li>Fly Speed</li>
+                            <li>Player Speed</li><li>Weapon and Skin Changer</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Character Attributes</h4>
+                        <ul class="feature-list">
+                            <li>Character Resonance Chain 6 Unlock</li><li>Signature Weapon Rank 5 Replicate</li><li>Flight Everywhere</li>
+                            <li>100% Critical</li><li>High Echo Attack</li><li>Increase Coin, Material and Echo Rate</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Stats Editor</h4>
+                        <ul class="feature-list">
+                            <li>Attack Modifier</li><li>Defend Modifier</li><li>HP Modifier</li><li>Crit Rate Modifier</li><li>Crit Damage Modifier</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Enemy</h4>
+                        <ul class="feature-list">
+                            <li>Enemy Vacuum</li><li>Kill Aura 1</li><li>Kill Aura 2</li><li>Exclude Quest Monster</li>
+                            <li>Kill Aura Animal</li><li>Kill Aura Counter Attack</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>World</h4>
+                        <ul class="feature-list">
+                            <li>Auto Loot Collect</li><li>Auto Loot Chest</li><li>Auto Absorb Echo</li><li>Auto Destroy</li>
+                            <li>Auto Puzzle</li><li>No Restrict Area</li><li>World Speed</li><li>Fishing Boat Speed</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Dungeon &amp; Farm</h4>
+                        <ul class="feature-list">
+                            <li>Farm Tracked Enemy</li><li>Auto Restart Dungeon</li><li>Auto Challenge Boss / Tacet</li><li>Auto Claim Reward</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>ESP</h4>
+                        <ul class="feature-list"><li>Monster</li><li>Collect</li><li>Chest</li></ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Teleport</h4>
+                        <ul class="feature-list">
+                            <li>JSON File Custom Teleport</li><li>Track Icon To Teleport</li><li>Quest Teleport</li><li>Map Mark Teleport</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Misc</h4>
+                        <ul class="feature-list">
+                            <li>FOV</li><li>Pause In Game Time</li><li>Unlock FPS</li><li>Auto Claim Trophies</li>
+                            <li>Cook &amp; Craft No Animation</li><li>Plot Skip</li><li>Auto Plot Skip</li><li>Hide UID</li>
+                            <li>Show FPS</li><li>Change UID</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subpanel" id="solo">
+                    <div class="feature-category">
+                        <h4>Solo Leveling Arise</h4>
+                        <ul class="feature-list">
+                            <li>Shadow Attack Modifier</li><li>Shadow Cooldown Reduction</li><li>x2 Move Speed</li>
+                            <li>Set Monster HP</li><li>Set Monster Damage</li><li>Auto Break Shield</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subpanel" id="other">
+                    <div class="feature-category">
+                        <h4>Supported Games</h4>
+                        <ul class="game-list">
+                            <li>GLF 2 Haoplay &amp; Sunborn</li><li>Rememento White Shadow</li><li>Genshin Shika Bypass</li>
+                            <li>ZZZ Bypass</li><li>Etheria Restart</li><li>Crystal Of Atlan</li>
+                            <li>Blue Archive</li><li>Stella Sora</li><li>Duet Night Abyss</li>
+                        </ul>
+                        <p class="note-line">Note: cek di server untuk daftar fitur lengkapnya.</p>
+                    </div>
+                </div>
             </div>
 
             <div class="tab-panel" id="panduan">
                 <p>Ikuti langkah berikut agar pesanan cepat diproses:</p>
                 <ul class="info-list">
-                    <li>Pilih paket dan atur jumlahnya.</li>
+                    <li>Pilih paket durasi yang diinginkan dan atur jumlahnya.</li>
                     <li>Isi nickname Discord atau nomor WhatsApp yang aktif.</li>
                     <li>Klik <strong>Tambah ke Keranjang</strong> atau <strong>Checkout</strong>.</li>
                     <li>Selesaikan pembayaran di halaman keranjang, lalu kirim bukti ke admin.</li>
@@ -451,53 +599,73 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
                     <li>Telegram: <strong>@ryuhuuz</strong></li>
                     <li>Email: <strong>ryuhuustore@gmail.com</strong></li>
                 </ul>
-                <p style="margin-top: 14px;">Sertakan Order ID saat menghubungi admin agar pengecekan lebih cepat.</p>
+                <p style="margin-top: 14px;">Sertakan Order ID saat menghubungi admin agar proses pengecekan lebih cepat.</p>
             </div>
         </div>
 
+        <!-- Action bar sticky -->
         <div class="action-bar">
             <div>
                 <div class="selected-label">Paket Terpilih</div>
-                <div class="selected-value" id="selected-value">3 Day — Rp 40.000</div>
+                <div class="selected-value" id="selected-value">3 Hari — Rp 40.000</div>
             </div>
             <div class="action-buttons">
-                <button type="button" class="btn btn-ghost" id="cartButton"><i class="fas fa-cart-plus"></i> Tambah ke Keranjang</button>
-                <button type="button" class="btn btn-primary" id="checkoutButton"><i class="fas fa-bolt"></i> Checkout</button>
+                <button type="button" class="cart-button" id="cartButton"><i class="fas fa-cart-plus"></i> Tambah ke Keranjang</button>
+                <button type="button" class="checkout-button" id="checkoutButton"><i class="fas fa-bolt"></i> Checkout</button>
             </div>
         </div>
     </div>
 </section>
 
+<section class="gameplay-section">
+    <h2 class="section-title">🎬 Gameplay Slash</h2>
+    <div class="video-container glass-panel">
+        <div class="video-placeholder">
+            <div class="play-badge"><i class="fab fa-youtube"></i></div>
+            <h3>Video Gameplay Segera Hadir</h3>
+            <p>Nantikan cuplikan gameplay Slash yang akan diupload segera.</p>
+        </div>
+    </div>
+</section>
+
 <section class="related-products">
-    <h2 class="section-title">Produk Lainnya</h2>
+    <h2 class="section-title">✨ Produk Lainnya</h2>
     <div class="products-grid">
-            <div class="product-card glass-panel">
-                <div class="card-image" style="background: linear-gradient(135deg, #a855f7, #ec4899);"><i class="fas fa-wind"></i></div>
-                <div class="card-info">
-                    <span class="card-category">Genshin Impact</span>
-                    <h3 class="card-name">Shika</h3>
-                    <div class="card-price">Mulai Rp 70.000</div>
-                    <a href="shika-genshin-impact.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
-                </div>
+        <div class="product-card glass-panel">
+            <div class="card-image art-blue">
+                <img src="shika.png" alt="Shika" onerror="this.outerHTML='&lt;i class=&quot;fas fa-gamepad fallback-icon&quot;&gt;&lt;/i&gt;'">
             </div>
-            <div class="product-card glass-panel">
-                <div class="card-image" style="background: linear-gradient(135deg, #22c55e, #059669);"><i class="fas fa-wind"></i></div>
-                <div class="card-info">
-                    <span class="card-category">Genshin Impact</span>
-                    <h3 class="card-name">Antiaddict</h3>
-                    <div class="card-price">Mulai Rp 50.000</div>
-                    <a href="antiaddict-genshin-impact.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
-                </div>
+            <div class="card-info">
+                <span class="card-category">Genshin Impact</span>
+                <h3 class="card-name">Shika</h3>
+                <div class="card-price">Rp 80.000</div>
+                <a href="shika.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
             </div>
-            <div class="product-card glass-panel">
-                <div class="card-image" style="background: linear-gradient(135deg, #eab308, #f97316);"><i class="fas fa-wind"></i></div>
-                <div class="card-info">
-                    <span class="card-category">Genshin Impact</span>
-                    <h3 class="card-name">Shibal</h3>
-                    <div class="card-price">Mulai Rp 75.000</div>
-                    <a href="shibal-genshin-impact.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
-                </div>
+        </div>
+
+        <div class="product-card glass-panel">
+            <div class="card-image art-teal">
+                <img src="unicore.png" alt="Unicore" onerror="this.outerHTML='&lt;i class=&quot;fas fa-gamepad fallback-icon&quot;&gt;&lt;/i&gt;'">
             </div>
+            <div class="card-info">
+                <span class="card-category">Genshin Impact</span>
+                <h3 class="card-name">Unicore</h3>
+                <div class="card-price">Rp 45.000</div>
+                <a href="unicore.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
+            </div>
+        </div>
+
+        <div class="product-card glass-panel">
+            <div class="card-image art-rose">
+                <img src="uniwaves.png" alt="Uniwaves" onerror="this.outerHTML='&lt;i class=&quot;fas fa-gamepad fallback-icon&quot;&gt;&lt;/i&gt;'">
+            </div>
+            <div class="card-info">
+                <span class="card-category">Wuthering Waves</span>
+                <h3 class="card-name">Uniwaves</h3>
+                <div class="card-price">Rp 45.000</div>
+                <a href="uniwaves.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -507,29 +675,34 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
             <h3>Ryuhuustore</h3>
             <p style="color: var(--text-secondary); font-size: 13.5px; line-height: 1.7; margin-bottom: 18px;">Toko digital terpercaya dengan pelayanan terbaik dan harga kompetitif. Kami berkomitmen memberikan pengalaman berbelanja terbaik untuk para gamer.</p>
             <div class="social-links">
-                <a href="https://wa.me/6285117065033" target="_blank" rel="noopener noreferrer" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://discord.com/users/1120396377839648780" target="_blank" rel="noopener noreferrer" class="social-link" title="Discord"><i class="fab fa-discord"></i></a>
-                <a href="https://t.me/ryuhuuz" target="_blank" rel="noopener noreferrer" class="social-link" title="Telegram"><i class="fab fa-telegram"></i></a>
-                <a href="mailto:ryuhuustore@gmail.com" class="social-link" title="Email"><i class="fas fa-envelope"></i></a>
+                <a href="https://wa.me/6285117065033" target="_blank" rel="noopener noreferrer" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://discord.com/users/1120396377839648780" target="_blank" rel="noopener noreferrer" class="social-link"><i class="fab fa-discord"></i></a>
+                <a href="https://t.me/ryuhuuz" target="_blank" rel="noopener noreferrer" class="social-link"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
+
         <div class="footer-section">
-            <h3>Navigasi</h3>
+            <h3>Produk</h3>
             <ul class="footer-links">
-                <li><a href="../index.html"><i class="fas fa-house"></i> Beranda</a></li>
-                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Semua Produk</a></li>
-                <li><a href="../keranjang.html"><i class="fas fa-shopping-bag"></i> Keranjang</a></li>
-                <li><a href="../index.html#cara-order"><i class="fas fa-list-check"></i> Cara Order</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Genshin Impact</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Wuthering Waves</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Solo Leveling Arise</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Star Rail</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Zenless Zone Zero</a></li>
             </ul>
         </div>
+
         <div class="footer-section">
             <h3>Bantuan</h3>
             <ul class="footer-links">
-                <li><a href="../index.html#cara-order"><i class="fas fa-shopping-cart"></i> Cara Pembelian</a></li>
-                <li><a href="../index.html#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
-                <li><a href="https://wa.me/6285117065033" target="_blank" rel="noopener noreferrer"><i class="fas fa-headset"></i> Hubungi Admin</a></li>
+                <li><a href="../tutorial.html"><i class="fas fa-shopping-cart"></i> Cara Pembelian</a></li>
+                <li><a href="../tutorial.html"><i class="fas fa-info-circle"></i> Cara Penggunaan</a></li>
+                <li><a href="../tutorial.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                <li><a href="#"><i class="fas fa-shield-alt"></i> Kebijakan Privasi</a></li>
             </ul>
         </div>
+
         <div class="footer-section">
             <h3>Kontak</h3>
             <ul class="footer-links">
@@ -540,213 +713,133 @@ footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(2
             </ul>
         </div>
     </div>
-    <div class="copyright">© 2026 Ryuhuustore. All rights reserved.</div>
+
+    <div class="copyright">© 2024 Ryuhuustore. All rights reserved.</div>
 </footer>
 
 <div id="toast-stack" aria-live="polite"></div>
 
 <script>
-
-// ============ NOTIFIKASI ============
+// ============ NOTIFIKASI MODERN ============
 const TONE_ICONS = { info: 'fa-circle-info', success: 'fa-circle-check', warning: 'fa-triangle-exclamation', error: 'fa-circle-exclamation' };
+
 function notify(options) {
     const opts = options || {};
     const tone = opts.tone || 'info';
     const duration = typeof opts.duration === 'number' ? opts.duration : 4500;
     const stack = document.getElementById('toast-stack');
     if (!stack) return;
+
     const toast = document.createElement('div');
     toast.className = 'toast t-' + tone;
-    toast.innerHTML = '<div class="toast-icon tone-' + tone + '"><i class="fas ' + (TONE_ICONS[tone] || TONE_ICONS.info) + '"></i></div>'
-        + '<div class="toast-content"><div class="toast-title"></div>' + (opts.message ? '<div class="toast-body"></div>' : '') + '</div>'
-        + '<button type="button" class="toast-close" aria-label="Tutup"><i class="fas fa-times"></i></button>';
+    toast.innerHTML = `
+        <div class="toast-icon tone-${tone}"><i class="fas ${TONE_ICONS[tone] || TONE_ICONS.info}"></i></div>
+        <div class="toast-content">
+            <div class="toast-title"></div>
+            ${opts.message ? '<div class="toast-body"></div>' : ''}
+        </div>
+        <button type="button" class="toast-close" aria-label="Tutup"><i class="fas fa-times"></i></button>
+    `;
     toast.querySelector('.toast-title').textContent = opts.title || '';
     if (opts.message) toast.querySelector('.toast-body').textContent = opts.message;
-    const remove = function () {
-        toast.classList.remove('toast-in'); toast.classList.add('toast-out');
-        setTimeout(function () { toast.remove(); }, 240);
+
+    const remove = () => {
+        toast.classList.remove('toast-in');
+        toast.classList.add('toast-out');
+        setTimeout(() => toast.remove(), 240);
     };
     toast.querySelector('.toast-close').addEventListener('click', remove);
+
     stack.appendChild(toast);
-    requestAnimationFrame(function () { toast.classList.add('toast-in'); });
+    requestAnimationFrame(() => toast.classList.add('toast-in'));
     if (duration > 0) setTimeout(remove, duration);
 }
 
-// ============ KERANJANG (tahan banting) ============
-const CART_KEY = 'cart';
-let memoryCart = null;
-
-const HAS_STORAGE = (function () {
-    try {
-        const k = '__ryuhuu_test__';
-        window.localStorage.setItem(k, '1');
-        window.localStorage.removeItem(k);
-        return true;
-    } catch (e) { return false; }
-})();
-
-function encodeCart(cart) {
-    try { return encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(cart))))); }
-    catch (e) { return ''; }
-}
-function decodeCart(str) {
-    try {
-        const parsed = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(str)))));
-        return Array.isArray(parsed) ? parsed : null;
-    } catch (e) { return null; }
-}
-function cartFromUrl() {
-    const src = window.location.hash + '&' + window.location.search;
-    const m = src.match(/cart=([^&]+)/);
-    return m ? decodeCart(m[1]) : null;
-}
-
-function getCart() {
-    if (HAS_STORAGE) {
-        try {
-            const raw = window.localStorage.getItem(CART_KEY);
-            const parsed = raw ? JSON.parse(raw) : [];
-            if (Array.isArray(parsed)) return parsed;
-        } catch (e) { console.warn('Keranjang tidak terbaca:', e); }
-    }
-    if (memoryCart) return memoryCart;
-    const fromUrl = cartFromUrl();
-    if (fromUrl) { memoryCart = fromUrl; return fromUrl; }
-    return [];
-}
-
-function saveCart(cart) {
-    memoryCart = cart;
-    if (HAS_STORAGE) {
-        try { window.localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
-        catch (e) { console.warn('Keranjang hanya disimpan sementara:', e); }
-    }
-    return true;
-}
-
-// Saat dibuka lewat file:// sebagian browser memblokir localStorage,
-// jadi isi keranjang ikut dibawa lewat URL antar halaman.
-function cartLink(base) {
-    if (HAS_STORAGE) return base;
-    const cart = getCart();
-    if (!cart.length) return base;
-    const payload = encodeCart(cart);
-    return payload ? base + '#cart=' + payload : base;
-}
-function syncCartLinks() {
-    if (HAS_STORAGE) return;
-    document.querySelectorAll('a[href*="keranjang.html"]').forEach(function (a) {
-        const base = a.getAttribute('href').split('#')[0];
-        a.setAttribute('href', cartLink(base));
-    });
-}
-function adoptCartFromUrl() {
-    const fromUrl = cartFromUrl();
-    if (!fromUrl || !fromUrl.length) return false;
-    const current = getCart();
-    if (current.length) return false;
-    saveCart(fromUrl);
-    return true;
-}
-
-function cartTotalQty() { return getCart().reduce(function (s, i) { return s + (Number(i && i.qty) || 1); }, 0); }
-function cartSubtotal() { return getCart().reduce(function (s, i) { return s + (Number(i.price) || 0) * (Number(i.qty) || 1); }, 0); }
-function updateCartCount() {
-    const total = cartTotalQty();
-    document.querySelectorAll('.cart-count').forEach(function (el) {
-        el.textContent = total;
-        el.style.display = total > 0 ? 'flex' : 'none';
-    });
-    syncCartLinks();
-}
-function formatIDR(value) { return 'Rp ' + Number(value || 0).toLocaleString('id-ID'); }
-
-// ============ KODE ORDER ============
-function productCodeOf(name) {
-    return String(name || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8) || 'ITEM';
-}
-function tierCodeOf(tier) {
-    const t = String(tier || '').toUpperCase();
-    if (t.indexOf('LIFETIME') >= 0) return 'LIFE';
-    if (t.indexOf('INVITE') >= 0) return 'INVITE';
-    if (t.indexOf('ADMIN') >= 0 || t.indexOf('HUBUNGI') >= 0) return 'DM';
-    const m = t.match(/(\d+)\s*(HARI|DAY|DAYS|MINGGU|WEEK|BULAN|MONTH|TAHUN|YEAR)/);
-    if (!m) return t.replace(/[^A-Z0-9]/g, '').slice(0, 6) || 'STD';
-    const unit = { HARI: 'D', DAY: 'D', DAYS: 'D', MINGGU: 'W', WEEK: 'W', BULAN: 'M', MONTH: 'M', TAHUN: 'Y', YEAR: 'Y' }[m[2]] || '';
-    return m[1] + unit;
-}
-function cartCodeSummary(cart) {
-    const codes = cart.map(function (i) {
-        const base = productCodeOf(i.product) + tierCodeOf(i.tier);
-        const qty = Number(i.qty) || 1;
-        return qty > 1 ? base + 'X' + qty : base;
-    });
-    let out = codes.join('_');
-    if (out.length > 64) {
-        let kept = [], len = 0, rest = 0;
-        codes.forEach(function (c) {
-            if (len + c.length + 1 <= 58) { kept.push(c); len += c.length + 1; } else { rest++; }
-        });
-        out = kept.join('_') + (rest ? '_P' + rest : '');
-    }
-    return out || 'ORDER';
-}
-function createOrderId(cart) {
-    const d = new Date();
-    const ymd = String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
-    let rand = '';
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    for (let i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
-    return 'RYH-' + ymd + '-' + cartCodeSummary(cart) + '-' + rand;
-}
-
-const PRODUCT_NAME = "Slash";
-const PRODUCT_GAME = "Multi-Game";
-
+// ============ LOGIKA HALAMAN ============
 document.addEventListener('DOMContentLoaded', function () {
     const serviceItems = document.querySelectorAll('.service-item');
     const selectedValue = document.getElementById('selected-value');
+    const cartButton = document.getElementById('cartButton');
+    const checkoutButton = document.getElementById('checkoutButton');
+    const cartCount = document.querySelector('.cart-count');
     const contactInput = document.getElementById('contact');
     const qtyInput = document.getElementById('qty');
 
-    let selectedTier = serviceItems[0].getAttribute('data-tier');
-    let selectedPrice = parseInt(serviceItems[0].getAttribute('data-price'), 10) || 0;
+    let selectedDuration = '3 Hari';
+    let selectedPrice = 40000;
 
-    const getQty = function () { return Math.min(99, Math.max(1, parseInt(qtyInput.value, 10) || 1)); };
+    const formatIDR = (value) => 'Rp ' + Number(value || 0).toLocaleString('id-ID');
+    const getQty = () => Math.min(99, Math.max(1, parseInt(qtyInput.value, 10) || 1));
 
     function updateSelection() {
         const qty = getQty();
         qtyInput.value = qty;
         const total = selectedPrice * qty;
-        const priceTxt = selectedPrice ? formatIDR(total) : 'Hubungi Admin';
-        selectedValue.textContent = qty > 1 ? selectedTier + ' × ' + qty + ' — ' + priceTxt : selectedTier + ' — ' + priceTxt;
+        selectedValue.textContent = qty > 1
+            ? `${selectedDuration} × ${qty} — ${formatIDR(total)}`
+            : `${selectedDuration} — ${formatIDR(total)}`;
     }
 
-    serviceItems.forEach(function (item) {
+    serviceItems.forEach(item => {
         item.addEventListener('click', function () {
-            selectedTier = this.getAttribute('data-tier');
+            selectedDuration = this.getAttribute('data-duration');
             selectedPrice = parseInt(this.getAttribute('data-price'), 10) || 0;
-            serviceItems.forEach(function (el) { el.classList.remove('active'); });
+            serviceItems.forEach(el => el.classList.remove('active'));
             this.classList.add('active');
             updateSelection();
         });
     });
 
+    // Tab utama
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
-    tabButtons.forEach(function (btn) {
+    tabButtons.forEach(btn => {
         btn.addEventListener('click', function () {
-            tabButtons.forEach(function (b) { b.classList.remove('active'); });
-            tabPanels.forEach(function (p) { p.classList.remove('active'); });
+            tabButtons.forEach(b => b.classList.remove('active'));
+            tabPanels.forEach(p => p.classList.remove('active'));
             this.classList.add('active');
             const panel = document.getElementById(this.getAttribute('data-tab'));
             if (panel) panel.classList.add('active');
         });
     });
 
-    document.getElementById('qty-minus').addEventListener('click', function () { qtyInput.value = getQty() - 1; updateSelection(); });
-    document.getElementById('qty-plus').addEventListener('click', function () { qtyInput.value = getQty() + 1; updateSelection(); });
+    // Sub-tab fitur
+    const subButtons = document.querySelectorAll('.subtab');
+    const subPanels = document.querySelectorAll('.subpanel');
+    subButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            subButtons.forEach(b => b.classList.remove('active'));
+            subPanels.forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            const panel = document.getElementById(this.getAttribute('data-sub'));
+            if (panel) panel.classList.add('active');
+        });
+    });
+
+    document.getElementById('qty-minus').addEventListener('click', () => { qtyInput.value = getQty() - 1; updateSelection(); });
+    document.getElementById('qty-plus').addEventListener('click', () => { qtyInput.value = getQty() + 1; updateSelection(); });
     qtyInput.addEventListener('input', updateSelection);
+
+    function getCart() {
+        try {
+            const cartData = localStorage.getItem('cart');
+            if (!cartData) return [];
+            const parsed = JSON.parse(cartData);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+            console.error('Error reading cart from localStorage:', error);
+            return [];
+        }
+    }
+
+    function updateCartCount() {
+        const cart = getCart();
+        const totalQty = cart.reduce((sum, item) => sum + (Number(item && item.qty) || 1), 0);
+        cartCount.textContent = totalQty;
+        cartCount.style.display = totalQty > 0 ? 'flex' : 'none';
+    }
+
+    updateCartCount();
 
     function addToCart() {
         const contact = contactInput.value.trim();
@@ -760,45 +853,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const qty = getQty();
         const cart = getCart();
-        const existing = cart.find(function (i) {
-            return i && i.product === PRODUCT_NAME && i.game === PRODUCT_GAME && i.tier === selectedTier && i.contact === contact;
-        });
+        const existing = cart.find(item => item && item.product === 'Slash' && item.duration === selectedDuration && item.contact === contact);
+
         if (existing) {
             existing.qty = (Number(existing.qty) || 1) + qty;
         } else {
             cart.push({
-                id: 'item-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
-                product: PRODUCT_NAME,
-                game: PRODUCT_GAME,
-                tier: selectedTier,
+                id: 'slash-' + Date.now(),
+                product: 'Slash',
+                duration: selectedDuration,
                 price: selectedPrice,
                 qty: qty,
+                game: 'Semua Game Tersedia',
                 contact: contact
             });
         }
-        if (!saveCart(cart)) return false;
+
+        try {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        } catch (error) {
+            console.error('Error saving cart to localStorage:', error);
+            notify({ tone: 'error', title: 'Gagal menyimpan keranjang', message: 'Browser menolak menyimpan data. Coba matikan mode penyamaran atau kosongkan penyimpanan situs.' });
+            return false;
+        }
+
         updateCartCount();
         return true;
     }
 
-    document.getElementById('cartButton').addEventListener('click', function () {
+    cartButton.addEventListener('click', function () {
         const qty = getQty();
         if (addToCart()) {
-            notify({ tone: 'success', title: 'Ditambahkan ke keranjang',
-                message: PRODUCT_NAME + ' ' + selectedTier + ' × ' + qty + (selectedPrice ? ' — total ' + formatIDR(selectedPrice * qty) : ' — harga via admin') });
+            notify({ tone: 'success', title: 'Ditambahkan ke keranjang', message: `Slash ${selectedDuration} × ${qty} — total ${formatIDR(selectedPrice * qty)}.` });
             contactInput.value = '';
         }
     });
 
-    document.getElementById('checkoutButton').addEventListener('click', function () {
+    checkoutButton.addEventListener('click', function () {
+        const qty = getQty();
         if (addToCart()) {
-            notify({ tone: 'success', title: 'Menuju keranjang', message: 'Item ditambahkan. Mengarahkan ke halaman keranjang...', duration: 2200 });
+            notify({ tone: 'success', title: 'Menuju checkout', message: `Slash ${selectedDuration} × ${qty} ditambahkan. Mengarahkan ke keranjang...`, duration: 2500 });
             contactInput.value = '';
-            setTimeout(function () { window.location.href = cartLink('../keranjang.html'); }, 1100);
+            setTimeout(() => { window.location.href = '../keranjang.html'; }, 1200);
         }
     });
 
-    updateCartCount();
     updateSelection();
 });
 </script>
