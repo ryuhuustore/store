@@ -66,24 +66,53 @@
             transition: background-color 0.5s, color 0.5s;
             overflow-x: hidden;
         }
+        /* ==== Liquid glass hemat GPU ====
+           Efek kaca dibuat dari gradient + highlight statis, bukan blur realtime,
+           sehingga GPU tidak dipaksa merender ulang tiap frame. */
         .ambient-light {
             position: fixed;
             border-radius: 50%;
-            filter: blur(100px);
             z-index: -1;
-            opacity: 0.5;
+            opacity: 1;
+            pointer-events: none;
             transition: opacity 0.5s;
         }
-        .dark .ambient-light { opacity: 0.15; }
-        .light-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #3b82f6; }
-        .light-2 { bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: #8b5cf6; }
+        .light-1 { top: -18%; left: -12%; width: 60vw; height: 60vw;
+            background: radial-gradient(circle at 50% 50%, rgba(59,130,246,.40), rgba(59,130,246,.16) 42%, rgba(59,130,246,0) 70%); }
+        .light-2 { bottom: -18%; right: -12%; width: 52vw; height: 52vw;
+            background: radial-gradient(circle at 50% 50%, rgba(139,92,246,.36), rgba(139,92,246,.14) 42%, rgba(139,92,246,0) 70%); }
+        .dark .light-1 { background: radial-gradient(circle at 50% 50%, rgba(59,130,246,.22), rgba(59,130,246,.07) 45%, rgba(59,130,246,0) 70%); }
+        .dark .light-2 { background: radial-gradient(circle at 50% 50%, rgba(139,92,246,.20), rgba(139,92,246,.06) 45%, rgba(139,92,246,0) 70%); }
         .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            position: relative;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.78), rgba(255,255,255,.52)),
+                var(--glass-bg);
             border: 1px solid var(--glass-border);
-            box-shadow: var(--panel-shadow);
+            box-shadow: var(--panel-shadow), inset 0 1px 0 rgba(255,255,255,.7);
         }
+        .dark .glass-panel {
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.085), rgba(255,255,255,.022)),
+                rgba(9, 14, 26, .74);
+            box-shadow: var(--panel-shadow), inset 0 1px 0 rgba(255,255,255,.10);
+        }
+        /* Blur asli hanya dipakai di sedikit elemen kunci (navbar, sidebar, overlay) */
+        .glass-blur { backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
+        /* Mode hemat GPU: semua blur realtime & animasi berulang dimatikan */
+        html.perf-lite .glass-blur,
+        html.perf-lite #app-dialog-backdrop,
+        html.perf-lite #cart-overlay { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+        html.perf-lite #app-dialog-backdrop { background: rgba(2, 6, 23, .74); }
+        html.perf-lite .ambient-light { display: none; }
+        html.perf-lite *,
+        html.perf-lite *::before,
+        html.perf-lite *::after { animation-iteration-count: 1 !important; }
+        /* Hentikan animasi saat tab tidak aktif supaya GPU idle */
+        html.anim-paused *,
+        html.anim-paused *::before,
+        html.anim-paused *::after { animation-play-state: paused !important; }
+        .product-card { content-visibility: auto; contain-intrinsic-size: 340px; }
         .glass-input {
             background: rgba(15, 23, 42, 0.05);
             border: 1px solid var(--glass-border);
@@ -273,8 +302,8 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col font-sans selection:bg-blue-500/30">
 
-    <div class="ambient-light light-1 animate-blob"></div>
-    <div class="ambient-light light-2 animate-blob"></div>
+    <div class="ambient-light light-1"></div>
+    <div class="ambient-light light-2"></div>
 
     <!-- Floating Hubungi Admin -->
     <div class="fixed bottom-6 right-6 z-[90] flex flex-col items-end space-y-2">
@@ -289,7 +318,7 @@
 
     <!-- Navbar -->
     <nav class="fixed top-0 w-full z-50 px-4 py-4 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto glass-panel rounded-full px-6 py-3 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto glass-panel glass-blur rounded-full px-6 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
                 <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-lg overflow-hidden border border-white/10"><img src="logo.png" alt="Ryuhuu Store Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.textContent='Ryuhuu';" /></div>
                 <span class="font-semibold text-lg tracking-tight" data-lang="brand">Ryuhuu Store</span>
@@ -302,6 +331,7 @@
             </div>
             <div class="flex items-center gap-3">
                 <button onclick="toggleRegion()" class="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors text-sm font-bold" id="region-toggle-btn">🇮🇩</button>
+                <button onclick="togglePerfMode()" id="perf-toggle-btn" aria-pressed="false" title="Mode Hemat GPU" class="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors"><i class="fas fa-bolt"></i></button>
                 <button onclick="toggleTheme()" class="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors">
                     <i class="fas fa-moon dark:hidden text-gray-600"></i>
                     <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
@@ -528,7 +558,7 @@
     </main>
 
     <!-- Cart Sidebar -->
-    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-[400px] glass-panel z-[120] transform translate-x-full transition-transform duration-300 flex flex-col border-l border-[var(--glass-border)]">
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-[400px] glass-panel glass-blur z-[120] transform translate-x-full transition-transform duration-300 flex flex-col border-l border-[var(--glass-border)]">
         <div class="p-6 flex justify-between items-center border-b border-[var(--glass-border)]">
             <h2 class="text-xl font-bold"><i class="fas fa-shopping-bag mr-2"></i> <span data-lang="your_cart">Keranjang Anda</span></h2>
             <button onclick="toggleCart()" class="w-8 h-8 rounded-full glass-panel flex items-center justify-center hover:bg-white/10"><i class="fas fa-times"></i></button>
@@ -2605,7 +2635,7 @@
             filtered.forEach((p, i) => {
                 const card = document.createElement('div');
                 card.className =
-                    'glass-panel rounded-3xl overflow-hidden group cursor-pointer hover:-translate-y-1 transition-all duration-300 animate-slide-up border border-[var(--glass-border)]';
+                    'product-card glass-panel rounded-3xl overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform duration-300 animate-slide-up border border-[var(--glass-border)]';
                 card.style.animationDelay = `${i*0.05}s`;
                 card.onclick = () => openProductModal(p.id);
                 card.innerHTML = `
@@ -2913,7 +2943,10 @@
             stock_label: 'Stok', select_tier: 'Pilih paket', dm_to_buy: 'DM untuk membeli', dm_to_buy_product: 'DM untuk membeli produk ini',
             manual_confirm_note: 'Metode ini memerlukan konfirmasi manual dari admin.', open_instant_checkout: 'Buka Checkout Instan', open_sellauth_checkout: 'Buka Checkout SellAuth',
             merchant_label: 'Merchant', method_label: 'Metode', product_code_label: 'Kode Produk',
-            fee_label: 'biaya', dm_for_key: 'DM admin untuk key', instant_delivery: 'Pengiriman instan', instant_redirect: 'Redirect instan', manual_check: 'Cek manual', qty_short: 'Jml', need_help: 'Butuh bantuan?', contact_admin_short: 'Kontak admin', summary_hint: 'Cek item & total sebelum bayar', secure_order: 'Order Aman', tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.', coupon_placeholder: 'Kode kupon',
+            fee_label: 'biaya', dm_for_key: 'DM admin untuk key', instant_delivery: 'Pengiriman instan', instant_redirect: 'Redirect instan', manual_check: 'Cek manual', qty_short: 'Jml',
+            perf_mode_on: 'Mode Hemat GPU: AKTIF (klik untuk efek penuh)', perf_mode_off: 'Mode Hemat GPU: NONAKTIF (klik untuk hemat GPU)',
+            perf_on_title: 'Mode Hemat GPU aktif', perf_on_body: 'Efek blur realtime dan animasi berulang dimatikan. Tampilan kaca tetap, pemakaian GPU jauh lebih ringan.',
+            perf_off_title: 'Efek penuh aktif', perf_off_body: 'Blur realtime dan animasi dinyalakan kembali. Matikan lagi jika GPU terasa berat.', need_help: 'Butuh bantuan?', contact_admin_short: 'Kontak admin', summary_hint: 'Cek item & total sebelum bayar', secure_order: 'Order Aman', tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.', coupon_placeholder: 'Kode kupon',
             dm_payment_body: 'Silakan DM admin di Discord untuk detail pembayaran {method}. Setelah bayar, kirim bukti pembayaran untuk mendapatkan key.',
             visa_cc_body: 'Bayar menggunakan kartu via Boosty. Kirim bukti pembayaran ke DM admin untuk mendapatkan key. Metode ini bisa dipakai global untuk region mana saja.',
             binance_body: 'Binance manual perlu DM admin terlebih dahulu untuk detail pembayaran. Setelah bayar, kirim bukti pembayaran ke DM untuk mendapatkan key.' };
@@ -2922,7 +2955,10 @@
             stock_label: 'Stock', select_tier: 'Select a package', dm_to_buy: 'DM to buy', dm_to_buy_product: 'DM to buy this product',
             manual_confirm_note: 'This method requires manual confirmation from the admin.', open_instant_checkout: 'Open Instant Checkout', open_sellauth_checkout: 'Open SellAuth Checkout',
             merchant_label: 'Merchant', method_label: 'Method', product_code_label: 'Product Code',
-            fee_label: 'fee', dm_for_key: 'DM for key', instant_delivery: 'Instant delivery', instant_redirect: 'Instant redirect', manual_check: 'Manual check', qty_short: 'Qty', need_help: 'Need help?', contact_admin_short: 'Contact admin', summary_hint: 'Check items & total before payment', secure_order: 'Secure Order', tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.', coupon_placeholder: 'Coupon code',
+            fee_label: 'fee', dm_for_key: 'DM for key', instant_delivery: 'Instant delivery', instant_redirect: 'Instant redirect', manual_check: 'Manual check', qty_short: 'Qty',
+            perf_mode_on: 'GPU Saver: ON (click for full effects)', perf_mode_off: 'GPU Saver: OFF (click to save GPU)',
+            perf_on_title: 'GPU Saver enabled', perf_on_body: 'Realtime blur and looping animations are off. The glass look stays, GPU usage drops a lot.',
+            perf_off_title: 'Full effects enabled', perf_off_body: 'Realtime blur and animations are back on. Turn this off again if your GPU struggles.', need_help: 'Need help?', contact_admin_short: 'Contact admin', summary_hint: 'Check items & total before payment', secure_order: 'Secure Order', tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.', coupon_placeholder: 'Coupon code',
             dm_payment_body: 'Please DM admin on Discord for {method} payment details. After payment, send proof to receive your key.',
             visa_cc_body: 'Pay by card via Boosty. Send payment proof to admin DM to receive your key. This method works globally for any region.',
             binance_body: 'Binance manual requires DM admin first for payment details. After payment, send proof by DM to receive your key.' };
@@ -3283,6 +3319,69 @@
 
         document.querySelectorAll('[data-dialog-close]').forEach(el => el.addEventListener('click', closeDialog));
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDialog(); });
+    </script>
+    <script>
+        // ============================================================
+        // MODE HEMAT GPU (GPU SAVER)
+        // Mematikan blur realtime + animasi berulang tanpa menghilangkan
+        // tampilan liquid glass (kaca dibuat dari gradient statis).
+        // ============================================================
+        const PERF_KEY = 'ryuhuu_perf_lite';
+
+        function isLowPowerDevice() {
+            try {
+                const cores = navigator.hardwareConcurrency || 8;
+                const mem = navigator.deviceMemory || 8;
+                const saveData = !!(navigator.connection && navigator.connection.saveData);
+                const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const smallScreen = window.innerWidth <= 768;
+                return cores <= 4 || mem <= 4 || saveData || reduced || smallScreen;
+            } catch (e) { return false; }
+        }
+
+        function perfText(key, fallback) {
+            try { return typeof t === 'function' ? t(key, fallback) : fallback; } catch (e) { return fallback; }
+        }
+
+        function applyPerfMode(on, options) {
+            const opts = options || {};
+            document.documentElement.classList.toggle('perf-lite', !!on);
+            if (opts.save !== false) {
+                try { localStorage.setItem(PERF_KEY, on ? '1' : '0'); } catch (e) {}
+            }
+            const btn = document.getElementById('perf-toggle-btn');
+            if (btn) {
+                btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+                btn.title = on
+                    ? perfText('perf_mode_on', 'Mode Hemat GPU: AKTIF')
+                    : perfText('perf_mode_off', 'Mode Hemat GPU: NONAKTIF');
+                const icon = btn.querySelector('i');
+                if (icon) icon.className = on ? 'fas fa-bolt text-green-400' : 'fas fa-bolt';
+            }
+            if (opts.toast && typeof notify === 'function') {
+                notify({
+                    tone: on ? 'success' : 'info',
+                    title: on ? perfText('perf_on_title', 'Mode Hemat GPU aktif') : perfText('perf_off_title', 'Efek penuh aktif'),
+                    message: on ? perfText('perf_on_body', '') : perfText('perf_off_body', '')
+                });
+            }
+        }
+
+        function togglePerfMode() {
+            applyPerfMode(!document.documentElement.classList.contains('perf-lite'), { toast: true });
+        }
+
+        (function initPerfMode() {
+            let saved = null;
+            try { saved = localStorage.getItem(PERF_KEY); } catch (e) {}
+            const on = saved === null ? isLowPowerDevice() : saved === '1';
+            applyPerfMode(on, { save: false });
+        })();
+
+        // Animasi dihentikan saat tab tidak terlihat agar GPU benar-benar idle
+        document.addEventListener('visibilitychange', function () {
+            document.documentElement.classList.toggle('anim-paused', document.hidden);
+        });
     </script>
 </body>
 </html>
