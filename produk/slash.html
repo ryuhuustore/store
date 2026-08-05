@@ -1,1642 +1,905 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Slash - Ryuhuustore</title>
-    <style>
-        :root {
-            /* iOS Colors */
-            --ios-bg: #000000;
-            --ios-card-bg: rgba(28, 28, 30, 0.8);
-            --ios-surface: rgba(44, 44, 46, 0.8);
-            --ios-blue: #0A84FF;
-            --ios-purple: #BF5AF2;
-            --ios-green: #32D74B;
-            --ios-orange: #FF9F0A;
-            --ios-pink: #FF375F;
-            --ios-cyan: #64D2FF;
-            
-            /* Text Colors */
-            --text-primary: rgba(255, 255, 255, 0.95);
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --text-tertiary: rgba(255, 255, 255, 0.5);
-            
-            /* Effects */
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            --hover-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-            
-            /* Animations */
-            --transition-quick: all 0.2s ease;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Reset & Base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        body {
-            background: var(--ios-bg);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 80px;
-        }
-        
-        /* Background Gradient (menggantikan .bg-gradient) */
-        .bg-gradient {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(10, 132, 255, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(191, 90, 242, 0.1) 0%, transparent 40%),
-                #000000;
-        }
-        
-        /* Glowing Orbs (iOS style) */
-        .glowing-orbs {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.15;
-        }
-        
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--ios-blue);
-            top: -100px;
-            left: -100px;
-        }
-        
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--ios-purple);
-            top: 40%;
-            right: -100px;
-        }
-        
-        .orb-3 {
-            width: 200px;
-            height: 200px;
-            background: var(--ios-orange);
-            bottom: -50px;
-            left: 30%;
-        }
-        
-        /* iOS Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 64px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text-primary);
-            font-weight: 700;
-            font-size: 20px;
-        }
-        
-        .logo img {
-            height: 32px;
-            filter: drop-shadow(0 2px 8px rgba(10, 132, 255, 0.3));
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            transition: var(--transition-quick);
-            padding: 8px 0;
-            position: relative;
-        }
-        
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--ios-blue);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
-        .cart-icon {
-            position: relative;
-        }
-        
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--ios-pink);
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 10px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-        
-        /* Breadcrumb */
-        .breadcrumb {
-            max-width: 1200px;
-            margin: 20px auto 0;
-            padding: 0 20px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        .breadcrumb a {
-            color: var(--ios-blue);
-            text-decoration: none;
-        }
-        
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Product Detail */
-        .product-detail {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-        
-        .product-image {
-            background: var(--ios-card-bg);
-            border-radius: 24px;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: relative;
-        }
-        
-        .product-image img {
-            max-width: 70%;
-            max-height: 70%;
-            object-fit: contain;
-            z-index: 1;
-        }
-        
-        /* Features (glassmorphism) */
-        .features {
-            background: var(--ios-card-bg);
-            border-radius: 24px;
-            padding: 28px;
-            margin-top: 30px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        
-        .features h3 {
-            margin-bottom: 20px;
-            font-size: 22px;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--ios-blue), var(--ios-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .feature-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .feature-tab {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .feature-tab.active {
-            background: var(--ios-blue);
-            color: white;
-            border-color: var(--ios-blue);
-            box-shadow: 0 4px 16px rgba(10, 132, 255, 0.3);
-        }
-        
-        .feature-tab:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .tab-content {
-            display: none;
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .tab-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .tab-content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-        }
-        
-        .tab-content::-webkit-scrollbar-thumb {
-            background: var(--ios-blue);
-            border-radius: 3px;
-        }
-        
-        .feature-category {
-            margin-bottom: 24px;
-        }
-        
-        .feature-category h4 {
-            margin-bottom: 12px;
-            font-size: 16px;
-            color: var(--ios-cyan);
-            font-weight: 600;
-        }
-        
-        .feature-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 10px;
-        }
-        
-        .feature-list li {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            padding-left: 32px;
-        }
-        
-        .feature-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 12px;
-            color: var(--ios-green);
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        /* Game List (untuk tab "Game Lainnya") */
-        .game-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 10px;
-        }
-        
-        .game-list li {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            padding-left: 32px;
-        }
-        
-        .game-list li::before {
-            content: '🎮';
-            position: absolute;
-            left: 12px;
-            font-size: 14px;
-        }
-        
-        /* Product Info */
-        .product-name {
-            font-size: 40px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            background: linear-gradient(to right, var(--text-primary), var(--ios-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
-        }
-        
-        .product-category {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple));
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            margin-bottom: 16px;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-        }
-        
-        .product-description {
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-            font-size: 16px;
-            line-height: 1.7;
-        }
-        
-        /* Order Form (glassmorphism) */
-        .order-form {
-            background: var(--ios-card-bg);
-            border-radius: 24px;
-            padding: 28px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        
-        .order-form h3 {
-            margin-bottom: 24px;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        
-        .service-options {
-            margin-bottom: 24px;
-        }
-        
-        .service-options h4 {
-            margin-bottom: 16px;
-            font-size: 18px;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        .ramadan-badge {
-            background: linear-gradient(135deg, var(--ios-orange), var(--ios-pink));
-            color: white;
-            padding: 10px 16px;
-            border-radius: 50px;
-            display: inline-block;
-            margin-bottom: 16px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        
-        .service-list {
-            display: grid;
-            gap: 12px;
-        }
-        
-        .service-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition-smooth);
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .service-item:hover {
-            border-color: var(--ios-blue);
-            transform: translateY(-4px);
-            box-shadow: var(--hover-shadow);
-        }
-        
-        .service-item.active {
-            border-color: var(--ios-blue);
-            background: rgba(10, 132, 255, 0.15);
-        }
-        
-        .service-item.active::after {
-            content: '✓';
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--ios-green);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .service-item.best-value {
-            border: 2px solid var(--ios-orange);
-            background: rgba(255, 159, 10, 0.1);
-        }
-        
-        .service-item.best-value::before {
-            content: '⭐ TERBAIK';
-            position: absolute;
-            top: -10px;
-            right: 16px;
-            background: var(--ios-orange);
-            color: #000;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 4px 8px;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
-        }
-        
-        .service-info {
-            flex: 1;
-        }
-        
-        .service-duration {
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-        
-        .service-price {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 4px;
-        }
-        
-        .original-price {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            text-decoration: line-through;
-        }
-        
-        .price-amount {
-            font-weight: 700;
-            color: var(--ios-orange);
-            font-size: 18px;
-        }
-        
-        .form-group {
-            margin-bottom: 24px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 15px;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 16px;
-            transition: var(--transition-smooth);
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--ios-blue);
-            box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
-        }
-        
-        .contact-note {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 8px;
-        }
-        
-        .order-summary {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 15px;
-        }
-        
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-        
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 700;
-            font-size: 18px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        
-        .cart-button, .checkout-button {
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .cart-button {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        
-        .cart-button:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-        }
-        
-        .checkout-button {
-            background: linear-gradient(135deg, var(--ios-blue), #007AFF);
-            color: white;
-            box-shadow: 0 4px 16px rgba(10, 132, 255, 0.3);
-        }
-        
-        .checkout-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(10, 132, 255, 0.4);
-        }
-        
-        /* Gameplay Section */
-        .gameplay-section {
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 0 20px;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 48px;
-            color: var(--text-primary);
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -16px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--ios-blue);
-            border-radius: 2px;
-        }
-        
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%;
-            border-radius: 24px;
-            overflow: hidden;
-            background: var(--ios-card-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        
-        .video-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            text-align: center;
-            gap: 16px;
-        }
-        
-        .video-placeholder i {
-            font-size: 48px;
-            color: var(--ios-blue);
-            opacity: 0.8;
-        }
-        
-        .video-placeholder h3 {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        
-        .video-placeholder p {
-            font-size: 14px;
-        }
-        
-        /* Related Products (glassmorphism cards) */
-        .related-products {
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 0 20px;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 40px;
-        }
-        
-        .product-card {
-            background: var(--ios-card-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            transition: var(--transition-smooth);
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            height: 320px;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: var(--hover-shadow);
-        }
-        
-        .card-image {
-            height: 180px;
-            background: rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            position: relative;
-        }
-        
-        .card-image img {
-            max-width: 70%;
-            max-height: 70%;
-            object-fit: contain;
-        }
-        
-        .card-info {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        .card-category {
-            color: var(--ios-blue);
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .card-name {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-        
-        .card-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--ios-orange);
-            margin-bottom: 16px;
-        }
-        
-        .view-details {
-            margin-top: auto;
-            display: inline-block;
-            text-align: center;
-            padding: 12px;
-            background: rgba(10, 132, 255, 0.1);
-            color: var(--ios-blue);
-            border: 1px solid rgba(10, 132, 255, 0.2);
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 13px;
-            text-decoration: none;
-            transition: var(--transition-smooth);
-        }
-        
-        .view-details:hover {
-            background: rgba(10, 132, 255, 0.2);
-            transform: translateY(-2px);
-            border-color: rgba(10, 132, 255, 0.4);
-            box-shadow: 0 4px 16px rgba(10, 132, 255, 0.2);
-        }
-        
-        /* iOS Footer */
-        footer {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 80px 20px 40px;
-            margin-top: 80px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 40px;
-        }
-        
-        .footer-section h3 {
-            color: var(--text-primary);
-            font-size: 18px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--ios-blue);
-            font-weight: 600;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a, .contact-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition-smooth);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-        }
-        
-        .footer-links a:hover, .contact-link:hover {
-            color: var(--ios-blue);
-            transform: translateX(4px);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            transition: var(--transition-smooth);
-            text-decoration: none;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        
-        .social-link:hover {
-            background: var(--ios-blue);
-            color: white;
-            transform: translateY(-4px);
-            border-color: var(--ios-blue);
-            box-shadow: 0 4px 16px rgba(10, 132, 255, 0.3);
-        }
-        
-        .copyright {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-tertiary);
-            font-size: 14px;
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--ios-blue);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transform: translateX(100%);
-            opacity: 0;
-            transition: var(--transition-smooth);
-            z-index: 1000;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .product-detail {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .product-name {
-                font-size: 32px;
-            }
-            
-            .action-buttons {
-                grid-template-columns: 1fr;
-            }
-            
-            .feature-list, .game-list {
-                grid-template-columns: 1fr;
-            }
-            
-            .product-image {
-                height: 300px;
-            }
-            
-            .service-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-            
-            .service-price {
-                align-items: flex-start;
-                width: 100%;
-            }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .tab-content {
-                max-height: 600px;
-            }
-            
-            .section-title {
-                font-size: 28px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .product-name {
-                font-size: 28px;
-            }
-            
-            .product-card {
-                height: 280px;
-            }
-            
-            .feature-list li, .game-list li {
-                padding: 10px;
-                font-size: 13px;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Slash - Ryuhuustore</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --ios-bg: #030712;
+    --ios-blue: #0A84FF;
+    --ios-purple: #BF5AF2;
+    --ios-green: #32D74B;
+    --ios-orange: #FF9F0A;
+    --ios-pink: #FF375F;
+    --ios-cyan: #64D2FF;
+
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-tint: linear-gradient(135deg, rgba(255, 255, 255, .085), rgba(255, 255, 255, .022));
+    --glass-base: rgba(9, 14, 26, .74);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, .10);
+    --card-shadow: 0 10px 34px rgba(0, 0, 0, .40);
+    --hover-shadow: 0 18px 44px rgba(0, 0, 0, .52);
+
+    --notif-surface: #1b2438;
+    --notif-border: rgba(255, 255, 255, 0.18);
+    --notif-shadow: 0 2px 8px rgba(0, 0, 0, .5), 0 24px 70px rgba(0, 0, 0, .75);
+    --notif-title: #ffffff;
+    --notif-text: #d7deeb;
+
+    --transition-quick: color .2s ease, background .2s ease, border-color .2s ease;
+    --transition-smooth: transform .25s cubic-bezier(.4,0,.2,1), background .25s ease, border-color .25s ease, box-shadow .25s ease, color .2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+body {
+    background: var(--ios-bg);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* ============ LIQUID GLASS HEMAT GPU ============ */
+.glass-panel {
+    position: relative;
+    background: var(--glass-tint), var(--glass-base);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--card-shadow), var(--glass-highlight);
+    overflow: hidden;
+}
+.glass-panel::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(160deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 22%, rgba(255,255,255,0) 46%);
+}
+.glass-panel > * { position: relative; z-index: 1; }
+
+.glass-blur { backdrop-filter: blur(16px) saturate(150%); -webkit-backdrop-filter: blur(16px) saturate(150%); }
+
+.bg-gradient {
+    position: fixed; inset: 0; z-index: -2;
+    background:
+        radial-gradient(circle at 18% 20%, rgba(10, 132, 255, .12) 0%, transparent 44%),
+        radial-gradient(circle at 82% 68%, rgba(191, 90, 242, .12) 0%, transparent 44%),
+        var(--ios-bg);
+}
+.glowing-orbs { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
+.ambient-light { position: absolute; border-radius: 50%; }
+.orb-1 { width: 640px; height: 640px; top: -230px; left: -190px;
+    background: radial-gradient(circle at 50% 50%, rgba(10,132,255,.24), rgba(10,132,255,.07) 45%, rgba(10,132,255,0) 70%); }
+.orb-2 { width: 540px; height: 540px; top: 32%; right: -210px;
+    background: radial-gradient(circle at 50% 50%, rgba(191,90,242,.22), rgba(191,90,242,.06) 45%, rgba(191,90,242,0) 70%); }
+.orb-3 { width: 440px; height: 440px; bottom: -170px; left: 26%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,159,10,.16), rgba(255,159,10,.05) 45%, rgba(255,159,10,0) 70%); }
+
+/* ============ Header ============ */
+header {
+    position: sticky; top: 0; z-index: 100;
+    background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02)), rgba(3, 7, 18, .70);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+}
+nav { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 70px; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 19px; letter-spacing: -.02em; }
+.logo-mark { width: 38px; height: 38px; border-radius: 13px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple)); box-shadow: 0 8px 20px rgba(10,132,255,.32), inset 0 1px 0 rgba(255,255,255,.35); overflow: hidden; }
+.logo-mark img { width: 100%; height: 100%; object-fit: cover; }
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 600; font-size: 14.5px; transition: var(--transition-quick); padding: 8px 0; position: relative; }
+.nav-links a:hover { color: var(--text-primary); }
+.nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; border-radius: 2px; background: linear-gradient(to right, var(--ios-blue), var(--ios-purple)); transition: width .3s ease; }
+.nav-links a:hover::after { width: 100%; }
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+    width: 40px; height: 40px; border-radius: 14px; cursor: pointer; flex: none;
+    display: flex; align-items: center; justify-content: center; text-decoration: none;
+    background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+    border: 1px solid var(--glass-border); box-shadow: var(--glass-highlight);
+    color: var(--text-secondary); font-size: 15px; transition: var(--transition-smooth);
+}
+.icon-btn:hover { color: var(--text-primary); background: rgba(255,255,255,.14); transform: translateY(-2px); }
+.cart-icon { position: relative; }
+.cart-count { position: absolute; top: -6px; right: -6px; background: var(--ios-pink); color: #fff; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 800; box-shadow: 0 4px 12px rgba(255,55,95,.45); }
+
+.breadcrumb { max-width: 1140px; margin: 26px auto 14px; padding: 0 20px; font-size: 13.5px; color: var(--text-tertiary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.breadcrumb a { color: var(--ios-blue); text-decoration: none; font-weight: 600; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb i { font-size: 10px; opacity: .5; }
+
+/* ============================================================
+   TATA LETAK PANEL GANDA (seperti modal di referensi)
+   Kiri: visual produk • Kanan: detail + paket + tab + action bar
+   ============================================================ */
+.product-shell {
+    max-width: 1140px;
+    margin: 0 auto;
+    border-radius: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+    align-items: stretch;
+    min-height: 720px;
+}
+
+/* --- Panel kiri --- */
+.product-visual {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+    border-right: 1px solid rgba(255, 255, 255, .09);
+    background:
+        radial-gradient(circle at 50% 38%, rgba(10,132,255,.20), transparent 62%),
+        linear-gradient(160deg, rgba(191,90,242,.14), rgba(3,7,18,.55) 55%),
+        rgba(6, 10, 20, .82);
+}
+.visual-inner { display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+.visual-art {
+    width: 190px; height: 190px; border-radius: 46px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 24px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.14);
+}
+.visual-art img { width: 74%; height: 74%; object-fit: contain; filter: drop-shadow(0 16px 34px rgba(0,0,0,.55)); }
+.visual-art i { font-size: 74px; color: rgba(255,255,255,.22); }
+.visual-caption { font-size: 13px; color: var(--text-tertiary); max-width: 240px; line-height: 1.6; }
+.visual-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.mini-badge { font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 999px; color: #cfe3ff; background: rgba(10,132,255,.16); border: 1px solid rgba(10,132,255,.28); }
+
+/* --- Panel kanan --- */
+.product-panel { position: relative; display: flex; flex-direction: column; min-width: 0; }
+.panel-scroll { padding: 34px 34px 20px; }
+.panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.close-btn { width: 38px; height: 38px; border-radius: 50%; flex: none; }
+
+.product-category { display: block; color: #4da3ff; font-size: 12.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .10em; margin-bottom: 6px; }
+.product-name { font-size: 40px; font-weight: 800; letter-spacing: -.035em; line-height: 1.06; margin-bottom: 8px; }
+.product-meta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 14.5px; color: var(--text-secondary); }
+.product-meta span { display: inline-flex; align-items: center; gap: 7px; }
+.status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ios-green); box-shadow: 0 0 10px var(--ios-green); }
+.meta-star { color: var(--ios-orange); }
+
+.panel-divider { height: 1px; background: rgba(255,255,255,.09); margin: 22px 0; }
+.section-label { font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+
+/* Pilih Paket — grid 2 kolom seperti referensi */
+.service-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.service-item {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.02));
+    border-radius: 16px; border: 1px solid rgba(255,255,255,.10);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    transition: var(--transition-smooth); cursor: pointer; position: relative;
+}
+.service-item:hover { border-color: rgba(10,132,255,.55); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.10); }
+.service-item.active { border-color: rgba(10,132,255,.85); background: linear-gradient(135deg, rgba(10,132,255,.24), rgba(10,132,255,.07)); box-shadow: 0 10px 26px rgba(10,132,255,.20), inset 0 1px 0 rgba(255,255,255,.16); }
+.service-item.best-value { border-color: rgba(255,159,10,.50); background: linear-gradient(135deg, rgba(255,159,10,.16), rgba(255,159,10,.035)); }
+.service-item.best-value.active { border-color: rgba(255,159,10,.9); box-shadow: 0 10px 26px rgba(255,159,10,.20), inset 0 1px 0 rgba(255,255,255,.16); }
+.service-duration { font-weight: 700; font-size: 15.5px; }
+.service-sub { font-size: 11.5px; color: var(--text-tertiary); text-decoration: line-through; }
+.price-amount { font-weight: 700; font-size: 15px; white-space: nowrap; }
+.best-tag { position: absolute; top: -9px; left: 16px; background: var(--ios-orange); color: #1c1200; font-size: 9.5px; font-weight: 800; letter-spacing: .08em; padding: 2px 9px; border-radius: 999px; }
+
+/* Qty + kontak inline */
+.inline-fields { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: end; margin-top: 18px; }
+.field-label { font-size: 12.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; display: block; }
+.qty-control { display: flex; align-items: center; gap: 8px; }
+.qty-control input { width: 58px; text-align: center; padding: 9px 4px; border-radius: 12px; font: inherit; font-weight: 800; font-size: 15px; color: var(--text-primary); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); -moz-appearance: textfield; }
+.qty-control input::-webkit-outer-spin-button, .qty-control input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.qty-btn { width: 38px; height: 38px; border-radius: 12px; }
+#contact {
+    width: 100%; padding: 12px 15px; border-radius: 14px; font: inherit; font-size: 14.5px; color: var(--text-primary);
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06); transition: border-color .2s ease, box-shadow .2s ease;
+}
+#contact::placeholder { color: rgba(255,255,255,.35); }
+#contact:focus { outline: none; border-color: var(--ios-blue); box-shadow: 0 0 0 3px rgba(10,132,255,.22); }
+#contact.input-error { border-color: var(--ios-pink); box-shadow: 0 0 0 3px rgba(255,55,95,.22); }
+
+/* Tab — underline seperti referensi */
+.tabs { display: flex; gap: 24px; border-bottom: 1px solid rgba(255,255,255,.10); flex-wrap: wrap; margin-bottom: 20px; }
+.tab-btn { background: none; border: none; color: var(--text-tertiary); font: inherit; font-size: 14.5px; font-weight: 600; padding: 0 2px 12px; cursor: pointer; position: relative; transition: color .2s ease; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: #4da3ff; }
+.tab-btn::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 2px; background: #4da3ff; opacity: 0; transition: opacity .2s ease; }
+.tab-btn.active::after { opacity: 1; }
+.tab-panel { display: none; font-size: 14.5px; color: var(--text-secondary); line-height: 1.75; }
+.tab-panel.active { display: block; }
+.tab-panel strong { color: var(--text-primary); font-weight: 700; }
+.tab-panel > p { margin-bottom: 14px; }
+.info-list { list-style: disc; padding-left: 20px; display: grid; gap: 8px; }
+.info-list li { font-size: 14px; }
+
+/* Sub-tab fitur */
+.subtabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.subtab { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: var(--text-secondary); font: inherit; font-size: 12.5px; font-weight: 700; padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: var(--transition-smooth); }
+.subtab:hover { background: rgba(255,255,255,.11); color: var(--text-primary); }
+.subtab.active { background: rgba(10,132,255,.85); border-color: rgba(10,132,255,.9); color: #fff; box-shadow: 0 6px 18px rgba(10,132,255,.28); }
+.subpanel { display: none; max-height: 320px; overflow-y: auto; padding-right: 8px; }
+.subpanel.active { display: block; }
+.subpanel::-webkit-scrollbar { width: 6px; }
+.subpanel::-webkit-scrollbar-track { background: rgba(255,255,255,.04); border-radius: 3px; }
+.subpanel::-webkit-scrollbar-thumb { background: rgba(10,132,255,.55); border-radius: 3px; }
+.feature-category { margin-bottom: 18px; }
+.feature-category h4 { margin-bottom: 10px; font-size: 12.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--ios-cyan); }
+.feature-list, .game-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.feature-list li, .game-list li {
+    background: linear-gradient(135deg, rgba(255,255,255,.065), rgba(255,255,255,.015));
+    padding: 10px 12px 10px 32px; border-radius: 12px; font-size: 13px; color: var(--text-secondary);
+    border: 1px solid rgba(255,255,255,.07); box-shadow: inset 0 1px 0 rgba(255,255,255,.06); position: relative;
+}
+.feature-list li::before { content: '\2713'; position: absolute; left: 12px; top: 10px; color: var(--ios-green); font-weight: 800; font-size: 12px; }
+.game-list li::before { content: '\1F3AE'; position: absolute; left: 10px; top: 9px; font-size: 12.5px; }
+.note-line { margin-top: 12px; font-size: 13px; color: var(--text-tertiary); font-style: italic; }
+.bonus-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(255,159,10,.20), rgba(255,55,95,.14)); color: #ffd9a3; padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 13px; border: 1px solid rgba(255,159,10,.30); margin-bottom: 16px; }
+
+/* Action bar bawah panel */
+.action-bar {
+    position: sticky; bottom: 0; margin-top: auto;
+    padding: 18px 34px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    background: linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.015)), rgba(7, 11, 22, .95);
+    border-top: 1px solid rgba(255,255,255,.10);
+}
+.selected-label { font-size: 12.5px; font-weight: 600; color: var(--text-tertiary); }
+.selected-value { font-size: 20px; font-weight: 800; letter-spacing: -.025em; }
+.action-buttons { display: flex; gap: 10px; }
+.cart-button, .checkout-button { padding: 14px 22px; border-radius: 15px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition-smooth); border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+.cart-button { background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.05)); color: var(--text-primary); border: 1px solid rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
+.cart-button:hover { background: rgba(255,255,255,.19); transform: translateY(-2px); }
+.checkout-button { background: linear-gradient(135deg, var(--ios-blue), #6f5bff); color: #fff; box-shadow: 0 10px 26px rgba(10,132,255,.34), inset 0 1px 0 rgba(255,255,255,.28); }
+.checkout-button:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(10,132,255,.44), inset 0 1px 0 rgba(255,255,255,.28); }
+
+/* ============ Sections bawah ============ */
+.gameplay-section, .related-products { max-width: 1140px; margin: 84px auto; padding: 0 20px; }
+.section-title { text-align: center; font-size: 30px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 46px; position: relative; }
+.section-title::after { content: ''; position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); width: 64px; height: 3px; background: linear-gradient(to right, var(--ios-blue), var(--ios-purple)); border-radius: 2px; }
+.video-container { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 28px; }
+.video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-secondary); text-align: center; gap: 14px; padding: 20px; z-index: 1; }
+.video-placeholder .play-badge { width: 84px; height: 84px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff; background: linear-gradient(135deg, rgba(255,55,95,.9), rgba(191,90,242,.75)); box-shadow: 0 18px 40px rgba(255,55,95,.28), inset 0 1px 0 rgba(255,255,255,.35); }
+.video-placeholder h3 { font-size: 19px; font-weight: 700; color: var(--text-primary); }
+.video-placeholder p { font-size: 13.5px; }
+
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-top: 40px; }
+.product-card { border-radius: 24px; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: var(--transition-smooth); content-visibility: auto; contain-intrinsic-size: 350px; }
+.product-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,.22); box-shadow: var(--hover-shadow), var(--glass-highlight); }
+.card-image { height: 168px; display: flex; align-items: center; justify-content: center; padding: 22px; position: relative; }
+.card-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(3,7,18,.35)); }
+.card-image img { max-width: 66%; max-height: 66%; object-fit: contain; position: relative; z-index: 1; filter: drop-shadow(0 10px 24px rgba(0,0,0,.5)); }
+.card-image .fallback-icon { font-size: 42px; color: rgba(255,255,255,.28); position: relative; z-index: 1; }
+.art-blue { background: linear-gradient(135deg, #1d4ed8, #7c3aed); }
+.art-teal { background: linear-gradient(135deg, #0e7490, #2563eb); }
+.art-rose { background: linear-gradient(135deg, #be185d, #7c3aed); }
+.card-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.card-category { color: #7cc0ff; font-size: 11px; font-weight: 800; margin-bottom: 7px; text-transform: uppercase; letter-spacing: .12em; }
+.card-name { font-size: 18px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 6px; }
+.card-price { font-size: 17px; font-weight: 800; margin-bottom: 16px; color: #ffd08a; }
+.view-details { margin-top: auto; text-align: center; padding: 12px; background: linear-gradient(135deg, rgba(10,132,255,.22), rgba(191,90,242,.12)); color: #cfe3ff; border: 1px solid rgba(10,132,255,.30); border-radius: 14px; font-weight: 700; font-size: 13px; text-decoration: none; transition: var(--transition-smooth); }
+.view-details:hover { background: rgba(10,132,255,.32); transform: translateY(-2px); color: #fff; }
+
+footer { padding: 72px 20px 40px; margin-top: 80px; border-top: 1px solid rgba(255,255,255,.09); background: linear-gradient(135deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(3, 7, 18, .84); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
+.footer-content { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 40px; }
+.footer-section h3 { font-size: 16px; margin-bottom: 18px; padding-bottom: 12px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,.10); position: relative; }
+.footer-section h3::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 42px; height: 2px; border-radius: 2px; background: linear-gradient(to right, var(--ios-blue), var(--ios-purple)); }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 11px; }
+.footer-links a, .contact-link { color: var(--text-secondary); text-decoration: none; transition: var(--transition-smooth); display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
+.footer-links a:hover, .contact-link:hover { color: #7cc0ff; transform: translateX(4px); }
+.footer-links i { width: 16px; text-align: center; opacity: .8; }
+.social-links { display: flex; gap: 10px; margin-top: 20px; }
+.social-link { width: 42px; height: 42px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.10); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: var(--transition-smooth); text-decoration: none; }
+.social-link:hover { background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple)); color: #fff; transform: translateY(-4px); border-color: transparent; box-shadow: 0 10px 26px rgba(10,132,255,.32); }
+.copyright { text-align: center; margin-top: 52px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.09); color: var(--text-tertiary); font-size: 13.5px; }
+
+/* ============ Toast ============ */
+#toast-stack { position: fixed; top: 18px; right: 18px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; width: min(380px, calc(100vw - 36px)); pointer-events: none; }
+.toast { pointer-events: auto; position: relative; overflow: hidden; display: flex; align-items: flex-start; gap: .8rem; padding: 1rem 1.05rem 1rem 1.2rem; border-radius: 16px; background: var(--notif-surface); border: 1px solid var(--notif-border); box-shadow: var(--notif-shadow); opacity: 0; transform: translateY(-10px) scale(.98); transition: opacity .22s ease, transform .22s ease; }
+.toast::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--toast-accent, #3b82f6); }
+.toast.toast-in { opacity: 1; transform: translateY(0) scale(1); }
+.toast.toast-out { opacity: 0; transform: translateY(-8px) scale(.98); }
+.toast.t-info { --toast-accent: #3b82f6; border-color: rgba(59,130,246,.45); }
+.toast.t-success { --toast-accent: #10b981; border-color: rgba(16,185,129,.45); }
+.toast.t-warning { --toast-accent: #f59e0b; border-color: rgba(245,158,11,.45); }
+.toast.t-error { --toast-accent: #ef4444; border-color: rgba(239,68,68,.45); }
+.toast-icon { flex: none; width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.tone-info { background: rgba(59,130,246,.22); color: #60a5fa; }
+.tone-success { background: rgba(16,185,129,.22); color: #34d399; }
+.tone-warning { background: rgba(245,158,11,.22); color: #fbbf24; }
+.tone-error { background: rgba(239,68,68,.22); color: #f87171; }
+.toast-content { flex: 1; min-width: 0; }
+.toast-title { font-size: 15px; font-weight: 800; color: var(--notif-title); line-height: 1.3; }
+.toast-body { font-size: 13.5px; color: var(--notif-text); margin-top: 3px; line-height: 1.5; }
+.toast-close { flex: none; width: 28px; height: 28px; border-radius: 9px; border: none; cursor: pointer; background: rgba(127,127,127,.14); color: var(--notif-text); font-size: 12px; display: flex; align-items: center; justify-content: center; transition: background .2s ease; }
+.toast-close:hover { background: rgba(127,127,127,.26); }
+
+/* ============ Responsive ============ */
+@media (max-width: 960px) {
+    .product-shell { grid-template-columns: 1fr; min-height: 0; }
+    .product-visual { border-right: none; border-bottom: 1px solid rgba(255,255,255,.09); padding: 32px 24px; }
+    .visual-art { width: 150px; height: 150px; border-radius: 38px; }
+    .panel-scroll { padding: 26px 24px 16px; }
+    .action-bar { padding: 16px 24px; }
+}
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .product-name { font-size: 32px; }
+    .service-list { grid-template-columns: 1fr; }
+    .inline-fields { grid-template-columns: 1fr; align-items: stretch; }
+    .feature-list, .game-list { grid-template-columns: 1fr; }
+    .action-bar { flex-direction: column; align-items: stretch; }
+    .action-buttons { justify-content: stretch; }
+    .cart-button, .checkout-button { flex: 1; }
+    .products-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: 26px; }
+    #toast-stack { top: 12px; right: 12px; left: 12px; width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+</style>
 </head>
 <body>
-    <!-- Background Elements (iOS style) -->
-    <div class="bg-gradient"></div>
-    <div class="glowing-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-    
-    <!-- Header -->
-    <header>
-        <nav>
-            <a href="../index.html" class="logo">
-                <img src="../logo.png" alt="Ryuhuustore Logo">
-                Ryuhuustore
-            </a>
-            <div class="nav-links">
-                <a href="../index.html">Beranda</a>
-                <a href="../tutorial.html">Tutorial</a>
-                <a href="../keranjang.html" class="cart-icon">
-                    Keranjang <span class="cart-count">0</span>
-                </a>
-                <a href="#kontak">Kontak</a>
-            </div>
-        </nav>
-    </header>
-    
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-        <a href="../index.html">Beranda</a> > <a href="../index.html#produk">Produk</a> > <span>Slash</span>
-    </div>
-    
-    <!-- Product Detail -->
-    <section class="product-detail">
-        <div class="product-left">
-            <div class="product-image">
-                <img src="slash.png" alt="Slash Logo">
-            </div>
-            
-            <div class="features">
-                <h3>✨ Fitur Utama:</h3>
-                <div class="feature-tabs">
-                    <button class="feature-tab active" data-tab="wuthering">Wuthering Waves</button>
-                    <button class="feature-tab" data-tab="solo">Solo Leveling</button>
-                    <button class="feature-tab" data-tab="other">Game Lainnya</button>
-                </div>
-                
-                <div class="tab-content active" id="wuthering">
-                    <div class="feature-category">
-                        <h4>🔥 Player</h4>
-                        <ul class="feature-list">
-                            <li>God Mode</li>
-                            <li>Auto Revive</li>
-                            <li>No Cooldown</li>
-                            <li>Infinite Stamina</li>
-                            <li>Infinite Special Energy</li>
-                            <li>Infinite Ultimate</li>
-                            <li>Infinite Intro Outro</li>
-                            <li>No Fall Damage</li>
-                            <li>Auto Dodge Dash</li>
-                            <li>Auto Dodge Jump</li>
-                            <li>Auto Parry Basic Attack</li>
-                            <li>Auto Parry Intro Skill</li>
-                            <li>Reduce Stamina While Dodge or Parry</li>
-                            <li>Fly</li>
-                            <li>No Clip</li>
-                            <li>Fly Speed</li>
-                            <li>Player Speed</li>
-                            <li>Weapon and Skin Changer</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-category">
-                        <h4>⚙️ Character Attributes</h4>
-                        <ul class="feature-list">
-                            <li>Character Resonance Chain 6 Unlock</li>
-                            <li>Signature Weapon Rank 5 Replicate</li>
-                            <li>Flight Everywhere</li>
-                            <li>100% Critical</li>
-                            <li>High Echo Attack</li>
-                            <li>Increase Coin, Material and Echo Rate</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-category">
-                        <h4>📊 Stats Editor</h4>
-                        <ul class="feature-list">
-                            <li>Attack Modifier</li>
-                            <li>Defend Modifier</li>
-                            <li>HP Modifier</li>
-                            <li>Crit Rate Modifier</li>
-                            <li>Crit Damage Modifier</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-category">
-                        <h4>👹 Enemy</h4>
-                        <ul class="feature-list">
-                            <li>Enemy Vacuum</li>
-                            <li>Kill Aura 1</li>
-                            <li>Kill Aura 2</li>
-                            <li>Exclude Quest Monster</li>
-                            <li>Kill Aura Animal</li>
-                            <li>Kill Aura Counter Attack</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-category">
-                        <h4>🌍 World</h4>
-                        <ul class="feature-list">
-                            <li>Auto Loot Collect</li>
-                            <li>Auto Loot Chest</li>
-                            <li>Auto Absorb Echo</li>
-                            <li>Auto Destroy</li>
-                            <li>Auto Puzzle</li>
-                            <li>No Restrict Area</li>
-                            <li>World Speed</li>
-                            <li>Fishing Boat Speed</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-category">
-                        <h4>🏆 Dungeon & Farm</h4>
-                        <ul class="feature-list">
-                            <li>Farm Tracked Enemy</li>
-                            <li>Auto Restart Dungeon</li>
-                            <li>Auto Challenge Boss / Tacet</li>
-                            <li>Auto Claim Reward</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-category">
-                        <h4>🔭 ESP</h4>
-                        <ul class="feature-list">
-                            <li>Monster</li>
-                            <li>Collect</li>
-                            <li>Chest</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-category">
-                        <h4>🧭 Teleport</h4>
-                        <ul class="feature-list">
-                            <li>JSON File Custom Teleport</li>
-                            <li>Track Icon To Teleport</li>
-                            <li>Quest Teleport</li>
-                            <li>Map Mark Teleport</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-category">
-                        <h4>🧩 MISC</h4>
-                        <ul class="feature-list">
-                            <li>FOV</li>
-                            <li>Pause In Game Time</li>
-                            <li>Unlock FPS</li>
-                            <li>Auto Claim Trophies</li>
-                            <li>Cook & Craft No Animation</li>
-                            <li>Plot Skip</li>
-                            <li>Auto Plot Skip</li>
-                            <li>Hide UID</li>
-                            <li>Show FPS</li>
-                            <li>Change UID</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="solo">
-                    <div class="feature-category">
-                        <h4>📌 SLASH — Solo Leveling Cheetos</h4>
-                        <ul class="feature-list">
-                            <li>Shadow Attack Modifier</li>
-                            <li>Shadow Cooldown Reduction</li>
-                            <li>x2 Move Speed</li>
-                            <li>Set Monster HP</li>
-                            <li>Set Monster Damage</li>
-                            <li>Auto Break Shield</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="other">
-                    <div class="feature-category">
-                        <h4>📌 SLASH — Supported Games</h4>
-                        <ul class="game-list">
-                            <li>GLF 2 Haoplay & Sunborn</li>
-                            <li>Rememento White Shadow</li>
-                            <li>Genshin Shika Bypass</li>
-                            <li>ZZZ Bypass</li>
-                            <li>Etheria Restart</li>
-                            <li>Crystal Of Atlan</li>
-                            <li>Blue Archive</li>
-                            <li>Stella Sora</li>
-                            <li>Duet Night Abyss</li>
-                        </ul>
-                        <p style="margin-top: 12px; font-style: italic; color: var(--text-secondary);">Note: Cek di server untuk fitur lengkapnya</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="product-right">
-            <span class="product-category">Wuthering Waves • Solo Leveling Arise • Multi-Game</span>
-            <h1 class="product-name">Slash</h1>
-            
-            <p class="product-description">
-                Slash adalah produk premium dengan fitur-fitur canggih yang mendukung berbagai game populer. 
-                Dapatkan pengalaman gaming terbaik dengan kemampuan modifikasi yang luas dan sistem anti-detection 
-                yang membuat akun Anda tetap aman. Slash kompatibel dengan Wuthering Waves, Solo Leveling Arise, 
-                dan berbagai game lainnya.
-            </p>
-            
-            <div class="order-form">
-                <h3>🛒 Form Pemesanan</h3>
-                <form id="orderForm">
-                    <div class="service-options">
-                        <div class="ramadan-badge">
-                            Beli Slash = Gratis Bypass Genshin Tools ✅
-                        </div>
-                        <h4>📦 Pilih Layanan:</h4>
-                        <div class="service-list">
-                            <div class="service-item active" data-duration="3 Hari" data-price="40000">
-                                <div class="service-info">
-                                    <div class="service-duration">3 Hari</div>
-                                </div>
-                                <div class="service-price">
-                                    <span class="original-price">Rp 60.000</span>
-                                    <div class="price-amount">Rp 40.000</div>
-                                </div>
-                            </div>
-                            <div class="service-item" data-duration="7 Hari" data-price="60000">
-                                <div class="service-info">
-                                    <div class="service-duration">7 Hari</div>
-                                </div>
-                                <div class="service-price">
-                                    <span class="original-price">Rp 80.000</span>
-                                    <div class="price-amount">Rp 60.000</div>
-                                </div>
-                            </div>
-                            <div class="service-item best-value" data-duration="30 Hari" data-price="120000">
-                                <div class="service-info">
-                                    <div class="service-duration">30 Hari</div>
-                                </div>
-                                <div class="service-price">
-                                    <span class="original-price">Rp 150.000</span>
-                                    <div class="price-amount">Rp 120.000</div>
-                                </div>
-                            </div>
-                            <div class="service-item" data-duration="120 Hari" data-price="470000">
-                                <div class="service-info">
-                                    <div class="service-duration">120 Hari</div>
-                                </div>
-                                <div class="service-price">
-                                    <span class="original-price">Rp 500.000</span>
-                                    <div class="price-amount">Rp 470.000</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="contact">📱 Nickname Discord / Nomor WhatsApp:</label>
-                        <input type="text" id="contact" required placeholder="Contoh: user123#4567 atau 08123456789">
-                        <div class="contact-note">Kami akan menghubungi Anda melalui Discord atau WhatsApp untuk konfirmasi pesanan</div>
-                    </div>
-                    
-                    <div class="order-summary">
-                        <div class="summary-item">
-                            <span>Produk:</span>
-                            <span>Slash</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Durasi:</span>
-                            <span id="summary-duration">3 Hari</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Harga:</span>
-                            <span id="summary-price">Rp 40.000</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Game:</span>
-                            <span>Semua Game Tersedia</span>
-                        </div>
-                        <div class="summary-total">
-                            <span>Total:</span>
-                            <span id="summary-total">Rp 40.000</span>
-                        </div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button type="button" class="cart-button" id="cartButton">
-                            <i class="fas fa-cart-plus"></i> Tambah ke Keranjang
-                        </button>
-                        <button type="button" class="checkout-button" id="checkoutButton">
-                            <i class="fas fa-bolt"></i> Checkout Langsung
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
+<div class="bg-gradient"></div>
+<div class="glowing-orbs">
+    <div class="ambient-light orb-1"></div>
+    <div class="ambient-light orb-2"></div>
+    <div class="ambient-light orb-3"></div>
+</div>
 
-    <!-- Gameplay Section -->
-    <section class="gameplay-section">
-        <h2 class="section-title">🎬 Gameplay Slash</h2>
-        <div class="video-container">
-            <div class="video-placeholder">
-                <i class="fab fa-youtube"></i>
-                <h3>Video Gameplay Akan Segera Hadir</h3>
-                <p>Nantikan video gameplay Slash yang akan diupload segera</p>
-            </div>
+<header class="glass-blur">
+    <nav>
+        <a href="../index.html" class="logo">
+            <span class="logo-mark"><img src="../logo.png" alt="Ryuhuustore" onerror="this.style.display='none'"></span>
+            Ryuhuustore
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">Beranda</a>
+            <a href="../tutorial.html">Tutorial</a>
+            <a href="../keranjang.html">Keranjang</a>
+            <a href="#kontak">Kontak</a>
         </div>
-    </section>
-    
-    <!-- Related Products -->
-    <section class="related-products">
-        <h2 class="section-title">✨ Produk Lainnya</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="card-image">
-                    <img src="shika.png" alt="Shika">
-                </div>
-                <div class="card-info">
-                    <span class="card-category">Genshin Impact</span>
-                    <h3 class="card-name">Shika</h3>
-                    <div class="card-price">Rp 80.000</div>
-                    <a href="shika.html" class="view-details">
-                        <i class="fas fa-eye"></i> Lihat Detail
-                    </a>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="card-image">
-                    <img src="unicore.png" alt="Unicore">
-                </div>
-                <div class="card-info">
-                    <span class="card-category">Genshin Impact</span>
-                    <h3 class="card-name">Unicore</h3>
-                    <div class="card-price">Rp 45.000</div>
-                    <a href="unicore.html" class="view-details">
-                        <i class="fas fa-eye"></i> Lihat Detail
-                    </a>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="card-image">
-                    <img src="uniwaves.png" alt="Uniwaves">
-                </div>
-                <div class="card-info">
-                    <span class="card-category">Wuthering Waves</span>
-                    <h3 class="card-name">Uniwaves</h3>
-                    <div class="card-price">Rp 45.000</div>
-                    <a href="uniwaves.html" class="view-details">
-                        <i class="fas fa-eye"></i> Lihat Detail
-                    </a>
-                </div>
-            </div>
+        <div class="nav-actions">
+            <a href="../keranjang.html" class="icon-btn cart-icon" title="Keranjang">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count">0</span>
+            </a>
         </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer id="kontak">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Ryuhuustore</h3>
-                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 20px;">Toko top up game terpercaya dengan pelayanan terbaik dan harga kompetitif. Kami berkomitmen memberikan pengalaman berbelanja terbaik untuk para gamer.</p>
-                <div class="social-links">
-                    <a href="https://wa.me/6285117065033" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://discord.com/users/1120396377839648780" target="_blank" class="social-link"><i class="fab fa-discord"></i></a>
-                    <a href="https://t.me/ryuhuuz" target="_blank" class="social-link"><i class="fab fa-telegram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                </div>
+    </nav>
+</header>
+
+<div class="breadcrumb">
+    <a href="../index.html">Beranda</a> <i class="fas fa-chevron-right"></i>
+    <a href="../index.html#produk">Produk</a> <i class="fas fa-chevron-right"></i>
+    <span>Slash</span>
+</div>
+
+<!-- ============ PANEL PRODUK (layout seperti referensi) ============ -->
+<section class="product-shell glass-panel">
+
+    <!-- Panel kiri: visual -->
+    <div class="product-visual">
+        <div class="visual-inner">
+            <div class="visual-art">
+                <img src="slash.png" alt="Slash" onerror="this.outerHTML='&lt;i class=&quot;fas fa-gamepad&quot;&gt;&lt;/i&gt;'">
             </div>
-            
-            <div class="footer-section">
-                <h3>Produk</h3>
-                <ul class="footer-links">
-                    <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Genshin Impact</a></li>
-                    <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Wuthering Waves</a></li>
-                    <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Solo Leveling Arise</a></li>
-                    <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Star Rail</a></li>
-                    <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Zenless Zone Zero</a></li>
-                </ul>
+            <div class="visual-badges">
+                <span class="mini-badge">Wuthering Waves</span>
+                <span class="mini-badge">Solo Leveling</span>
+                <span class="mini-badge">Multi-Game</span>
             </div>
-            
-            <div class="footer-section">
-                <h3>Bantuan</h3>
-                <ul class="footer-links">
-                    <li><a href="../tutorial.html"><i class="fas fa-shopping-cart"></i> Cara Pembelian</a></li>
-                    <li><a href="../tutorial.html"><i class="fas fa-info-circle"></i> Cara Penggunaan</a></li>
-                    <li><a href="../tutorial.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
-                    <li><a href="#"><i class="fas fa-shield-alt"></i> Kebijakan Privasi</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Kontak</h3>
-                <ul class="footer-links">
-                    <li>
-                        <a href="mailto:ryuhuustore@gmail.com" class="contact-link">
-                            <i class="fas fa-envelope"></i> ryuhuustore@gmail.com
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://wa.me/6285117065033" target="_blank" class="contact-link">
-                            <i class="fab fa-whatsapp"></i> +62 851-1706-5033
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://t.me/ryuhuuz" target="_blank" class="contact-link">
-                            <i class="fab fa-telegram"></i> @ryuhuuz
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://discord.com/users/1120396377839648780" target="_blank" class="contact-link">
-                            <i class="fab fa-discord"></i> ryuhuu.
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <p class="visual-caption">Lisensi resmi Slash dengan sistem anti-detection dan dukungan admin.</p>
         </div>
-        
-        <div class="copyright">
-            &copy; 2024 Ryuhuustore. All rights reserved.
-        </div>
-    </footer>
-    
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notification-text">Produk berhasil ditambahkan ke keranjang!</span>
     </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Service selection
-            const serviceItems = document.querySelectorAll('.service-item');
-            const summaryDuration = document.getElementById('summary-duration');
-            const summaryTotal = document.getElementById('summary-total');
-            const summaryPrice = document.getElementById('summary-price');
-            const cartButton = document.getElementById('cartButton');
-            const checkoutButton = document.getElementById('checkoutButton');
-            const orderForm = document.getElementById('orderForm');
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notification-text');
-            const cartCount = document.querySelector('.cart-count');
-            const featureTabs = document.querySelectorAll('.feature-tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            // Set default selected service
-            let selectedDuration = '3 Hari';
-            let selectedPrice = '40000';
-            
-            // Service selection functionality - klik pada seluruh area service-item
-            serviceItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const duration = this.getAttribute('data-duration');
-                    const price = this.getAttribute('data-price');
-                    
-                    // Update selected service
-                    selectedDuration = duration;
-                    selectedPrice = price;
-                    
-                    // Update UI
-                    serviceItems.forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    
-                    this.classList.add('active');
-                    
-                    // Update summary
-                    updateOrderSummary();
-                });
-            });
-            
-            // Feature tabs functionality
-            featureTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Remove active class from all tabs and contents
-                    featureTabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    this.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-            
-            // Update order summary
-            function updateOrderSummary() {
-                const priceNum = parseInt(selectedPrice);
-                
-                summaryDuration.textContent = selectedDuration;
-                summaryPrice.textContent = `Rp ${priceNum.toLocaleString('id-ID')}`;
-                summaryTotal.textContent = `Rp ${priceNum.toLocaleString('id-ID')}`;
-            }
-            
-            // Show notification
-            function showNotification(message) {
-                notificationText.textContent = message;
-                notification.classList.add('show');
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
-            }
-            
-            // Get cart from localStorage
-            function getCart() {
-                try {
-                    const cartData = localStorage.getItem('cart');
-                    
-                    if (!cartData) {
-                        return [];
-                    }
-                    
-                    const parsedCart = JSON.parse(cartData);
-                    
-                    // Ensure it's an array
-                    return Array.isArray(parsedCart) ? parsedCart : [];
-                } catch (error) {
-                    console.error('Error reading cart from localStorage:', error);
-                    return [];
-                }
-            }
-            
-            // Update cart count
-            function updateCartCount() {
-                const cart = getCart();
-                cartCount.textContent = cart.length;
-            }
-            
-            // Initialize cart count
-            updateCartCount();
-            
-            // Function to add item to cart
-            function addToCart() {
-                // Simple form validation
-                const contactInput = document.getElementById('contact');
-                if (!contactInput.value.trim()) {
-                    alert('Harap masukkan nickname Discord atau nomor WhatsApp!');
-                    return false;
-                }
-                
-                const contact = contactInput.value.trim();
-                
-                // Calculate price
-                const priceNum = parseInt(selectedPrice);
-                
-                // Create cart item with proper structure
-                const cartItem = {
-                    id: 'slash-' + Date.now(),
-                    product: 'Slash',
-                    duration: selectedDuration,
-                    price: priceNum,
-                    game: 'Semua Game Tersedia',
-                    contact: contact
-                };
-                
-                // Get current cart
-                const cart = getCart();
-                
-                // Add item to cart
-                cart.push(cartItem);
-                
-                // Save cart to localStorage
-                try {
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                } catch (error) {
-                    console.error('Error saving cart to localStorage:', error);
-                    return false;
-                }
-                
-                // Update cart count
-                updateCartCount();
-                
-                return true;
-            }
-            
-            // Add to cart functionality
-            cartButton.addEventListener('click', function() {
-                if (addToCart()) {
-                    showNotification(`Slash (${selectedDuration}) berhasil ditambahkan ke keranjang!`);
-                    
-                    // Clear form after successful add
-                    document.getElementById('contact').value = '';
-                }
-            });
-            
-            // Checkout functionality
-            checkoutButton.addEventListener('click', function() {
-                if (addToCart()) {
-                    showNotification(`Slash (${selectedDuration}) berhasil ditambahkan ke keranjang!`);
-                    
-                    // Clear form
-                    document.getElementById('contact').value = '';
-                    
-                    // Redirect to keranjang.html after a short delay
-                    setTimeout(() => {
-                        window.location.href = '../keranjang.html';
-                    }, 1000);
-                }
-            });
+
+    <!-- Panel kanan: detail -->
+    <div class="product-panel">
+        <div class="panel-scroll">
+            <div class="panel-head">
+                <div>
+                    <span class="product-category">Multi-Game Premium</span>
+                    <h1 class="product-name">Slash</h1>
+                    <div class="product-meta">
+                        <span><i class="status-dot"></i> Available</span>
+                        <span><i class="fas fa-star meta-star"></i> 5.0</span>
+                        <span><i class="fas fa-box"></i> Stok : 99+</span>
+                    </div>
+                </div>
+                <a href="../index.html#produk" class="icon-btn close-btn" title="Kembali ke daftar produk"><i class="fas fa-times"></i></a>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <div class="bonus-badge"><i class="fas fa-gift"></i> Beli Slash = Gratis Bypass Genshin Tools</div>
+
+            <div class="section-label">Pilih Paket</div>
+            <div class="service-list">
+                <div class="service-item active" data-duration="3 Hari" data-price="40000">
+                    <div>
+                        <div class="service-duration">3 Hari</div>
+                        <div class="service-sub">Rp 60.000</div>
+                    </div>
+                    <span class="price-amount">Rp 40.000</span>
+                </div>
+                <div class="service-item" data-duration="7 Hari" data-price="60000">
+                    <div>
+                        <div class="service-duration">7 Hari</div>
+                        <div class="service-sub">Rp 80.000</div>
+                    </div>
+                    <span class="price-amount">Rp 60.000</span>
+                </div>
+                <div class="service-item best-value" data-duration="30 Hari" data-price="120000">
+                    <span class="best-tag">TERBAIK</span>
+                    <div>
+                        <div class="service-duration">30 Hari</div>
+                        <div class="service-sub">Rp 150.000</div>
+                    </div>
+                    <span class="price-amount">Rp 120.000</span>
+                </div>
+                <div class="service-item" data-duration="120 Hari" data-price="470000">
+                    <div>
+                        <div class="service-duration">120 Hari</div>
+                        <div class="service-sub">Rp 500.000</div>
+                    </div>
+                    <span class="price-amount">Rp 470.000</span>
+                </div>
+            </div>
+
+            <div class="inline-fields">
+                <div>
+                    <span class="field-label">Jumlah</span>
+                    <div class="qty-control">
+                        <button type="button" class="icon-btn qty-btn" id="qty-minus" aria-label="Kurangi jumlah"><i class="fas fa-minus"></i></button>
+                        <input type="number" id="qty" value="1" min="1" max="99" aria-label="Jumlah">
+                        <button type="button" class="icon-btn qty-btn" id="qty-plus" aria-label="Tambah jumlah"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+                <div>
+                    <label class="field-label" for="contact">Nickname Discord / Nomor WhatsApp</label>
+                    <input type="text" id="contact" placeholder="Contoh: ryuhuu. atau 08123456789">
+                </div>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- Tab utama -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="info">Informasi Produk</button>
+                <button class="tab-btn" data-tab="fitur">Fitur</button>
+                <button class="tab-btn" data-tab="panduan">Panduan Order</button>
+                <button class="tab-btn" data-tab="dukungan">Dukungan</button>
+            </div>
+
+            <div class="tab-panel active" id="info">
+                <p><strong>Slash</strong> tersedia untuk <strong>Wuthering Waves, Solo Leveling Arise,</strong> dan banyak game lain dalam beberapa pilihan durasi. Pastikan memilih durasi yang sesuai sebelum melanjutkan checkout.</p>
+                <ul class="info-list">
+                    <li>Lisensi dikirim setelah pembayaran dikonfirmasi.</li>
+                    <li>Proses aktivasi dibantu oleh admin.</li>
+                    <li>Harga mengikuti region pembayaran yang dipilih.</li>
+                    <li>Ketersediaan produk dapat berubah sewaktu-waktu.</li>
+                </ul>
+            </div>
+
+            <div class="tab-panel" id="fitur">
+                <div class="subtabs">
+                    <button class="subtab active" data-sub="wuthering">Wuthering Waves</button>
+                    <button class="subtab" data-sub="solo">Solo Leveling</button>
+                    <button class="subtab" data-sub="other">Game Lainnya</button>
+                </div>
+
+                <div class="subpanel active" id="wuthering">
+                    <div class="feature-category">
+                        <h4>Player</h4>
+                        <ul class="feature-list">
+                            <li>God Mode</li><li>Auto Revive</li><li>No Cooldown</li><li>Infinite Stamina</li>
+                            <li>Infinite Special Energy</li><li>Infinite Ultimate</li><li>Infinite Intro Outro</li><li>No Fall Damage</li>
+                            <li>Auto Dodge Dash</li><li>Auto Dodge Jump</li><li>Auto Parry Basic Attack</li><li>Auto Parry Intro Skill</li>
+                            <li>Reduce Stamina While Dodge or Parry</li><li>Fly</li><li>No Clip</li><li>Fly Speed</li>
+                            <li>Player Speed</li><li>Weapon and Skin Changer</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Character Attributes</h4>
+                        <ul class="feature-list">
+                            <li>Character Resonance Chain 6 Unlock</li><li>Signature Weapon Rank 5 Replicate</li><li>Flight Everywhere</li>
+                            <li>100% Critical</li><li>High Echo Attack</li><li>Increase Coin, Material and Echo Rate</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Stats Editor</h4>
+                        <ul class="feature-list">
+                            <li>Attack Modifier</li><li>Defend Modifier</li><li>HP Modifier</li><li>Crit Rate Modifier</li><li>Crit Damage Modifier</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Enemy</h4>
+                        <ul class="feature-list">
+                            <li>Enemy Vacuum</li><li>Kill Aura 1</li><li>Kill Aura 2</li><li>Exclude Quest Monster</li>
+                            <li>Kill Aura Animal</li><li>Kill Aura Counter Attack</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>World</h4>
+                        <ul class="feature-list">
+                            <li>Auto Loot Collect</li><li>Auto Loot Chest</li><li>Auto Absorb Echo</li><li>Auto Destroy</li>
+                            <li>Auto Puzzle</li><li>No Restrict Area</li><li>World Speed</li><li>Fishing Boat Speed</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Dungeon &amp; Farm</h4>
+                        <ul class="feature-list">
+                            <li>Farm Tracked Enemy</li><li>Auto Restart Dungeon</li><li>Auto Challenge Boss / Tacet</li><li>Auto Claim Reward</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>ESP</h4>
+                        <ul class="feature-list"><li>Monster</li><li>Collect</li><li>Chest</li></ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Teleport</h4>
+                        <ul class="feature-list">
+                            <li>JSON File Custom Teleport</li><li>Track Icon To Teleport</li><li>Quest Teleport</li><li>Map Mark Teleport</li>
+                        </ul>
+                    </div>
+                    <div class="feature-category">
+                        <h4>Misc</h4>
+                        <ul class="feature-list">
+                            <li>FOV</li><li>Pause In Game Time</li><li>Unlock FPS</li><li>Auto Claim Trophies</li>
+                            <li>Cook &amp; Craft No Animation</li><li>Plot Skip</li><li>Auto Plot Skip</li><li>Hide UID</li>
+                            <li>Show FPS</li><li>Change UID</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subpanel" id="solo">
+                    <div class="feature-category">
+                        <h4>Solo Leveling Arise</h4>
+                        <ul class="feature-list">
+                            <li>Shadow Attack Modifier</li><li>Shadow Cooldown Reduction</li><li>x2 Move Speed</li>
+                            <li>Set Monster HP</li><li>Set Monster Damage</li><li>Auto Break Shield</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subpanel" id="other">
+                    <div class="feature-category">
+                        <h4>Supported Games</h4>
+                        <ul class="game-list">
+                            <li>GLF 2 Haoplay &amp; Sunborn</li><li>Rememento White Shadow</li><li>Genshin Shika Bypass</li>
+                            <li>ZZZ Bypass</li><li>Etheria Restart</li><li>Crystal Of Atlan</li>
+                            <li>Blue Archive</li><li>Stella Sora</li><li>Duet Night Abyss</li>
+                        </ul>
+                        <p class="note-line">Note: cek di server untuk daftar fitur lengkapnya.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="panduan">
+                <p>Ikuti langkah berikut agar pesanan cepat diproses:</p>
+                <ul class="info-list">
+                    <li>Pilih paket durasi yang diinginkan dan atur jumlahnya.</li>
+                    <li>Isi nickname Discord atau nomor WhatsApp yang aktif.</li>
+                    <li>Klik <strong>Tambah ke Keranjang</strong> atau <strong>Checkout</strong>.</li>
+                    <li>Selesaikan pembayaran di halaman keranjang, lalu kirim bukti ke admin.</li>
+                    <li>Key dan panduan pemakaian dikirim setelah pembayaran diverifikasi.</li>
+                </ul>
+            </div>
+
+            <div class="tab-panel" id="dukungan">
+                <p>Butuh bantuan? Tim kami siap membantu setiap hari:</p>
+                <ul class="info-list">
+                    <li>WhatsApp: <strong>+62 851-1706-5033</strong></li>
+                    <li>Discord: <strong>ryuhuu.</strong></li>
+                    <li>Telegram: <strong>@ryuhuuz</strong></li>
+                    <li>Email: <strong>ryuhuustore@gmail.com</strong></li>
+                </ul>
+                <p style="margin-top: 14px;">Sertakan Order ID saat menghubungi admin agar proses pengecekan lebih cepat.</p>
+            </div>
+        </div>
+
+        <!-- Action bar sticky -->
+        <div class="action-bar">
+            <div>
+                <div class="selected-label">Paket Terpilih</div>
+                <div class="selected-value" id="selected-value">3 Hari — Rp 40.000</div>
+            </div>
+            <div class="action-buttons">
+                <button type="button" class="cart-button" id="cartButton"><i class="fas fa-cart-plus"></i> Tambah ke Keranjang</button>
+                <button type="button" class="checkout-button" id="checkoutButton"><i class="fas fa-bolt"></i> Checkout</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gameplay-section">
+    <h2 class="section-title">🎬 Gameplay Slash</h2>
+    <div class="video-container glass-panel">
+        <div class="video-placeholder">
+            <div class="play-badge"><i class="fab fa-youtube"></i></div>
+            <h3>Video Gameplay Segera Hadir</h3>
+            <p>Nantikan cuplikan gameplay Slash yang akan diupload segera.</p>
+        </div>
+    </div>
+</section>
+
+<section class="related-products">
+    <h2 class="section-title">✨ Produk Lainnya</h2>
+    <div class="products-grid">
+        <div class="product-card glass-panel">
+            <div class="card-image art-blue">
+                <img src="shika.png" alt="Shika" onerror="this.outerHTML='&lt;i class=&quot;fas fa-gamepad fallback-icon&quot;&gt;&lt;/i&gt;'">
+            </div>
+            <div class="card-info">
+                <span class="card-category">Genshin Impact</span>
+                <h3 class="card-name">Shika</h3>
+                <div class="card-price">Rp 80.000</div>
+                <a href="shika.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
+            </div>
+        </div>
+
+        <div class="product-card glass-panel">
+            <div class="card-image art-teal">
+                <img src="unicore.png" alt="Unicore" onerror="this.outerHTML='&lt;i class=&quot;fas fa-gamepad fallback-icon&quot;&gt;&lt;/i&gt;'">
+            </div>
+            <div class="card-info">
+                <span class="card-category">Genshin Impact</span>
+                <h3 class="card-name">Unicore</h3>
+                <div class="card-price">Rp 45.000</div>
+                <a href="unicore.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
+            </div>
+        </div>
+
+        <div class="product-card glass-panel">
+            <div class="card-image art-rose">
+                <img src="uniwaves.png" alt="Uniwaves" onerror="this.outerHTML='&lt;i class=&quot;fas fa-gamepad fallback-icon&quot;&gt;&lt;/i&gt;'">
+            </div>
+            <div class="card-info">
+                <span class="card-category">Wuthering Waves</span>
+                <h3 class="card-name">Uniwaves</h3>
+                <div class="card-price">Rp 45.000</div>
+                <a href="uniwaves.html" class="view-details"><i class="fas fa-eye"></i> Lihat Detail</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer id="kontak">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Ryuhuustore</h3>
+            <p style="color: var(--text-secondary); font-size: 13.5px; line-height: 1.7; margin-bottom: 18px;">Toko digital terpercaya dengan pelayanan terbaik dan harga kompetitif. Kami berkomitmen memberikan pengalaman berbelanja terbaik untuk para gamer.</p>
+            <div class="social-links">
+                <a href="https://wa.me/6285117065033" target="_blank" rel="noopener noreferrer" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://discord.com/users/1120396377839648780" target="_blank" rel="noopener noreferrer" class="social-link"><i class="fab fa-discord"></i></a>
+                <a href="https://t.me/ryuhuuz" target="_blank" rel="noopener noreferrer" class="social-link"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h3>Produk</h3>
+            <ul class="footer-links">
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Genshin Impact</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Wuthering Waves</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Solo Leveling Arise</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Star Rail</a></li>
+                <li><a href="../index.html#produk"><i class="fas fa-gamepad"></i> Zenless Zone Zero</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Bantuan</h3>
+            <ul class="footer-links">
+                <li><a href="../tutorial.html"><i class="fas fa-shopping-cart"></i> Cara Pembelian</a></li>
+                <li><a href="../tutorial.html"><i class="fas fa-info-circle"></i> Cara Penggunaan</a></li>
+                <li><a href="../tutorial.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                <li><a href="#"><i class="fas fa-shield-alt"></i> Kebijakan Privasi</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Kontak</h3>
+            <ul class="footer-links">
+                <li><a href="mailto:ryuhuustore@gmail.com" class="contact-link"><i class="fas fa-envelope"></i> ryuhuustore@gmail.com</a></li>
+                <li><a href="https://wa.me/6285117065033" target="_blank" rel="noopener noreferrer" class="contact-link"><i class="fab fa-whatsapp"></i> +62 851-1706-5033</a></li>
+                <li><a href="https://t.me/ryuhuuz" target="_blank" rel="noopener noreferrer" class="contact-link"><i class="fab fa-telegram"></i> @ryuhuuz</a></li>
+                <li><a href="https://discord.com/users/1120396377839648780" target="_blank" rel="noopener noreferrer" class="contact-link"><i class="fab fa-discord"></i> ryuhuu.</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="copyright">© 2024 Ryuhuustore. All rights reserved.</div>
+</footer>
+
+<div id="toast-stack" aria-live="polite"></div>
+
+<script>
+// ============ NOTIFIKASI MODERN ============
+const TONE_ICONS = { info: 'fa-circle-info', success: 'fa-circle-check', warning: 'fa-triangle-exclamation', error: 'fa-circle-exclamation' };
+
+function notify(options) {
+    const opts = options || {};
+    const tone = opts.tone || 'info';
+    const duration = typeof opts.duration === 'number' ? opts.duration : 4500;
+    const stack = document.getElementById('toast-stack');
+    if (!stack) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast t-' + tone;
+    toast.innerHTML = `
+        <div class="toast-icon tone-${tone}"><i class="fas ${TONE_ICONS[tone] || TONE_ICONS.info}"></i></div>
+        <div class="toast-content">
+            <div class="toast-title"></div>
+            ${opts.message ? '<div class="toast-body"></div>' : ''}
+        </div>
+        <button type="button" class="toast-close" aria-label="Tutup"><i class="fas fa-times"></i></button>
+    `;
+    toast.querySelector('.toast-title').textContent = opts.title || '';
+    if (opts.message) toast.querySelector('.toast-body').textContent = opts.message;
+
+    const remove = () => {
+        toast.classList.remove('toast-in');
+        toast.classList.add('toast-out');
+        setTimeout(() => toast.remove(), 240);
+    };
+    toast.querySelector('.toast-close').addEventListener('click', remove);
+
+    stack.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('toast-in'));
+    if (duration > 0) setTimeout(remove, duration);
+}
+
+// ============ LOGIKA HALAMAN ============
+document.addEventListener('DOMContentLoaded', function () {
+    const serviceItems = document.querySelectorAll('.service-item');
+    const selectedValue = document.getElementById('selected-value');
+    const cartButton = document.getElementById('cartButton');
+    const checkoutButton = document.getElementById('checkoutButton');
+    const cartCount = document.querySelector('.cart-count');
+    const contactInput = document.getElementById('contact');
+    const qtyInput = document.getElementById('qty');
+
+    let selectedDuration = '3 Hari';
+    let selectedPrice = 40000;
+
+    const formatIDR = (value) => 'Rp ' + Number(value || 0).toLocaleString('id-ID');
+    const getQty = () => Math.min(99, Math.max(1, parseInt(qtyInput.value, 10) || 1));
+
+    function updateSelection() {
+        const qty = getQty();
+        qtyInput.value = qty;
+        const total = selectedPrice * qty;
+        selectedValue.textContent = qty > 1
+            ? `${selectedDuration} × ${qty} — ${formatIDR(total)}`
+            : `${selectedDuration} — ${formatIDR(total)}`;
+    }
+
+    serviceItems.forEach(item => {
+        item.addEventListener('click', function () {
+            selectedDuration = this.getAttribute('data-duration');
+            selectedPrice = parseInt(this.getAttribute('data-price'), 10) || 0;
+            serviceItems.forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+            updateSelection();
         });
-    </script>
+    });
+
+    // Tab utama
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            tabButtons.forEach(b => b.classList.remove('active'));
+            tabPanels.forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            const panel = document.getElementById(this.getAttribute('data-tab'));
+            if (panel) panel.classList.add('active');
+        });
+    });
+
+    // Sub-tab fitur
+    const subButtons = document.querySelectorAll('.subtab');
+    const subPanels = document.querySelectorAll('.subpanel');
+    subButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            subButtons.forEach(b => b.classList.remove('active'));
+            subPanels.forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            const panel = document.getElementById(this.getAttribute('data-sub'));
+            if (panel) panel.classList.add('active');
+        });
+    });
+
+    document.getElementById('qty-minus').addEventListener('click', () => { qtyInput.value = getQty() - 1; updateSelection(); });
+    document.getElementById('qty-plus').addEventListener('click', () => { qtyInput.value = getQty() + 1; updateSelection(); });
+    qtyInput.addEventListener('input', updateSelection);
+
+    function getCart() {
+        try {
+            const cartData = localStorage.getItem('cart');
+            if (!cartData) return [];
+            const parsed = JSON.parse(cartData);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+            console.error('Error reading cart from localStorage:', error);
+            return [];
+        }
+    }
+
+    function updateCartCount() {
+        const cart = getCart();
+        const totalQty = cart.reduce((sum, item) => sum + (Number(item && item.qty) || 1), 0);
+        cartCount.textContent = totalQty;
+        cartCount.style.display = totalQty > 0 ? 'flex' : 'none';
+    }
+
+    updateCartCount();
+
+    function addToCart() {
+        const contact = contactInput.value.trim();
+        if (!contact) {
+            contactInput.classList.add('input-error');
+            contactInput.focus();
+            notify({ tone: 'warning', title: 'Kontak belum diisi', message: 'Masukkan nickname Discord atau nomor WhatsApp agar admin bisa mengirim key kamu.' });
+            return false;
+        }
+        contactInput.classList.remove('input-error');
+
+        const qty = getQty();
+        const cart = getCart();
+        const existing = cart.find(item => item && item.product === 'Slash' && item.duration === selectedDuration && item.contact === contact);
+
+        if (existing) {
+            existing.qty = (Number(existing.qty) || 1) + qty;
+        } else {
+            cart.push({
+                id: 'slash-' + Date.now(),
+                product: 'Slash',
+                duration: selectedDuration,
+                price: selectedPrice,
+                qty: qty,
+                game: 'Semua Game Tersedia',
+                contact: contact
+            });
+        }
+
+        try {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        } catch (error) {
+            console.error('Error saving cart to localStorage:', error);
+            notify({ tone: 'error', title: 'Gagal menyimpan keranjang', message: 'Browser menolak menyimpan data. Coba matikan mode penyamaran atau kosongkan penyimpanan situs.' });
+            return false;
+        }
+
+        updateCartCount();
+        return true;
+    }
+
+    cartButton.addEventListener('click', function () {
+        const qty = getQty();
+        if (addToCart()) {
+            notify({ tone: 'success', title: 'Ditambahkan ke keranjang', message: `Slash ${selectedDuration} × ${qty} — total ${formatIDR(selectedPrice * qty)}.` });
+            contactInput.value = '';
+        }
+    });
+
+    checkoutButton.addEventListener('click', function () {
+        const qty = getQty();
+        if (addToCart()) {
+            notify({ tone: 'success', title: 'Menuju checkout', message: `Slash ${selectedDuration} × ${qty} ditambahkan. Mengarahkan ke keranjang...`, duration: 2500 });
+            contactInput.value = '';
+            setTimeout(() => { window.location.href = '../keranjang.html'; }, 1200);
+        }
+    });
+
+    updateSelection();
+});
+</script>
 </body>
 </html>
