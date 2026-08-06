@@ -266,10 +266,40 @@
             background: rgba(127,127,127,.08); border: 1px solid var(--notif-border);
         }
         .dialog-code span { font-family: Menlo, Consolas, monospace; font-size: 13px; color: var(--text-main); word-break: break-all; }
-        .dialog-meta { display: flex; flex-direction: column; gap: 6px; padding: .7rem .9rem; border-radius: 12px; background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.22); }
-        .dialog-meta-row { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; font-size: 12px; }
-        .dialog-meta-label { color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; font-size: 10px; white-space: nowrap; }
-        .dialog-meta-value { font-family: Menlo, Consolas, monospace; font-size: 12px; color: #60a5fa; text-align: right; word-break: break-all; }
+        .dialog-meta { display: grid; gap: 10px; padding: 0; border: 0; background: transparent; }
+        .dialog-meta-row { display: grid; grid-template-columns: 34px 1fr; gap: .75rem; align-items: start; padding: .85rem .95rem; border-radius: 14px; background: rgba(127,127,127,.08); border: 1px solid var(--notif-border); }
+        .dialog-meta-row.is-total { background: linear-gradient(135deg, rgba(59,130,246,.18), rgba(34,197,94,.10)); border-color: rgba(96,165,250,.45); }
+        .dialog-meta-row.is-payment { background: rgba(59,130,246,.10); border-color: rgba(59,130,246,.28); }
+        .dialog-meta-row.is-fee { background: rgba(245,158,11,.10); border-color: rgba(245,158,11,.30); }
+        .dialog-meta-row.is-fee .dialog-meta-icon { color: #fbbf24; }
+        .dialog-meta-row.is-product { background: rgba(16,185,129,.10); border-color: rgba(16,185,129,.25); }
+        .dialog-meta-icon { width: 34px; height: 34px; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.08); color: #60a5fa; }
+        .dialog-meta-label { display: block; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; font-size: 10px; font-weight: 700; margin-bottom: 3px; }
+        .dialog-meta-value { display: block; font-size: 13px; color: var(--notif-title); line-height: 1.35; text-align: left; word-break: break-word; }
+        .dialog-meta-value.is-money { font-size: 18px; font-weight: 800; color: #34d399; }
+        .dialog-meta-value a { color: #60a5fa; text-decoration: underline; text-underline-offset: 3px; }
+        .dialog-items { display: grid; gap: 6px; }
+        .dialog-item { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(127,127,127,.16); }
+        .dialog-item:last-child { border-bottom: 0; padding-bottom: 0; }
+        .dialog-item-name { font-weight: 700; color: var(--notif-title); }
+        .dialog-item-sub { color: var(--text-muted); font-size: 11px; margin-top: 1px; }
+        .dialog-item-price { font-weight: 800; white-space: nowrap; color: var(--notif-title); }
+        .store-category-tabs { display: grid; gap: 10px; max-width: 620px; margin: 0 auto; }
+        .store-category-btn { position: relative; overflow: hidden; padding: 14px 16px; border-radius: 18px; border: 1px solid var(--glass-border); background: rgba(255,255,255,.06); text-align: left; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+        .store-category-btn:hover { transform: translateY(-2px); border-color: rgba(96,165,250,.55); background: rgba(59,130,246,.10); }
+        .store-category-btn.is-active { min-height: 74px; border-color: rgba(96,165,250,.70); background: linear-gradient(135deg, rgba(59,130,246,.22), rgba(99,102,241,.12)); box-shadow: 0 10px 30px rgba(37,99,235,.18); }
+        .store-leaks { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .store-category-btn.is-disabled { width: auto; min-height: 0; padding: 7px 10px; border-radius: 999px; opacity: .56; cursor: pointer; filter: grayscale(.1); display: inline-flex; align-items: center; gap: 6px; }
+        .store-category-icon { width: 34px; height: 34px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; background: rgba(59,130,246,.16); color: #60a5fa; }
+        .store-category-btn.is-disabled .store-category-icon { width: 18px; height: 18px; border-radius: 7px; margin-bottom: 0; font-size: 10px; opacity: .78; }
+        .store-category-title { display: block; font-weight: 800; color: var(--text-main); font-size: 14px; }
+        .store-category-btn.is-disabled .store-category-title { font-size: 11px; white-space: nowrap; }
+        .store-category-desc { display: block; color: var(--text-muted); font-size: 11px; margin-top: 2px; }
+        .store-category-btn.is-disabled .store-category-desc { display: none; }
+        .coming-soon-badge { font-size: 8px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 2px 5px; border-radius: 999px; background: rgba(245,158,11,.12); color: #fbbf24; border: 1px solid rgba(245,158,11,.22); }
+        .store-category-btn.is-disabled .coming-soon-badge { position: static; order: 3; }
+        @media (max-width: 640px) { .store-category-tabs { max-width: 100%; } .store-leaks { justify-content: flex-start; } }
+
         .dialog-btn {
             min-height: 44px; padding: 0 1.1rem; border-radius: 12px; font-size: 14px; font-weight: 600;
             display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
@@ -356,9 +386,34 @@
                 </div>
                 <h1 class="text-5xl md:text-7xl font-bold tracking-tighter leading-[1.12] pb-2 md:pb-3 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[var(--text-main)] to-gray-500" data-lang="hero_title">Elevate Your Game.</h1>
                 <p class="text-lg text-[var(--text-muted)] max-w-2xl mx-auto mb-10" data-lang="hero_desc">Ryuhuu Store menyediakan produk digital pilihan dengan proses order cepat, pembayaran fleksibel, dan dukungan admin yang responsif.</p>
-                <div class="relative max-w-xl mx-auto">
+                <div class="store-category-tabs mt-4">
+                    <button type="button" class="store-category-btn is-active" onclick="setStoreCategory('digital')">
+                        <span class="store-category-icon"><i class="fas fa-shield-halved"></i></span>
+                        <span class="store-category-title" data-lang="cat_digital_title">Digital Products</span>
+                        <span class="store-category-desc" data-lang="cat_digital_desc">Digital tools & private services</span>
+                    </button>
+                    <div class="store-leaks">
+                        <button type="button" class="store-category-btn is-disabled" onclick="showComingSoon('Joki Game')">
+                            <span class="store-category-icon"><i class="fas fa-gamepad"></i></span>
+                            <span class="store-category-title" data-lang="cat_joki_title">Joki Game</span>
+                            <span class="coming-soon-badge" data-lang="coming_soon">Soon</span>
+                        </button>
+                        <button type="button" class="store-category-btn is-disabled" onclick="showComingSoon('Topup Game')">
+                            <span class="store-category-icon"><i class="fas fa-gem"></i></span>
+                            <span class="store-category-title" data-lang="cat_topup_title">Topup Game</span>
+                            <span class="coming-soon-badge" data-lang="coming_soon">Soon</span>
+                        </button>
+                        <button type="button" class="store-category-btn is-disabled" onclick="showComingSoon(appState.selectedRegion === 'id' || appState.selectedRegion === 'my' ? 'Jual Akun' : 'Game Accounts')">
+                            <span class="store-category-icon"><i class="fas fa-user-tag"></i></span>
+                            <span class="store-category-title" data-lang="cat_account_title">Jual Akun</span>
+                            <span class="coming-soon-badge" data-lang="coming_soon">Soon</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="relative max-w-xl mx-auto mt-5">
                     <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-[var(--text-muted)]"></i>
-                    <input type="text" id="search-input" data-lang-placeholder="search_placeholder" placeholder="Cari game, produk, atau tag..." class="w-full pl-12 pr-4 py-4 rounded-2xl glass-input text-sm shadow-sm" />
+                    <input type="text" id="search-input" data-lang-placeholder="search_placeholder" placeholder="Cari game, produk, atau tag..." class="w-full pl-12 pr-24 py-4 rounded-2xl glass-input text-sm shadow-sm" />
+                    <button type="button" onclick="submitSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 rounded-xl bg-blue-500 text-white text-xs font-bold hover:bg-blue-400 transition-colors" data-lang="search_enter_btn">Enter</button>
                 </div>
             </section>
 
@@ -669,8 +724,8 @@
                 tags: ["Premium"],
                 tiers: [
                     { id: "1d", name: "1 Day", priceIDR: 60000, priceUSD: 3 },
-                    { id: "7d", name: "7 Days", priceIDR: 100000, priceUSD: 5 },
-                    { id: "30d", name: "30 Days", priceIDR: 140000, priceUSD: 7 }
+                    { id: "7d", name: "7 Days", priceIDR: 120000, priceUSD: 6 },
+                    { id: "30d", name: "30 Days", priceIDR: 160000, priceUSD: 8 }
                 ],
                 status: "Available",
                 bg: "from-purple-400 to-pink-500"
@@ -862,21 +917,6 @@
                 bg: "from-cyan-500 to-blue-500"
             },
             {
-                id: "p_zzz_kinu",
-                name: "Kinu",
-                game: "Zenless Zone Zero",
-                tags: ["Premium"],
-                tiers: [
-                    { id: "1_day_1", name: "1 Day", priceIDR: 38000, priceUSD: 2 },
-                    { id: "3_days_2", name: "3 Days", priceIDR: 57000, priceUSD: 3 },
-                    { id: "7_days_3", name: "7 Days", priceIDR: 114000, priceUSD: 6 },
-                    { id: "30_days_4", name: "30 Days", priceIDR: 190000, priceUSD: 10 }
-                ],
-                status: "Available",
-                bg: "from-violet-600 to-purple-900"
-            },
-            // ===== Neverness to Everness (Kinu NTE) =====
-            {
                 id: "p_nte_kinu",
                 name: "Kinu",
                 game: "Neverness to Everness",
@@ -961,11 +1001,11 @@
                 bg: "from-purple-500 to-violet-600"
             },
             {
-                id: "p_val_hooked",
-                name: "Hooked",
+                id: "p_val_privates",
+                name: "Private S",
                 game: "Valorant",
-                tags: ["Private Slot", "Aimbot"],
-                tiers: [{ id: "hm", name: "Monthly", priceIDR: 800000, priceUSD: 80 }],
+                tags: ["Private"],
+                tiers: [{ id: "contact", name: "DM untuk pembelian", priceIDR: 0, priceUSD: 0 }],
                 status: "Available",
                 bg: "from-red-700 to-rose-800"
             },
@@ -1476,13 +1516,13 @@
             { id: 'pm_qrph', name: 'QRPH (Philippines)', type: 'local', regions: ['fil'], instant: false, icon: 'fa-qrcode',
                 color: 'text-blue-400', requiresDiscordGuide: true },
             { id: 'pm_vtcpay', name: 'VTCPay Wallet', type: 'local', regions: ['vi'], instant: false, icon: 'fa-wallet',
-                color: 'text-red-300', requiresDiscordGuide: false, needsDM: true },
+                color: 'text-red-300', requiresDiscordGuide: true },
             { id: 'pm_kakaopay', name: 'KakaoPay', type: 'local', regions: ['ko'], instant: false, icon: 'fa-comment',
-                color: 'text-yellow-300', requiresDiscordGuide: false, needsDM: true },
+                color: 'text-yellow-300', requiresDiscordGuide: true },
             { id: 'pm_naverpay', name: 'Naver Pay', type: 'local', regions: ['ko'], instant: false, icon: 'fa-n',
-                color: 'text-green-300', requiresDiscordGuide: false, needsDM: true },
+                color: 'text-green-300', requiresDiscordGuide: true },
             { id: 'pm_samsungpay', name: 'Samsung Pay', type: 'local', regions: ['ko'], instant: false, icon: 'fa-credit-card',
-                color: 'text-blue-300', requiresDiscordGuide: false, needsDM: true },
+                color: 'text-blue-300', requiresDiscordGuide: true },
             { id: 'pm_alipay', name: 'Alipay (China)', type: 'local', regions: ['zh'], instant: false, icon: 'fa-alipay',
                 color: 'text-blue-500', requiresDiscordGuide: true },
             { id: 'pm_upi', name: 'UPI (India)', type: 'local', regions: ['hi'], instant: false, icon: 'fa-credit-card',
@@ -1600,8 +1640,51 @@
         }
 
         function orderCodeMeta(order = currentOrderSnapshot) {
-            const codes = (order?.codeSummary || cartCodeSummary()).join(', ');
-            return codes ? [{ label: t('product_code_label', 'Kode Produk'), value: codes }] : [];
+            const rows = [];
+            if (!order) return rows;
+            rows.push({ type: 'products', label: t('products_bought_label', 'Products purchased'), value: orderItemsHtml(order), icon: 'fa-box-open' });
+            rows.push({ type: 'payment', label: t('payment_to_label', 'Payment to'), value: paymentDestinationHtml(order.paymentMethod), icon: 'fa-wallet' });
+            if ((order.paymentFee || 0) > 0) {
+                const percent = paymentFeePercentLabel(order.paymentMethod);
+                rows.push({ type: 'fee', label: t('payment_fee_label', 'Payment fee'), value: `${percent ? percent + '<br>' : ''}${formatPrice(order.paymentFee || 0)}`, icon: 'fa-percent' });
+            }
+            rows.push({ type: 'total', label: t('total_payment_label', 'Total payment'), value: formatPrice(order.total || 0), icon: 'fa-receipt' });
+            return rows;
+        }
+
+        function orderItemsHtml(order = currentOrderSnapshot) {
+            const items = order?.items || [];
+            if (!items.length) return `<span>${t('cart_empty', 'Keranjang kosong')}</span>`;
+            return `<div class="dialog-items">${items.map(item => {
+                const qty = Math.max(1, Number(item.qty) || 1);
+                const title = `${item.productName || '-'}${qty > 1 ? ' × ' + qty : ''}`;
+                const sub = [item.game, item.tierName].filter(Boolean).join(' • ');
+                const price = formatPrice(Number(item.price) || 0);
+                return `<div class="dialog-item"><div><div class="dialog-item-name">${escapeHtml(title)}</div><div class="dialog-item-sub">${escapeHtml(sub)}</div></div><div class="dialog-item-price">${escapeHtml(price)}</div></div>`;
+            }).join('')}</div>`;
+        }
+
+        function paymentFeePercentLabel(methodName = getPaymentMethodName()) {
+            const methodText = String(methodName || '').toLowerCase();
+            const method = ALL_PAYMENT_METHODS.find(pm => String(pm.name || '').toLowerCase() === methodText || methodText.includes(String(pm.name || '').toLowerCase()) || String(pm.id || '').toLowerCase().includes(methodText));
+            const percent = method?.feePercent || (methodText.includes('visa') || methodText.includes('cc') || methodText.includes('card') || methodText.includes('boosty') ? 15 : 0);
+            if (!percent) return '';
+            return t('payment_fee_percent_text', 'Service fee') + ` ${percent}%`;
+        }
+
+        function paymentDestinationHtml(methodName = getPaymentMethodName()) {
+            const method = String(methodName || '').toLowerCase();
+            if (method.includes('paypal')) return `PayPal Manual<br><a href="${STORE_CONFIG.paypalManualUrl}" target="_blank" rel="noopener noreferrer">${STORE_CONFIG.paypalManualUrl}</a>`;
+            if (method.includes('visa') || method.includes('cc') || method.includes('card') || method.includes('boosty')) return `Boosty / Visa-CC<br><a href="${STORE_CONFIG.boostyManualUrl}" target="_blank" rel="noopener noreferrer">${STORE_CONFIG.boostyManualUrl}</a>`;
+            if (method.includes('binance')) return ['id','my'].includes(appState.selectedRegion) ? 'Binance Manual<br>DM admin untuk detail pembayaran' : 'Binance Manual<br>DM admin for payment details';
+            if (method.includes('qris')) return ['id','my'].includes(appState.selectedRegion) ? 'QRIS Manual<br>Scan QRIS pada halaman checkout' : 'QRIS Manual<br>Scan the QRIS on the checkout page';
+            if (method.includes('sellauth') || method.includes('global')) return `SellAuth<br><a href="${STORE_CONFIG.globalPaymentUrl}" target="_blank" rel="noopener noreferrer">${STORE_CONFIG.globalPaymentUrl}</a>`;
+            if (method.includes('vtcpay') || method.includes('kakao') || method.includes('naver') || method.includes('samsung')) return `${escapeHtml(methodName)}<br>${t('dm_payment_short', 'DM admin for payment details')}`;
+            return escapeHtml(methodName || t('manual_confirm_note', 'Konfirmasi manual via admin'));
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
         }
 
         function cartItemCodes(cart = appState.cart) {
@@ -1878,7 +1961,7 @@
             const globalManual = ALL_PAYMENT_METHODS.filter(m => m.type === 'global' && !m.instant);
             // Urutan harus sama dengan urutan render agar radio pertama = metode yang aktif
             const methods = [...locals, ...globalInstant, ...globalManual, ...anotherLocals];
-            const labelFor = (pm) => pm.feePercent ? `${t('manual_payment','Manual')} • +${pm.feePercent}% ${t('fee_label','fee')}` : (pm.paypalMode === 'manual' || pm.needsDM ? `${t('manual_payment','Manual')} • ${t('dm_for_key','DM for key')}` : (pm.paypalMode === 'instant' ? t('instant_delivery','Instant delivery') : (pm.requiresDiscordGuide ? t('guide_via_discord','Guide via Discord') : (pm.instant ? t('instant_redirect','Instant redirect') : t('manual_check','Manual check')))));
+            const labelFor = (pm) => pm.feePercent ? `${t('manual_payment','Manual')} • +${pm.feePercent}% ${t('fee_label','fee')}` : (pm.paypalMode === 'manual' || pm.needsDM ? `${t('manual_payment','Manual')} • ${t('dm_admin','DM Admin')}` : (pm.paypalMode === 'instant' ? t('instant_delivery','Instant delivery') : (pm.requiresDiscordGuide ? t('guide_via_discord','Guide via Discord') : (pm.instant ? t('instant_redirect','Instant redirect') : t('manual_check','Manual check')))));
             const renderMethod = (pm, idx) => `
                 <label class="cursor-pointer">
                     <input type="radio" name="payment" class="peer hidden" ${idx===0?'checked':''} onchange="handlePaymentChange('${pm.id}')">
@@ -2599,6 +2682,30 @@
             closeLanguagePopup(true);
         }
 
+
+        function setStoreCategory(category) {
+            if (category !== 'digital') return showComingSoon(category);
+            document.querySelectorAll('.store-category-btn').forEach(btn => btn.classList.remove('is-active'));
+            document.querySelector('.store-category-btn:not(.is-disabled)')?.classList.add('is-active');
+            document.getElementById('games')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function showComingSoon(label) {
+            showDialog({
+                tone: 'info',
+                title: t('coming_soon_title', 'Coming soon'),
+                message: t('coming_soon_body', '{category} is not available yet. For now, please browse our digital products.').replace('{category}', label),
+                actions: [{ label: nt('notif_understood'), variant: 'primary' }]
+            });
+        }
+
+
+        function submitSearch() {
+            searchTerm = document.getElementById('search-input')?.value || '';
+            renderProducts();
+            document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         // ============================================================
         // RENDER PRODUK
         // ============================================================
@@ -2809,8 +2916,8 @@
                 system_status: 'Toko Digital 24/7',
                 hero_title: 'Upgrade Pengalaman Bermain Anda.',
                 hero_desc: 'Ryuhuu Store menyediakan produk digital pilihan dengan proses order cepat, pembayaran fleksibel, dan dukungan admin yang responsif.',
-                search_placeholder: 'Cari produk, game, atau durasi...',
-                trending_games: 'Produk Tersedia',
+                search_placeholder: 'Cari produk, game, atau durasi...', search_enter_btn: 'Cari',
+                trending_games: 'Produk Tersedia', cat_digital_title: 'Produk Digital', cat_digital_desc: 'Digital tools & private services', cat_joki_title: 'Joki Game', cat_joki_desc: 'Push rank & jasa akun', cat_topup_title: 'Topup Game', cat_topup_desc: 'Diamond, credit & currency', cat_account_title: 'Jual Akun', cat_account_desc: 'Beli & jual akun game', coming_soon: 'Soon', coming_soon_title: 'Segera hadir', coming_soon_body: '{category} belum tersedia. Untuk sekarang, silakan lihat produk digital kami.',
                 faq_title: 'Pertanyaan Umum',
                 policy_title: 'Kebijakan Toko',
                 policy_desc: 'Ketentuan layanan, privasi, dan kebijakan penggantian produk.',
@@ -2874,8 +2981,8 @@
                 system_status: '24/7 Store Online',
                 hero_title: 'Upgrade Your Gaming Experience.',
                 hero_desc: 'Curated digital products for popular games with streamlined ordering, manual PayPal support, and instant delivery through SellAuth.',
-                search_placeholder: 'Search games, products, or tags...',
-                trending_games: 'Available Products',
+                search_placeholder: 'Search games, products, or tags...', search_enter_btn: 'Enter',
+                trending_games: 'Available Products', cat_digital_title: 'Digital Products', cat_digital_desc: 'Digital tools & private services', cat_joki_title: 'Joki Game', cat_joki_desc: 'Rank push & account service', cat_topup_title: 'Topup Game', cat_topup_desc: 'Diamonds, credits & currency', cat_account_title: 'Game Accounts', cat_account_desc: 'Buy & sell game accounts', coming_soon: 'Soon', coming_soon_title: 'Coming soon', coming_soon_body: '{category} is not available yet. For now, please browse our digital products.',
                 faq_title: 'Frequently Asked Questions',
                 policy_title: 'Store Policies',
                 policy_desc: 'Terms, privacy, and product replacement policy.',
@@ -2942,24 +3049,24 @@
             local_payment: 'Pembayaran Lokal', global_payment: 'Pembayaran Global', another_payment: 'Lainnya', another_local_payment: 'Lokal Lainnya', instant_payment: 'Instan', manual_payment: 'Manual', guide_via_discord: 'Panduan via Discord', dm_admin: 'DM Admin', order_id: 'Order ID',
             stock_label: 'Stok', select_tier: 'Pilih paket', dm_to_buy: 'DM untuk membeli', dm_to_buy_product: 'DM untuk membeli produk ini',
             manual_confirm_note: 'Metode ini memerlukan konfirmasi manual dari admin.', open_instant_checkout: 'Buka Checkout Instan', open_sellauth_checkout: 'Buka Checkout SellAuth',
-            merchant_label: 'Merchant', method_label: 'Metode', product_code_label: 'Kode Produk',
+            merchant_label: 'Merchant', method_label: 'Metode', product_code_label: 'Kode Produk', products_bought_label: 'Produk dibeli', payment_to_label: 'Pembayaran ke', payment_fee_label: 'Fee pembayaran', payment_fee_percent_text: 'Biaya layanan', total_payment_label: 'Total bayar',
             fee_label: 'biaya', dm_for_key: 'DM admin untuk key', instant_delivery: 'Pengiriman instan', instant_redirect: 'Redirect instan', manual_check: 'Cek manual', qty_short: 'Jml',
             perf_mode_on: 'Mode Hemat GPU: AKTIF (klik untuk efek penuh)', perf_mode_off: 'Mode Hemat GPU: NONAKTIF (klik untuk hemat GPU)',
             perf_on_title: 'Mode Hemat GPU aktif', perf_on_body: 'Efek blur realtime dan animasi berulang dimatikan. Tampilan kaca tetap, pemakaian GPU jauh lebih ringan.',
             perf_off_title: 'Efek penuh aktif', perf_off_body: 'Blur realtime dan animasi dinyalakan kembali. Matikan lagi jika GPU terasa berat.', need_help: 'Butuh bantuan?', contact_admin_short: 'Kontak admin', summary_hint: 'Cek item & total sebelum bayar', secure_order: 'Order Aman', tips_hint: 'Tip/Donasi bersifat sukarela. Sebagian dana akan disalurkan untuk program kepedulian sosial.', coupon_placeholder: 'Kode kupon',
-            dm_payment_body: 'Silakan DM admin di Discord untuk detail pembayaran {method}. Setelah bayar, kirim bukti pembayaran untuk mendapatkan key.',
+            dm_payment_body: 'Silakan DM admin di Discord untuk detail pembayaran {method}. Setelah bayar, kirim bukti pembayaran untuk mendapatkan key.', dm_payment_short: 'DM admin untuk detail pembayaran',
             visa_cc_body: 'Bayar menggunakan kartu via Boosty. Kirim bukti pembayaran ke DM admin untuk mendapatkan key. Metode ini bisa dipakai global untuk region mana saja.',
             binance_body: 'Binance manual perlu DM admin terlebih dahulu untuk detail pembayaran. Setelah bayar, kirim bukti pembayaran ke DM untuk mendapatkan key.' };
         translations.en = { ...translations.en,
             local_payment: 'Local Payment', global_payment: 'Global Payment', another_payment: 'Other', another_local_payment: 'Other Local', instant_payment: 'Instant', manual_payment: 'Manual', guide_via_discord: 'Guide via Discord', dm_admin: 'DM Admin', order_id: 'Order ID',
             stock_label: 'Stock', select_tier: 'Select a package', dm_to_buy: 'DM to buy', dm_to_buy_product: 'DM to buy this product',
             manual_confirm_note: 'This method requires manual confirmation from the admin.', open_instant_checkout: 'Open Instant Checkout', open_sellauth_checkout: 'Open SellAuth Checkout',
-            merchant_label: 'Merchant', method_label: 'Method', product_code_label: 'Product Code',
+            merchant_label: 'Merchant', method_label: 'Method', product_code_label: 'Product Code', products_bought_label: 'Products purchased', payment_to_label: 'Payment to', payment_fee_label: 'Payment fee', payment_fee_percent_text: 'Service fee', total_payment_label: 'Total payment',
             fee_label: 'fee', dm_for_key: 'DM for key', instant_delivery: 'Instant delivery', instant_redirect: 'Instant redirect', manual_check: 'Manual check', qty_short: 'Qty',
             perf_mode_on: 'GPU Saver: ON (click for full effects)', perf_mode_off: 'GPU Saver: OFF (click to save GPU)',
             perf_on_title: 'GPU Saver enabled', perf_on_body: 'Realtime blur and looping animations are off. The glass look stays, GPU usage drops a lot.',
             perf_off_title: 'Full effects enabled', perf_off_body: 'Realtime blur and animations are back on. Turn this off again if your GPU struggles.', need_help: 'Need help?', contact_admin_short: 'Contact admin', summary_hint: 'Check items & total before payment', secure_order: 'Secure Order', tips_hint: 'Tips/Donations are voluntary. Part of the funds will be allocated to social care programs.', coupon_placeholder: 'Coupon code',
-            dm_payment_body: 'Please DM admin on Discord for {method} payment details. After payment, send proof to receive your key.',
+            dm_payment_body: 'Please DM admin on Discord for {method} payment details. After payment, send proof to receive your key.', dm_payment_short: 'DM admin for payment details',
             visa_cc_body: 'Pay by card via Boosty. Send payment proof to admin DM to receive your key. This method works globally for any region.',
             binance_body: 'Binance manual requires DM admin first for payment details. After payment, send proof by DM to receive your key.' };
         translations.vi = { ...translations.en,
@@ -3072,6 +3179,9 @@
             renderPolicies();
             document.getElementById('search-input').addEventListener('input', e => { searchTerm = e.target.value;
                 renderProducts(); });
+            document.getElementById('search-input').addEventListener('keydown', e => {
+                if (e.key === 'Enter') { e.preventDefault(); submitSearch(); }
+            });
             document.getElementById('modal-tab-buttons').addEventListener('click', (e) => {
                 if (e.target.classList.contains('tab-btn')) {
                     document.querySelectorAll('#modal-tab-buttons .tab-btn').forEach(b => {
@@ -3146,9 +3256,9 @@
             notif_need_name_title: 'Username Discord belum diisi',
             notif_need_name_body: 'Masukkan username Discord kamu agar admin bisa mengirim key pesanan.',
             notif_order_created_title: 'Pesanan berhasil dibuat',
-            notif_boosty_body: 'Selesaikan pembayaran kartu (Visa/CC) di Boosty. Total sudah termasuk biaya layanan 15%. Setelah membayar, kirim bukti pembayaran ke DM admin untuk menerima key.',
+            notif_boosty_body: 'Selesaikan pembayaran kartu (Visa/CC) di Boosty sesuai detail di bawah. Total sudah termasuk biaya layanan 15%. Setelah membayar, kirim bukti pembayaran ke DM admin untuk menerima key.',
             notif_binance_body: 'Untuk Binance manual, DM admin terlebih dahulu untuk detail pembayaran. Setelah membayar, kirim bukti pembayaran ke DM admin untuk menerima key.',
-            notif_paypal_body: 'Selesaikan pembayaran PayPal manual, lalu kirim Order ID dan bukti pembayaran ke DM admin untuk menerima key.',
+            notif_paypal_body: 'Selesaikan pembayaran PayPal manual sesuai detail di bawah, lalu kirim Order ID dan bukti pembayaran ke DM admin untuk menerima key.',
             notif_total_invalid_title: 'Total pesanan tidak valid',
             notif_total_invalid_body: 'Periksa kembali isi keranjang kamu sebelum melanjutkan pembayaran.',
             notif_no_order_title: 'Pesanan belum dibuat',
@@ -3172,9 +3282,9 @@
             notif_need_name_title: 'Discord username required',
             notif_need_name_body: 'Enter your Discord username so the admin can deliver your key.',
             notif_order_created_title: 'Order created',
-            notif_boosty_body: 'Complete the card payment (Visa/CC) on Boosty. The total already includes the 15% service fee. After paying, send your payment proof to the admin DM to receive your key.',
+            notif_boosty_body: 'Complete the card payment (Visa/CC) on Boosty using the details below. The total already includes the 15% service fee. After paying, send your payment proof to the admin DM to receive your key.',
             notif_binance_body: 'For Binance manual, DM the admin first for payment details. After paying, send your payment proof by DM to receive your key.',
-            notif_paypal_body: 'Complete the manual PayPal payment, then send your Order ID and payment proof to the admin DM to receive your key.',
+            notif_paypal_body: 'Complete the manual PayPal payment using the details below, then send your Order ID and payment proof to the admin DM to receive your key.',
             notif_total_invalid_title: 'Invalid order total',
             notif_total_invalid_body: 'Please review your cart before continuing to payment.',
             notif_no_order_title: 'No order yet',
@@ -3272,15 +3382,22 @@
                 metaWrap.classList.remove('hidden');
                 meta.forEach(row => {
                     const line = document.createElement('div');
-                    line.className = 'dialog-meta-row';
+                    line.className = 'dialog-meta-row' + (row.type ? ' is-' + row.type : '');
+                    const icon = document.createElement('div');
+                    icon.className = 'dialog-meta-icon';
+                    icon.innerHTML = '<i class="fas ' + (row.icon || 'fa-circle-info') + '"></i>';
+                    const content = document.createElement('div');
+                    content.className = 'min-w-0';
                     const label = document.createElement('span');
                     label.className = 'dialog-meta-label';
                     label.textContent = row.label;
                     const value = document.createElement('span');
-                    value.className = 'dialog-meta-value';
-                    value.textContent = row.value;
-                    line.appendChild(label);
-                    line.appendChild(value);
+                    value.className = 'dialog-meta-value' + (row.type === 'total' ? ' is-money' : '');
+                    if (row.html === false) value.textContent = row.value; else value.innerHTML = row.value;
+                    content.appendChild(label);
+                    content.appendChild(value);
+                    line.appendChild(icon);
+                    line.appendChild(content);
                     metaWrap.appendChild(line);
                 });
             } else {
